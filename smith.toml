@@ -118,6 +118,10 @@ build = "sh tools/pack-plugin.sh voice-extractor"
 assets = ["out/voice-extractor-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
+# A plugin is released as a GitHub Release with its .mtp package, never to PyPI.
+[projects.speech-to-text]
+registry = "none"
+
 [projects.speech-to-text.release]
 build = "sh tools/pack-plugin.sh speech-to-text python"
 assets = ["out/speech-to-text-*.mtp"]

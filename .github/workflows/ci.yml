@@ -22,7 +22,7 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     outputs:
-      released: ${{ steps.released.outputs.done }}
+      released: ${{ steps.release.outputs.released || steps.released.outputs.done }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -61,7 +61,7 @@ jobs:
       - name: Install smith
         shell: bash
         run: |
-          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.3
+          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.12
           smith --version
       - name: Build Metil
         shell: bash
@@ -93,6 +93,7 @@ jobs:
           path: dist/drop
           if-no-files-found: ignore
       - name: Release
+        id: release
         if: github.event_name == 'push' && github.ref_name == 'main'
         run: smith ci release
         env:
@@ -147,7 +148,7 @@ jobs:
       - name: Install smith
         shell: bash
         run: |
-          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.3
+          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.12
           smith --version
       - name: Build Metil
         shell: bash
