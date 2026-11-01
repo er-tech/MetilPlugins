@@ -156,7 +156,7 @@ def test_the_action_reads_a_stored_file_a_path_and_fails_with_the_status_that_fi
     assert code_of("transcribe", {"media": {"name": "no file"}}) == 400
     assert code_of("transcribe", {"media": str(tmp_path / "missing.mp3")}) == 404
     assert code_of("transcribe", {"media": {"file": str(tmp_path / "missing.mp3")}}) == 404
-    for bad in [
+    bad_options: list[dict[str, Any]] = [
         {"model": 3},
         {"model": "bad name; rm -rf"},
         {"language": "English"},
@@ -164,7 +164,8 @@ def test_the_action_reads_a_stored_file_a_path_and_fails_with_the_status_that_fi
         {"words": "yes"},
         {"beamSize": 0},
         {"beamSize": True},
-    ]:
+    ]
+    for bad in bad_options:
         assert code_of("transcribe", {"media": str(sound), **bad}) == 400, bad
     assert code_of("sing", {"media": str(sound)}) == 404
 

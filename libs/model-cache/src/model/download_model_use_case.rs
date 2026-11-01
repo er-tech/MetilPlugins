@@ -93,6 +93,8 @@ fn fetch(
 #[cfg(test)]
 mod tests {
     use std::cell::RefCell;
+    // The socket methods below need these traits on some systems and not on others.
+    #[allow(unused_imports)]
     use std::io::{Read as _, Write as _};
     use std::net::TcpListener;
 

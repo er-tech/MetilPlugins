@@ -1,6 +1,7 @@
 //! Times a model on the CPU and on a GPU through ONNX Runtime: gpu-probe <model> <shape, like 1,3,640,640> <cpu|dml:N> <runs>
 use std::time::Instant;
 
+#[cfg(windows)]
 use ort::ep;
 use ort::session::Session;
 use ort::value::Tensor;
@@ -16,16 +17,22 @@ fn main() {
     let runs: usize = args[4].parse().expect("runs is a whole number");
 
     let environment = ort::init().with_telemetry(false).build().expect("environment");
+    #[cfg_attr(not(windows), allow(unused_mut))]
     let mut builder = Session::builder(&environment).expect("builder");
-    if let Some(device) = provider.strip_prefix("dml:") {
-        let device: i32 = device.parse().expect("the adapter is a number");
-        builder = builder
-            .with_execution_providers([ep::DirectML::default()
-                .with_device_id(device)
-                .build()
-                .error_on_failure()])
-            .expect("directml");
+    #[cfg(windows)]
+    {
+        if let Some(device) = provider.strip_prefix("dml:") {
+            let device: i32 = device.parse().expect("the adapter is a number");
+            builder = builder
+                .with_execution_providers([ep::DirectML::default()
+                    .with_device_id(device)
+                    .build()
+                    .error_on_failure()])
+                .expect("directml");
+        }
     }
+    #[cfg(not(windows))]
+    assert!(!provider.starts_with("dml:"), "DirectML runs only on Windows");
     let started = Instant::now();
     let mut session = builder.commit_from_file(model).expect("load");
     let load = started.elapsed();
