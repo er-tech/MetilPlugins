@@ -17,7 +17,7 @@ def get_model(name: str) -> Any:
     """
     with _lock:
         if name not in _models:
-            # Heavy, so loaded on first use; imported by name because the package has stubs on some installs only.
+            # Heavy, so loaded on first use. Imported by name: stubs exist on some installs only.
             whisper_model = import_module("faster_whisper").WhisperModel
             _models[name] = whisper_model(name, device="cpu", compute_type="int8")
         return _models[name]
