@@ -34,6 +34,7 @@ metil run recipes/ --out out/result.json --plugins ~/.metil/plugins
 | `stallSeconds` | optional: how long a call may go without a `progress` message before the program is stopped and the call times out (408); without it only `timeoutSeconds` limits a call |
 | `cancelGraceSeconds` | how long a program gets to answer a cancelled call before it is stopped (default 5) |
 | `permissions` | optional: what the plugin needs beyond computing: `env` (environment variables), `network` (hosts), `read` and `write` (folders), `run` (programs). Nothing declared means nothing needed. See Environment |
+| `platforms` | optional: the platforms the plugin runs on, `["windows-x86_64", "linux-x86_64", "macos-aarch64"]` (system `windows`, `linux` or `macos`, processor `x86_64` or `aarch64`). Nothing listed means every platform. On any other platform Metil refuses to start the plugin and says where it runs: `metil check` reports a flow that calls it, `metil run` stops before anything starts, and `metil actions --json` marks it `"available": false` with the reason in `"unavailable"`. List the platforms you ship a package for |
 
 Unknown keys are refused. Metil does not install a plugin's runtime or dependencies: the plugin brings its own or documents them.
 

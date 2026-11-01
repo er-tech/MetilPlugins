@@ -4,6 +4,7 @@
   "title": "Upscale video",
   "description": "Makes a video larger, two or four times, with a Real-ESRGAN network that adds detail, or with plain Lanczos scaling. It runs on the graphics card when the host grants one. No language model.",
   "protocol": 2,
+  "platforms": ["windows-x86_64", "linux-x86_64", "macos-aarch64"],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-video-upscale"
