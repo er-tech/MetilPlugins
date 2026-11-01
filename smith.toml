@@ -57,13 +57,13 @@ node = "node-jest"     # ESLint with @monosmith/eslint-config, and Jest
 # depends_on = ["^build", "codegen"]
 
 # Each plugin releases on main as a .vcw package per platform (a Python one is a single "any" package).
-# vcw is private: the pipeline checks VideoCraw out beside this repository (secret VIDEOCRAW_TOKEN) and the build makes vcw from it.
+# vcw is private: the pipeline checks VideoCraw out beside this repository (secret METIL_TOKEN) and the build makes vcw from it.
 [[ci.sibling_repos]]
 repo = "er-tech/Metil"
 ref = "main"
 env = "VIDEOCRAW"
 pre_build = "cargo build --release -p videocraw-vcw"
-token_secret = "VIDEOCRAW_TOKEN"
+token_secret = "METIL_TOKEN"
 
 [release]
 github_releases = true

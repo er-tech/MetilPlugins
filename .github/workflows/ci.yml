@@ -31,7 +31,7 @@ jobs:
           repository: er-tech/Metil
           path: VideoCraw
           ref: 'main'
-          token: ${{ secrets.VIDEOCRAW_TOKEN }}
+          token: ${{ secrets.METIL_TOKEN }}
       - name: Export VIDEOCRAW
         shell: bash
         run: echo "VIDEOCRAW=$GITHUB_WORKSPACE/VideoCraw" >> "$GITHUB_ENV"
@@ -127,7 +127,7 @@ jobs:
           repository: er-tech/Metil
           path: VideoCraw
           ref: 'main'
-          token: ${{ secrets.VIDEOCRAW_TOKEN }}
+          token: ${{ secrets.METIL_TOKEN }}
       - name: Export VIDEOCRAW
         shell: bash
         run: echo "VIDEOCRAW=$GITHUB_WORKSPACE/VideoCraw" >> "$GITHUB_ENV"
