@@ -8,7 +8,7 @@ name = "videoplugins"
 # npm scope for Node packages
 scope = "@videoplugins"
 # Go module path prefix for Go projects
-module_prefix = "github.com/Open-Craw/VideoPlugins"
+module_prefix = "github.com/er-tech/MetilPlugins"
 
 [ci]
 # Pipelines to generate: "github", "azure", "gitlab", or several.
@@ -59,7 +59,7 @@ node = "node-jest"     # ESLint with @monosmith/eslint-config, and Jest
 # Each plugin releases on main as a .vcw package per platform (a Python one is a single "any" package).
 # vcw is private: the pipeline checks VideoCraw out beside this repository (secret VIDEOCRAW_TOKEN) and the build makes vcw from it.
 [[ci.sibling_repos]]
-repo = "Open-Craw/VideoCraw"
+repo = "er-tech/Metil"
 ref = "main"
 env = "VIDEOCRAW"
 pre_build = "cargo build --release -p videocraw-vcw"

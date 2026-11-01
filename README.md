@@ -1,6 +1,6 @@
 # VideoPlugins
 
-Plugins for [VideoCraw](https://github.com/Open-Craw/VideoCraw), the tool that extracts data from video: image, sound, text, context and search.
+Plugins for [VideoCraw](https://github.com/er-tech/Metil), the tool that extracts data from video: image, sound, text, context and search.
 
 VideoCraw's core does very little itself (it reads recipes, opens a video, extracts audio and keeps the results). Everything that finds something in the media is a plugin: a separate program that VideoCraw starts when a recipe calls it. A plugin can be written in any language. This repository holds the plugins that are developed alongside VideoCraw, and the documentation of how to write one.
 
