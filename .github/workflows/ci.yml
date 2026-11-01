@@ -25,13 +25,13 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: Check out Open-Craw/VideoCraw
+      - name: Check out er-tech/Metil
         uses: actions/checkout@v7
         with:
-          repository: Open-Craw/VideoCraw
+          repository: er-tech/Metil
           path: VideoCraw
           ref: 'main'
-          token: ${{ secrets.VIDEOCRAW_TOKEN }}
+          token: ${{ secrets.METIL_TOKEN }}
       - name: Export VIDEOCRAW
         shell: bash
         run: echo "VIDEOCRAW=$GITHUB_WORKSPACE/VideoCraw" >> "$GITHUB_ENV"
@@ -121,13 +121,13 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: Check out Open-Craw/VideoCraw
+      - name: Check out er-tech/Metil
         uses: actions/checkout@v7
         with:
-          repository: Open-Craw/VideoCraw
+          repository: er-tech/Metil
           path: VideoCraw
           ref: 'main'
-          token: ${{ secrets.VIDEOCRAW_TOKEN }}
+          token: ${{ secrets.METIL_TOKEN }}
       - name: Export VIDEOCRAW
         shell: bash
         run: echo "VIDEOCRAW=$GITHUB_WORKSPACE/VideoCraw" >> "$GITHUB_ENV"
