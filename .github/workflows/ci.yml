@@ -64,7 +64,7 @@ jobs:
       - name: Build Metil
         shell: bash
         working-directory: Metil
-        run: cargo build --release -p metil-plugin
+        run: cargo build --release -p metil-cli
       # smith:slot before-setup
       # smith:slot-end before-setup
       - name: Setup
@@ -146,7 +146,7 @@ jobs:
       - name: Build Metil
         shell: bash
         working-directory: Metil
-        run: cargo build --release -p metil-plugin
+        run: cargo build --release -p metil-cli
       - name: Setup
         run: smith ci setup
       - name: Build and upload the release files

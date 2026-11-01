@@ -52,7 +52,7 @@ The model is [YAMNet](https://github.com/tensorflow/models/tree/master/research/
 
 ## Licences
 
-The program's own licence is the author's to choose (`metil-plugin check` says there is none yet). What it uses: YAMNet is Apache-2.0 (the ONNX conversion says the same); ONNX Runtime is MIT; the Rust crates are listed in [docs/licences.md](../../docs/licences.md). The model is **not packaged**: it is downloaded.
+The program's own licence is the author's to choose (`metil plugins check` says there is none yet). What it uses: YAMNet is Apache-2.0 (the ONNX conversion says the same); ONNX Runtime is MIT; the Rust crates are listed in [docs/licences.md](../../docs/licences.md). The model is **not packaged**: it is downloaded.
 
 ## Failures
 

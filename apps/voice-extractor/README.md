@@ -53,7 +53,7 @@ The sound is cut in frames of 960 samples every 480 (20 ms and 10 ms at 48 kHz) 
 
 ## Licences
 
-The program's own licence is the author's to choose (`metil-plugin check` says there is none yet). What it uses: DeepFilterNet is Apache-2.0 or MIT (the ONNX conversion is published under MIT); ONNX Runtime is MIT; the Rust crates (`realfft` and `rustfft` for the transform) are listed in [docs/licences.md](../../docs/licences.md). The model is **not packaged**: it is downloaded.
+The program's own licence is the author's to choose (`metil plugins check` says there is none yet). What it uses: DeepFilterNet is Apache-2.0 or MIT (the ONNX conversion is published under MIT); ONNX Runtime is MIT; the Rust crates (`realfft` and `rustfft` for the transform) are listed in [docs/licences.md](../../docs/licences.md). The model is **not packaged**: it is downloaded.
 
 ## Failures
 

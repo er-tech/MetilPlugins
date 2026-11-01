@@ -57,12 +57,12 @@ node = "node-jest"     # ESLint with @monosmith/eslint-config, and Jest
 # depends_on = ["^build", "codegen"]
 
 # Each plugin releases on main as a .mtp package per platform (a Python one is a single "any" package).
-# metil-plugin is private: the pipeline checks Metil out beside this repository (secret METIL_TOKEN) and the build makes metil-plugin from it.
+# metil is private: the pipeline checks Metil out beside this repository (secret METIL_TOKEN) and the build makes the metil program from it.
 [[ci.sibling_repos]]
 repo = "er-tech/Metil"
 ref = "main"
 env = "METIL"
-pre_build = "cargo build --release -p metil-plugin"
+pre_build = "cargo build --release -p metil-cli"
 token_secret = "METIL_TOKEN"
 
 [release]
