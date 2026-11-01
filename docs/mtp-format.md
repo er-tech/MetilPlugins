@@ -15,7 +15,7 @@ cat-sounds-0.1.0-windows-x86_64.mtp
   ...                 whatever else the plugin needs to run
 ```
 
-`plugin.json` is always at the root. Its `command` is resolved against the folder the package is unpacked into, so the program and its files are packed where the command says. The file name is only a convention: `<name>-<version>-<platform>.mtp`. The `metil-plugin pack` tool makes a package from a plugin folder (`--program <file>` takes the built program from a build folder, such as `dist/cargo/release/`, and packs it as `bin/<name>` with the packaged `command` pointing there, so the manifest in the repository can keep its development path); a package made by hand that follows this page is just as good.
+`plugin.json` is always at the root. Its `command` is resolved against the folder the package is unpacked into, so the program and its files are packed where the command says. The file name is only a convention: `<name>-<version>-<platform>.mtp`. The `metil plugins pack` tool makes a package from a plugin folder (`--program <file>` takes the built program from a build folder, such as `dist/cargo/release/`, and packs it as `bin/<name>` with the packaged `command` pointing there, so the manifest in the repository can keep its development path); a package made by hand that follows this page is just as good.
 
 **Not in the package:**
 

@@ -49,7 +49,7 @@ The picture model runs on the processor by default (`device: "cpu"`). `gpu` or `
 
 ## Licences
 
-The program's own licence is the author's to choose (`metil-plugin check` says there is none yet). What it uses: SigLIP is Apache-2.0 (Google; the conversion says the same); ONNX Runtime is MIT; the Hugging Face `tokenizers` crate is Apache-2.0; the Rust crates are listed in [docs/licences.md](../../docs/licences.md). The model is **not packaged**: it is downloaded.
+The program's own licence is the author's to choose (`metil plugins check` says there is none yet). What it uses: SigLIP is Apache-2.0 (Google; the conversion says the same); ONNX Runtime is MIT; the Hugging Face `tokenizers` crate is Apache-2.0; the Rust crates are listed in [docs/licences.md](../../docs/licences.md). The model is **not packaged**: it is downloaded.
 
 ## Failures
 

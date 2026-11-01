@@ -50,7 +50,7 @@ The detector runs where the host grants (`device: "auto"`, the default): on the 
 
 ## Licences
 
-The program's own licence is the author's to choose (`metil-plugin check` says there is none yet). What it uses: the YOLOX code and weights are Apache-2.0; ONNX Runtime is MIT; the Rust crates are listed in [docs/licences.md](../../docs/licences.md). The weights are **not packaged**: they are downloaded from their authors.
+The program's own licence is the author's to choose (`metil plugins check` says there is none yet). What it uses: the YOLOX code and weights are Apache-2.0; ONNX Runtime is MIT; the Rust crates are listed in [docs/licences.md](../../docs/licences.md). The weights are **not packaged**: they are downloaded from their authors.
 
 ## Failures
 

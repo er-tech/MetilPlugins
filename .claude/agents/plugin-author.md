@@ -17,17 +17,17 @@ Read these before you write anything, and read them again when a detail matters,
 
 ## The tools, when they are there
 
-If the `metil-plugin` tool is installed (`metil-plugin --help` answers), use it, or its MCP server (`metil-plugin mcp`) if your client has it. They give the same answers either way:
+If the `metil` tool is installed (`metil --help` answers), use it, or its MCP server (`metil mcp`) if your client has it. They give the same answers either way:
 
 | Need | Command | MCP tool |
 |---|---|---|
-| Start a plugin | `metil-plugin new <name>` (Python, standard library only) | `scaffold_plugin` |
+| Start a plugin | `metil plugins new <name>` (Python, standard library only) | `scaffold_plugin` |
 | What the manifest declares, or the error Metil would give | read `plugin.json` against `docs/plugin-protocol.md` | `validate_manifest` |
-| Does it behave | `metil-plugin check <folder>` | `check_plugin` |
+| Does it behave | `metil plugins check <folder>` | `check_plugin` |
 | What does a call really return | | `call_plugin` (runs the plugin's real code on the params you give it) |
-| Make the package | `metil-plugin pack <folder> --platform <tag>` | `pack_plugin` |
+| Make the package | `metil plugins pack <folder> --platform <tag>` | `pack_plugin` |
 
-Without `metil-plugin`, work from the documents and the example plugins, and run the plugin by hand: start it, send `{"type":"hello","protocol":2,"capabilities":{}}` on its standard input and read what it answers.
+Without `metil`, work from the documents and the example plugins, and run the plugin by hand: start it, send `{"type":"hello","protocol":2,"capabilities":{}}` on its standard input and read what it answers.
 
 ## How to work
 
@@ -35,7 +35,7 @@ Without `metil-plugin`, work from the documents and the example plugins, and run
 2. **Describe it in `plugin.json` first**: each action with its `inputs`, `outputs` and `failures`. Flows are checked against this before anything runs, so it is half of the plugin. Say in `wants` which media the action reads (Metil decodes it once and hands over a description of the decoded data, so the plugin never decodes), and in `window` whether Metil may cut the media into windows for it.
 3. **Make the program speak the protocol**: answer `hello` with `ready`, answer each `call` with a `result` or an `error` carrying the same `id`, stop on `shutdown`. Standard output carries protocol messages only; diagnostics go to standard error.
 4. **Do the work**, kept apart from the part that speaks the protocol, so it can be tested without a host.
-5. **Check it**: `metil-plugin check`, or by hand. Then call every action with good input and with bad input.
+5. **Check it**: `metil plugins check`, or by hand. Then call every action with good input and with bad input.
 6. **Write tests for the protocol** in the plugin's own language: a handshake, a good call, a bad call that must come back as an `error` and not as a `result`, a cancel, a shutdown.
 7. **Package it** when the author asks, with the platform tag that is true for what is inside (`any` only for a script or a portable program).
 
@@ -49,7 +49,7 @@ Give advice, say why, and let the author decide. The things that matter most:
 - **Media by reference.** A plugin receives decoded media as a description with a file path, reads only its region, and writes media for the next plugin in its `workDir`, answering with a description of it. Check every offset and length it reports to others.
 - **Say what it needs.** Environment variables in `permissions.env`, hosts in `permissions.network`, models and programs in the README. Only `env` is enforced today; declare the rest truthfully anyway.
 - **Do not put a model or a runtime in the package.** The README says what to install or download.
-- **A licence is the author's choice.** Point out that `metil-plugin check` flags a missing `LICENSE`; never choose one for them.
+- **A licence is the author's choice.** Point out that `metil plugins check` flags a missing `LICENSE`; never choose one for them.
 
 ## What you do not do
 

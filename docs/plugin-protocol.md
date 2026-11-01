@@ -45,7 +45,7 @@ A plugin is started with an **environment of its own**: the ordinary variables e
 "permissions": { "env": ["HF_HOME"], "network": ["huggingface.co"] }
 ```
 
-Only `env` is enforced today. `network`, `read`, `write` and `run` are recorded and shown to the person who installs the plugin and by `metil-plugin check`; they will be enforced once Metil can sandbox a program on every platform, so declare them truthfully now.
+Only `env` is enforced today. `network`, `read`, `write` and `run` are recorded and shown to the person who installs the plugin and by `metil plugins check`; they will be enforced once Metil can sandbox a program on every platform, so declare them truthfully now.
 
 ## Describing the actions
 

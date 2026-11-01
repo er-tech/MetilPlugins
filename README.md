@@ -12,7 +12,7 @@ Read [docs/plugin-protocol.md](docs/plugin-protocol.md): the manifest (`plugin.j
 
 To hand a plugin to someone, pack it as a `.mtp` file: [docs/mtp-format.md](docs/mtp-format.md) says what goes in it and what an installer checks (`metil plugins install cat-sounds.mtp`).
 
-With Claude Code, open this repository and ask for the `plugin-author` agent (or the `write-a-plugin` skill): both are in `.claude/` and work from these documents, and use the `metil-plugin` tool and its MCP server when they are installed.
+With Claude Code, open this repository and ask for the `plugin-author` agent (or the `write-a-plugin` skill): both are in `.claude/` and work from these documents, and use the `metil` tool and its MCP server when they are installed.
 
 Then [docs/writing-good-plugins.md](docs/writing-good-plugins.md): guidance, not rules, on what makes a plugin pleasant to use in a workflow (report failures as failures, handle `cancel`, stay predictable).
 
