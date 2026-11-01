@@ -1,0 +1,23 @@
+{
+  "name": "replace-music",
+  "triggers": { "start": { "type": "Once" } },
+  "actions": {
+    "Videos": { "type": "data.listFiles", "inputs": { "from": ["videos"], "kinds": ["video"] } },
+    "Musics": { "type": "data.listFiles", "inputs": { "from": ["music"], "kinds": ["audio"] } },
+    "Pairs": { "type": "data.match", "runAfter": { "Videos": ["Succeeded"], "Musics": ["Succeeded"] },
+      "inputs": { "left": "@body('Videos')", "right": "@body('Musics')", "by": "stem", "onMissing": "fail" } },
+    "Each": {
+      "type": "Foreach", "runAfter": { "Pairs": ["Succeeded"] }, "foreach": "@body('Pairs')",
+      "actions": {
+        "Open": { "type": "media.open", "inputs": { "path": "@item().left.path" } },
+        "Where": { "type": "music-sync.findOffset", "runAfter": { "Open": ["Succeeded"] },
+          "inputs": { "video": "@body('Open')", "music": "@item().right.path" } },
+        "Better": { "type": "media.replaceAudio", "runAfter": { "Where": ["Succeeded"] },
+          "inputs": { "video": "@body('Open')", "sound": "@item().right.path", "offsetMs": "@body('Where').offsetMs", "speed": "@body('Where').speed", "keep": "audio", "freezeLastFrame": true, "saveAs": "@concat(item().key, '-better.mp4')" } }
+      }
+    },
+    "Records": { "type": "data.map", "runAfter": { "Each": ["Succeeded"] },
+      "inputs": { "items": "@body('Each')", "as": { "offsetMs": "@item().Where.offsetMs", "speed": "@item().Where.speed", "score": "@item().Where.score", "better": "@item().Better.path", "report": "@item().Better.report" } } }
+  },
+  "outputs": { "records": { "type": "array", "value": "@body('Records')" } }
+}

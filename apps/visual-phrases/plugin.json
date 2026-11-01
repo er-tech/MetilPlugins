@@ -1,0 +1,304 @@
+{
+  "name": "visual-phrases",
+  "version": "0.1.0",
+  "title": "Find what a phrase describes",
+  "description": "Finds when a phrase you write (\"two cats sleeping on a couch\") describes what a video shows, with an image-text model.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-visual-phrases"
+  ],
+  "timeoutSeconds": 1800,
+  "stallSeconds": 120,
+  "concurrency": 1,
+  "requirements": {
+    "cpu": 2,
+    "memoryMb": 1200
+  },
+  "permissions": {
+    "env": [
+      "METIL_MODELS"
+    ],
+    "network": [
+      "huggingface.co",
+      "us.aws.cdn.hf.co"
+    ],
+    "write": [
+      "~/.metil/models"
+    ]
+  },
+  "actions": {
+    "find": {
+      "description": "Finds when a phrase describes what a video shows (\"two cats sleeping on a couch\", \"a red car\", \"a person skiing\"), with an image-text model and no language model. Any phrase works, with no fixed list of classes. For each phrase it gives one appearance each time it holds, with the first picture and the time; a phrase that stays true is one appearance.",
+      "title": "Find what a phrase describes",
+      "category": "find",
+      "icon": "image-search",
+      "wants": {
+        "media": {
+          "media": "video",
+          "format": "rgb24",
+          "width": 640,
+          "everyMs": 1000
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video: a stored file or a video as media.open gives it, or a path in text. Metil decodes a colour picture of it every second.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "phrases": {
+            "title": "Phrases to look for",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 16,
+            "description": "What to look for, in words. Descriptive phrases score best (\"a photo of two cats sleeping on a couch\"); a negation or a count (\"no people\", \"exactly three\") does not work well.",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "x-ui": {
+              "group": "everyday",
+              "widget": "phrases"
+            }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ],
+            "default": "cpu",
+            "description": "Where the picture model runs: cpu (the default) or gpu / auto, which use the graphics card (on Windows, any DirectX 12 card). The graphics card was about 3 times faster here, but this model is quantised (int8) and its numbers differ a little from the processor's, so its scores differ too: try it on your material before relying on it. The phrase model always runs on the processor. A card that cannot be used falls back to the processor; the result says what ran.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "auto": "Automatic (graphics card if there is a discrete one)",
+                "cpu": "Processor",
+                "gpu": "Graphics card"
+              }
+            }
+          },
+          "minConfidence": {
+            "title": "Least confidence",
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 1,
+            "description": "How sure the model must be that a phrase describes a picture (default 0.1). The scores of this kind of model are low for short phrases: a good match is often 0.2 to 0.6.",
+            "default": 0.1,
+            "x-ui": {
+              "group": "everyday",
+              "widget": "slider"
+            }
+          },
+          "gapMs": {
+            "title": "Longest gap",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 600000,
+            "description": "How long a phrase can stop being true before it counts as over; if it comes back that is another appearance (default 2000).",
+            "default": 2000,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
+          },
+          "minSamples": {
+            "title": "Fewest pictures",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "In how few pictures (a second apart) a phrase is still reported, so a flicker is not (default 1).",
+            "default": 1,
+            "x-ui": {
+              "group": "advanced"
+            }
+          }
+        },
+        "required": [
+          "media",
+          "phrases"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "appearances": {
+            "title": "Appearances",
+            "type": "array",
+            "description": "In the order they start.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "phrase": {
+                  "title": "Phrase",
+                  "type": "string",
+                  "description": "The phrase as it was given, without the spaces round it."
+                },
+                "label": {
+                  "title": "Label",
+                  "type": "string",
+                  "description": "The same as phrase, under the name every timed label has."
+                },
+                "startMs": {
+                  "title": "First shown",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "When the picture where it first holds is shown, in the time of the video."
+                },
+                "endMs": {
+                  "title": "Last shown",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "When the last picture it holds in stops being shown."
+                },
+                "confidence": {
+                  "title": "Confidence",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1,
+                  "description": "The surest the model was of it in any picture of the appearance."
+                },
+                "samples": {
+                  "title": "Pictures it was seen in",
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "In how many pictures it held."
+                },
+                "picture": {
+                  "title": "Picture",
+                  "type": "object",
+                  "description": "The first picture of the appearance: a stored PNG.",
+                  "properties": {
+                    "blob": {
+                      "title": "Stored file",
+                      "type": "string"
+                    },
+                    "mime": {
+                      "title": "Type of file",
+                      "type": "string"
+                    },
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "title": "Size in bytes",
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "blob",
+                    "mime",
+                    "path",
+                    "bytes"
+                  ]
+                }
+              },
+              "required": [
+                "phrase",
+                "startMs",
+                "endMs",
+                "confidence",
+                "samples",
+                "picture",
+                "label"
+              ]
+            },
+            "x-ui": {
+              "type": "timedLabel"
+            }
+          },
+          "samples": {
+            "title": "Pictures it was seen in",
+            "type": "integer",
+            "minimum": 0,
+            "description": "How many pictures were looked at."
+          },
+          "durationMs": {
+            "title": "Time shown",
+            "type": "integer",
+            "minimum": 0
+          },
+          "device": {
+            "title": "What it ran on",
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "What the picture model really ran on: device (cpu or directml:N), name (the graphics card, if one was used) and fallback (why the graphics card was not used, if it was asked for).",
+            "properties": {
+              "device": {
+                "title": "Device",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "name": {
+                "title": "Graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "fallback": {
+                "title": "Why not the graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "appearances",
+          "samples",
+          "durationMs"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong, or media is missing or not a video Metil decoded for the plugin."
+        },
+        {
+          "code": 404,
+          "description": "A file is not there."
+        },
+        {
+          "code": 422,
+          "description": "The video has no picture, a file cannot be read, or the model cannot be loaded."
+        },
+        {
+          "code": 503,
+          "description": "A model file could not be downloaded (they are fetched once, on first use). Trying again may work."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    }
+  }
+}

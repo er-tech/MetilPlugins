@@ -1,0 +1,124 @@
+{
+  "name": "sound-clean",
+  "version": "0.1.0",
+  "title": "Sound cleaner",
+  "description": "Takes steady noise (a hum, a fan, hiss) out of a sound and hands the cleaned sound to the next plugin.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-sound-clean"
+  ],
+  "timeoutSeconds": 300,
+  "concurrency": 4,
+  "requirements": {
+    "cpu": 1
+  },
+  "actions": {
+    "reduceNoise": {
+      "description": "Takes steady noise (a hum, a fan, hiss) out of a sound and hands the cleaned sound to the next plugin.",
+      "title": "Reduce noise",
+      "category": "transform",
+      "icon": "sound-clean",
+      "wants": {
+        "audio": {
+          "media": "audio",
+          "sampleRate": 16000,
+          "channels": 1
+        }
+      },
+      "window": {
+        "mediaAt": "audio",
+        "overlapMs": 1000
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "audio": {
+            "title": "Sound",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The sound: a video or a stored file (an object with an absolute file path) or a path in text.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "strength": {
+            "title": "Strength",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "How much of the noise is taken out, 0 to 1 (default 0.5). More also takes a little of the voice.",
+            "default": 0.5,
+            "x-ui": {
+              "group": "everyday",
+              "widget": "slider"
+            }
+          },
+          "floorDb": {
+            "title": "Quietest allowed",
+            "type": "number",
+            "minimum": -60,
+            "maximum": -3,
+            "description": "The quietest a frequency is made, in dB (default -20), so the sound does not turn into bubbles.",
+            "default": -20,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "dB"
+            }
+          }
+        },
+        "required": [
+          "audio"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "audio": {
+            "title": "Cleaned sound",
+            "type": "object",
+            "description": "The cleaned sound, described as Metil describes decoded sound (kind audio, f32le, file, sampleRate, channels, sampleCount, startMs...). Give it to an action that wants sound; it is good for this run only.",
+            "x-ui": {
+              "kind": "sound"
+            }
+          },
+          "reducedDb": {
+            "title": "Noise taken out",
+            "type": "number",
+            "minimum": 0,
+            "description": "How much quieter the quietest tenth of the sound became, in dB."
+          }
+        },
+        "required": [
+          "audio",
+          "reducedDb"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong or audio is missing."
+        },
+        {
+          "code": 404,
+          "description": "The file is not there."
+        },
+        {
+          "code": 422,
+          "description": "The file is not a sound this plugin can read."
+        },
+        {
+          "code": 503,
+          "description": "Metil gave the plugin no place to write the cleaned sound (it does not offer the outputs feature)."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    }
+  }
+}

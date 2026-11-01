@@ -1,0 +1,20 @@
+[package]
+name = "metilplugins-visual-phrases"
+version = "0.0.0"
+edition = "2021"
+publish = false
+license = "MIT"
+
+[package.metadata.smith]
+kind = "app"
+
+[dependencies]
+ort = "=2.0.0-rc.15"
+serde_json = "1"
+tokenizers = { version = "0.22", default-features = false, features = ["fancy-regex"] }
+metilplugins-appearances = { path = "../../libs/appearances" }
+metilplugins-frame-reader = { path = "../../libs/frame-reader" }
+metilplugins-model-cache = { path = "../../libs/model-cache" }
+metilplugins-onnx-device = { path = "../../libs/onnx-device" }
+metilplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
+metilplugins-work-files = { path = "../../libs/work-files" }

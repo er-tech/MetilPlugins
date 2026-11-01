@@ -1,0 +1,13 @@
+[package]
+name = "metilplugins-frame-reader"
+version = "0.0.0"
+edition = "2021"
+publish = false
+license = "MIT"
+
+[package.metadata.smith]
+kind = "lib"
+
+[dependencies]
+memmap2 = "0.9"
+serde_json = "1"

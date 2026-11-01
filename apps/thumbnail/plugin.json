@@ -1,0 +1,155 @@
+{
+  "name": "thumbnail",
+  "version": "0.1.0",
+  "title": "Thumbnails",
+  "description": "Chooses the pictures that show a video best.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-thumbnail"
+  ],
+  "timeoutSeconds": 600,
+  "stallSeconds": 60,
+  "concurrency": 2,
+  "requirements": {
+    "cpu": 1,
+    "memoryMb": 300
+  },
+  "actions": {
+    "pick": {
+      "description": "Chooses the pictures that show a video best: sharp, well exposed, not a black or washed out frame, and not all from the same scene. Gives the times to take them at.",
+      "title": "Pick the best pictures",
+      "category": "find",
+      "icon": "image",
+      "wants": {
+        "media": {
+          "media": "video",
+          "format": "gray8",
+          "width": 320,
+          "everyMs": 1000
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video: a stored file or a video as media.open gives it, or a path in text. Metil decodes a grey picture of it every second.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "count": {
+            "title": "How many pictures",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "How many pictures to pick (default 5).",
+            "default": 5,
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "minGapMs": {
+            "title": "Least gap between picks",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3600000,
+            "description": "How far apart two picks must be, in milliseconds (default 2000).",
+            "default": 2000,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
+          }
+        },
+        "required": [
+          "media"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "picks": {
+            "title": "Picked pictures",
+            "type": "array",
+            "description": "The best pictures, best first.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "timeMs": {
+                  "title": "Moment",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "When to take the picture, in the time of the video."
+                },
+                "score": {
+                  "title": "Match strength",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "sharpness": {
+                  "title": "Sharpness",
+                  "type": "number",
+                  "minimum": 0
+                },
+                "brightness": {
+                  "title": "Brightness",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "timeMs",
+                "score",
+                "sharpness",
+                "brightness"
+              ]
+            }
+          },
+          "candidates": {
+            "title": "Pictures looked at",
+            "type": "integer",
+            "minimum": 0,
+            "description": "How many pictures were looked at."
+          },
+          "durationMs": {
+            "title": "Length",
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "picks",
+          "candidates",
+          "durationMs"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong, or media is missing or not a video Metil decoded for the plugin."
+        },
+        {
+          "code": 404,
+          "description": "A file is not there."
+        },
+        {
+          "code": 422,
+          "description": "The video has no picture, or a file cannot be read."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    }
+  }
+}

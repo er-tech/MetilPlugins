@@ -1,0 +1,272 @@
+{
+  "name": "speech-to-text",
+  "version": "0.1.0",
+  "title": "Speech to text",
+  "description": "Writes down what is said in a video or a sound, with the time each sentence starts and ends.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "python",
+    "-m",
+    "metilplugins_speech_to_text"
+  ],
+  "timeoutSeconds": 3600,
+  "concurrency": 1,
+  "processes": 1,
+  "stallSeconds": 120,
+  "permissions": {
+    "env": [
+      "HF_HOME",
+      "HF_HUB_CACHE",
+      "HF_HUB_OFFLINE"
+    ],
+    "network": [
+      "huggingface.co"
+    ]
+  },
+  "dependencies": [
+    {
+      "runtime": "python",
+      "minVersion": "3.12",
+      "packages": [
+        "faster-whisper>=1.1,<2",
+        "av>=11,<17"
+      ],
+      "paths": [
+        "src"
+      ]
+    }
+  ],
+  "requirements": {
+    "cpu": 2,
+    "memoryMb": 1500,
+    "maxForks": 1
+  },
+  "actions": {
+    "transcribe": {
+      "description": "Writes down the sentences said in a video or a sound, with the time each starts and ends. The core may run it a window of the media at a time and join the result: the sentences are joined, text is put together from them and durationMs is the whole media's; language and model are the first window's.",
+      "title": "Transcribe speech",
+      "category": "find",
+      "icon": "speech",
+      "wants": {
+        "media": {
+          "media": "audio",
+          "sampleRate": 16000,
+          "channels": 1
+        }
+      },
+      "window": {
+        "minMs": 20000,
+        "maxMs": 120000,
+        "overlapMs": 5000,
+        "itemsAt": "sentences",
+        "joinText": {
+          "field": "text",
+          "from": "text",
+          "separator": " "
+        },
+        "durationAt": "durationMs"
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video or sound",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video or sound: an object with an absolute file path (a stored file, or a video as media.open gives it) or a path in text.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "model": {
+            "title": "Model",
+            "type": "string",
+            "maxLength": 200,
+            "description": "The speech model: tiny, base, small, medium or large-v3, with .en for English only (default tiny). Downloaded once, on first use.",
+            "default": "tiny",
+            "x-ui": {
+              "group": "everyday",
+              "widget": "select"
+            }
+          },
+          "language": {
+            "title": "Language spoken",
+            "type": "string",
+            "description": "The language as a code such as en or pt (default: found out from the first seconds).",
+            "x-ui": {
+              "group": "everyday",
+              "widget": "select"
+            }
+          },
+          "skipSilence": {
+            "title": "Skip silence",
+            "type": "boolean",
+            "description": "Skip the stretches with no speech. It stops the model from inventing words in silence, but it can drop speech that sits over loud music (default false).",
+            "default": false,
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "words": {
+            "title": "Give each word its time",
+            "type": "boolean",
+            "description": "Give each sentence its words, with their own start and end time and confidence (default false).",
+            "default": false,
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "beamSize": {
+            "title": "Search width",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "description": "How many alternatives are weighed: more is slower and a little better (default 5).",
+            "default": 5,
+            "x-ui": {
+              "group": "advanced"
+            }
+          }
+        },
+        "required": [
+          "media"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "title": "Language",
+            "type": "string"
+          },
+          "languageProbability": {
+            "title": "Language certainty",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "durationMs": {
+            "title": "Length of the sound",
+            "type": "integer",
+            "minimum": 0
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "text": {
+            "title": "Sentence",
+            "type": "string",
+            "description": "Everything said, the sentences joined."
+          },
+          "sentences": {
+            "title": "Sentences",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "title": "Start of the sentence",
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "endMs": {
+                  "title": "End of the sentence",
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "text": {
+                  "title": "Sentence",
+                  "type": "string"
+                },
+                "confidence": {
+                  "title": "Confidence",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "words": {
+                  "title": "Give the words",
+                  "type": "array",
+                  "description": "Only when words is true: the words of the sentence, in order.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "startMs": {
+                        "title": "Start of the sentence",
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "endMs": {
+                        "title": "End of the sentence",
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "text": {
+                        "title": "Sentence",
+                        "type": "string"
+                      },
+                      "confidence": {
+                        "title": "Confidence",
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      }
+                    },
+                    "required": [
+                      "startMs",
+                      "endMs",
+                      "text",
+                      "confidence"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "text",
+                "confidence"
+              ]
+            },
+            "x-ui": {
+              "type": "timedText"
+            }
+          }
+        },
+        "required": [
+          "language",
+          "durationMs",
+          "text",
+          "sentences"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong or media is missing."
+        },
+        {
+          "code": 404,
+          "description": "The file is not there."
+        },
+        {
+          "code": 422,
+          "description": "No speech could be read from the file (it is damaged or has no audio)."
+        },
+        {
+          "code": 503,
+          "description": "The model could not be loaded: usually no network the first time, or a name that is not a model."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    }
+  }
+}

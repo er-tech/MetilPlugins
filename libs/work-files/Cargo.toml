@@ -1,0 +1,13 @@
+[package]
+name = "metilplugins-work-files"
+version = "0.0.0"
+edition = "2021"
+publish = false
+license = "MIT"
+
+[package.metadata.smith]
+kind = "lib"
+
+[dependencies]
+png = "0.18"
+serde_json = "1"

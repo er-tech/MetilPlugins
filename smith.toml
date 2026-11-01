@@ -1,0 +1,124 @@
+#:schema https://raw.githubusercontent.com/monosmith-app/monosmith/main/apps/smith/workspace/smith.schema.json
+# smith workspace configuration. Every setting below has a default; most
+# workspaces need nothing more than a name. See https://github.com/monosmith-app/monosmith/blob/main/docs/reference/configuration.md.
+schema = 1
+
+[workspace]
+name = "metilplugins"
+# npm scope for Node packages
+scope = "@metilplugins"
+# Go module path prefix for Go projects
+module_prefix = "github.com/er-tech/MetilPlugins"
+
+[ci]
+# Pipelines to generate: "github", "azure", "gitlab", or several.
+providers = ["github"]
+# A dev container (.devcontainer/devcontainer.json) with the toolchains CI
+# installs, at the same versions.
+devcontainer = true
+
+[dependencies]
+# One version per production dependency across the workspace, and dev tools at
+# the root, once: smith doctor reports a dependency two projects declare at
+# different versions, and smith deps up --align brings it to one.
+one_version = true
+# Dependencies that may differ between projects: allow = ["left-pad"]
+
+# A stack is the set of plugins a project is built with: its language plugin
+# and the toolchain, structure, scaffold and deploy plugins on top. Each
+# project records its own, so one monorepo can mix them; `smith stacks` lists
+# them and `smith add app web --stack node-vitest` picks one. Projects that record
+# none use the default of their language. See https://github.com/monosmith-app/monosmith/blob/main/docs/reference/stacks.md.
+[default_stacks]
+node = "node-jest"     # ESLint with @monosmith/eslint-config, and Jest
+
+# [stacks.node-quick]
+# description = "Vitest only, no lint"
+# language = "node"
+# toolchain = ["vitest"]
+
+# Conventions apply a plugin to every project of the languages it supports.
+# vertical-slices gives Go and Python projects a slice-check task, run before
+# lint: role-named files, no junk-drawer folders. See https://github.com/monosmith-app/monosmith/blob/main/docs/reference/conventions.md.
+[conventions.vertical-slices]
+
+# [release]
+# branch = "main"     # releases run only from this branch
+# remote = "origin"   # release tags are pushed here
+
+# [cache]
+# dir = ".smith/cache"
+# max_size_mb = 2048
+
+# Override any task a plugin infers, for every project or for one:
+# [tasks.test]
+# cache = false
+# [projects.web.tasks.build]
+# depends_on = ["^build", "codegen"]
+
+# Each plugin releases on main as a .mtp package per platform (a Python one is a single "any" package).
+# metil is private: the pipeline checks Metil out beside this repository (secret METIL_TOKEN) and the build makes the metil program from it.
+[[ci.sibling_repos]]
+repo = "er-tech/Metil"
+ref = "main"
+env = "METIL"
+pre_build = "cargo build --release -p metil-cli"
+token_secret = "METIL_TOKEN"
+
+[release]
+github_releases = true
+
+[projects.coco-objects.release]
+build = "sh tools/pack-plugin.sh coco-objects"
+assets = ["out/coco-objects-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+
+[projects.video-upscale.release]
+build = "sh tools/pack-plugin.sh video-upscale"
+assets = ["out/video-upscale-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+
+[projects.music-sync.release]
+build = "sh tools/pack-plugin.sh music-sync"
+assets = ["out/music-sync-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+
+[projects.sound-clean.release]
+build = "sh tools/pack-plugin.sh sound-clean"
+assets = ["out/sound-clean-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+
+[projects.sound-events.release]
+build = "sh tools/pack-plugin.sh sound-events"
+assets = ["out/sound-events-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+
+[projects.sound-graph.release]
+build = "sh tools/pack-plugin.sh sound-graph"
+assets = ["out/sound-graph-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+
+[projects.sound-volume.release]
+build = "sh tools/pack-plugin.sh sound-volume"
+assets = ["out/sound-volume-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+
+[projects.thumbnail.release]
+build = "sh tools/pack-plugin.sh thumbnail"
+assets = ["out/thumbnail-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+
+[projects.visual-phrases.release]
+build = "sh tools/pack-plugin.sh visual-phrases"
+assets = ["out/visual-phrases-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+
+[projects.voice-extractor.release]
+build = "sh tools/pack-plugin.sh voice-extractor"
+assets = ["out/voice-extractor-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+
+[projects.speech-to-text.release]
+build = "sh tools/pack-plugin.sh speech-to-text python"
+assets = ["out/speech-to-text-*.mtp"]
+platforms = ["linux-x64"]

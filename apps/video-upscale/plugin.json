@@ -1,0 +1,257 @@
+{
+  "name": "video-upscale",
+  "version": "0.1.0",
+  "title": "Upscale video",
+  "description": "Makes a video larger, two or four times, with a Real-ESRGAN network that adds detail, or with plain Lanczos scaling. It runs on the graphics card when the host grants one. No language model.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-video-upscale"
+  ],
+  "timeoutSeconds": 14400,
+  "stallSeconds": 600,
+  "concurrency": 1,
+  "requirements": {
+    "cpu": 2,
+    "memoryMb": 2000
+  },
+  "permissions": {
+    "env": [
+      "METIL_MODELS",
+      "METIL_FFMPEG"
+    ],
+    "network": [
+      "huggingface.co",
+      "us.aws.cdn.hf.co"
+    ],
+    "write": [
+      "~/.metil/models"
+    ]
+  },
+  "actions": {
+    "upscale": {
+      "description": "Makes a video larger. Metil decodes every picture of it; the plugin makes each one four times larger with the network you choose (cut in pieces, so large pictures fit in the memory of the graphics card), scales to the size you ask for and encodes an MP4 with FFmpeg. The new video has no sound: the plugin sees pictures only, so add the sound of the source again in a later step.",
+      "title": "Upscale video",
+      "category": "transform",
+      "icon": "scale",
+      "wants": {
+        "media": {
+          "media": "video",
+          "format": "rgb24"
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video: a stored file or a video as media.open gives it, or a path in text. Metil decodes every colour picture of it, so use a short clip or a stretch of a video.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "model": {
+            "title": "Model",
+            "type": "string",
+            "enum": [
+              "general-x4v3",
+              "animevideo-v3",
+              "x4plus",
+              "lanczos"
+            ],
+            "description": "How the detail is made: general-x4v3 is small and fast and good for most video; animevideo-v3 is tuned for cartoons and anime; x4plus is the largest and slowest and gives the most detail on photographs; lanczos adds no detail and needs no download (default general-x4v3). A network is downloaded once, on first use.",
+            "default": "general-x4v3",
+            "x-ui": {
+              "group": "everyday",
+              "widget": "select",
+              "enumTitles": {
+                "general-x4v3": "General: fast, most video",
+                "animevideo-v3": "Anime and cartoons",
+                "x4plus": "Photo detail: slowest",
+                "lanczos": "Plain scaling: no detail added"
+              }
+            }
+          },
+          "scale": {
+            "title": "Size",
+            "type": "integer",
+            "enum": [
+              2,
+              4
+            ],
+            "description": "How many times larger the video is, on each side (default 4). A network always makes four; with 2 the result is scaled down to half of that.",
+            "default": 4,
+            "x-ui": {
+              "group": "everyday",
+              "widget": "select",
+              "enumTitles": {
+                "2": "2 times",
+                "4": "4 times"
+              }
+            }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ],
+            "default": "auto",
+            "description": "Where the network runs: auto takes the graphics card the host grants (on Windows, any DirectX 12 card: AMD, NVIDIA or Intel Arc) and the processor otherwise; cpu always uses the processor; gpu uses the best graphics card even if it is the integrated one. A card that cannot be used falls back to the processor; the result says what ran.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "auto": "Automatic",
+                "cpu": "Processor",
+                "gpu": "Graphics card"
+              }
+            }
+          },
+          "tile": {
+            "title": "Piece size",
+            "type": "integer",
+            "minimum": 64,
+            "maximum": 1024,
+            "description": "The side of the square pieces a picture is cut in, in pixels, for a network that takes any size (default 256). Larger pieces are faster and need more memory on the card. animevideo-v3 and x4plus take one size only and ignore this.",
+            "default": 256,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "px"
+            }
+          }
+        },
+        "required": [
+          "media"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "video": {
+            "title": "Upscaled video",
+            "type": "object",
+            "description": "The new video, a stored MP4 with no sound.",
+            "properties": {
+              "blob": {
+                "title": "Stored file",
+                "type": "string"
+              },
+              "mime": {
+                "title": "Type of file",
+                "type": "string"
+              },
+              "path": {
+                "title": "Path",
+                "type": "string"
+              },
+              "bytes": {
+                "title": "Size in bytes",
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "blob",
+              "mime",
+              "path",
+              "bytes"
+            ]
+          },
+          "frames": {
+            "title": "Pictures",
+            "type": "integer",
+            "minimum": 1,
+            "description": "How many pictures were made larger."
+          },
+          "width": {
+            "title": "Width",
+            "type": "integer",
+            "minimum": 2
+          },
+          "height": {
+            "title": "Height",
+            "type": "integer",
+            "minimum": 2
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "device": {
+            "title": "What it ran on",
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "What the network really ran on: device (cpu or directml:N), name (the graphics card, if one was used) and fallback (why the graphics card was not used, if it was asked for or could have been). Null for lanczos.",
+            "properties": {
+              "device": {
+                "title": "Device",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "name": {
+                "title": "Graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "fallback": {
+                "title": "Why not the graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "video",
+          "frames",
+          "width",
+          "height",
+          "model"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong, the new video would be too large, or media is missing or not a video Metil decoded for the plugin."
+        },
+        {
+          "code": 404,
+          "description": "A file is not there."
+        },
+        {
+          "code": 422,
+          "description": "The video has no picture, a file cannot be read, the model cannot be loaded, or FFmpeg is missing or failed."
+        },
+        {
+          "code": 503,
+          "description": "The model could not be downloaded (it is fetched once, on first use). Trying again may work."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    }
+  }
+}

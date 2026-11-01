@@ -1,0 +1,306 @@
+{
+  "name": "voice-extractor",
+  "version": "0.1.0",
+  "title": "Voice extractor",
+  "description": "Splits the sound of a video into the voice and the rest. Optional: it does not reliably improve speech-to-text.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-voice-extractor"
+  ],
+  "timeoutSeconds": 1800,
+  "stallSeconds": 120,
+  "concurrency": 1,
+  "requirements": {
+    "cpu": 2,
+    "memoryMb": 1500
+  },
+  "permissions": {
+    "env": [
+      "METIL_MODELS"
+    ],
+    "network": [
+      "huggingface.co",
+      "us.aws.cdn.hf.co"
+    ],
+    "write": [
+      "~/.metil/models"
+    ]
+  },
+  "actions": {
+    "extract": {
+      "description": "Splits the sound of a video into the voice and the rest, with DeepFilterNet3: the voice is what a speech-enhancement network keeps, the rest is what it took out (it is not clean: some of the voice stays in it). Each track is given in a form the next plugin can read directly (speech-to-text on the voice, sound-events on the rest), and as a WAV file in the result when asked.",
+      "title": "Extract the voice",
+      "category": "transform",
+      "icon": "voice",
+      "wants": {
+        "media": {
+          "media": "audio",
+          "sampleRate": 48000,
+          "channels": 1
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video or sound",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video or sound: a stored file or a video as media.open gives it, or a path in text. Metil decodes its sound to 48 kHz, one channel.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "keep": {
+            "title": "How much of the original to add back",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "How much of the original sound is added back into the voice (default 0: the voice as the network makes it). A little (0.15) hides the artifacts of the network and lets some of the noise through.",
+            "default": 0,
+            "x-ui": {
+              "group": "advanced",
+              "widget": "slider"
+            }
+          },
+          "sampleRate": {
+            "title": "Sample rate",
+            "type": "integer",
+            "enum": [
+              16000,
+              48000
+            ],
+            "description": "The rate of the tracks given (default 16000, what the speech and sound plugins take).",
+            "default": 16000,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "Hz",
+              "enumTitles": {
+                "16000": "16 kHz: faster",
+                "48000": "48 kHz: full quality"
+              }
+            }
+          },
+          "rest": {
+            "title": "Also give everything but the voice",
+            "type": "boolean",
+            "description": "Give the rest as well as the voice (default true).",
+            "default": true,
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "files": {
+            "title": "Also give WAV files",
+            "type": "boolean",
+            "description": "Give each track as a WAV file in the result too, as voiceFile and restFile (default false).",
+            "default": false,
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ],
+            "default": "cpu",
+            "description": "Where the network runs: cpu (the default) or gpu / auto, which use the graphics card (on Windows, any DirectX 12 card). The card was much slower here (about 20 times, for a network that works one frame after another), so the processor is the default; the voice is the same on both. A card that cannot be used falls back to the processor; the result says what ran.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "auto": "Automatic",
+                "cpu": "Processor",
+                "gpu": "Graphics card"
+              }
+            }
+          }
+        },
+        "required": [
+          "media"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "voice": {
+            "title": "Voice track",
+            "type": "object",
+            "description": "The track, described as Metil describes decoded sound (kind audio, f32le, file, sampleRate, channels, sampleCount, startMs...). Give it to an action that wants sound; it is good for this run only.",
+            "x-ui": {
+              "kind": "sound"
+            }
+          },
+          "rest": {
+            "title": "Everything else",
+            "type": "object",
+            "description": "The track, described as Metil describes decoded sound (kind audio, f32le, file, sampleRate, channels, sampleCount, startMs...). Give it to an action that wants sound; it is good for this run only.",
+            "x-ui": {
+              "kind": "sound",
+              "when": {
+                "rest": true
+              }
+            }
+          },
+          "voiceFile": {
+            "title": "Voice as a file",
+            "type": "object",
+            "description": "The track as a stored WAV file.",
+            "properties": {
+              "blob": {
+                "title": "Stored file",
+                "type": "string"
+              },
+              "mime": {
+                "title": "Type of file",
+                "type": "string"
+              },
+              "path": {
+                "title": "Path",
+                "type": "string"
+              },
+              "bytes": {
+                "title": "Size in bytes",
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "blob",
+              "mime",
+              "path",
+              "bytes"
+            ],
+            "x-ui": {
+              "when": {
+                "files": true
+              }
+            }
+          },
+          "restFile": {
+            "title": "Rest as a file",
+            "type": "object",
+            "description": "The track as a stored WAV file.",
+            "properties": {
+              "blob": {
+                "title": "Stored file",
+                "type": "string"
+              },
+              "mime": {
+                "title": "Type of file",
+                "type": "string"
+              },
+              "path": {
+                "title": "Path",
+                "type": "string"
+              },
+              "bytes": {
+                "title": "Size in bytes",
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "blob",
+              "mime",
+              "path",
+              "bytes"
+            ],
+            "x-ui": {
+              "when": {
+                "files": true
+              }
+            }
+          },
+          "voiceDb": {
+            "title": "Loudness of the voice",
+            "type": "number",
+            "description": "How loud the voice track is, in dB against full scale (-120 is silence)."
+          },
+          "restDb": {
+            "title": "Loudness of the rest",
+            "type": "number",
+            "description": "How loud the rest track is, in dB against full scale."
+          },
+          "durationMs": {
+            "title": "Length",
+            "type": "integer",
+            "minimum": 0
+          },
+          "device": {
+            "title": "What it ran on",
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "What the network really ran on: device (cpu or directml:N), name (the graphics card, if one was used) and fallback (why the graphics card was not used, if it was asked for or could have been). Null when there was no sound.",
+            "properties": {
+              "device": {
+                "title": "Device",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "name": {
+                "title": "Graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "fallback": {
+                "title": "Why not the graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "voice",
+          "voiceDb",
+          "restDb",
+          "durationMs"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong, or media is missing or not sound Metil decoded for the plugin."
+        },
+        {
+          "code": 404,
+          "description": "A file is not there."
+        },
+        {
+          "code": 422,
+          "description": "The video has no sound, a file cannot be read, or the model cannot be loaded."
+        },
+        {
+          "code": 503,
+          "description": "A model file could not be downloaded (they are fetched once, on first use), or Metil gave the plugin no place to write the tracks. Trying again may work for the first."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    }
+  }
+}

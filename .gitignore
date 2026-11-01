@@ -12,3 +12,8 @@ build/
 *.log
 .DS_Store
 Thumbs.db
+
+# smith
+.smith/
+*.egg-info/
+/out/

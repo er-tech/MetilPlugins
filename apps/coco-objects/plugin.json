@@ -1,0 +1,494 @@
+{
+  "name": "coco-objects",
+  "version": "0.1.0",
+  "title": "Find objects",
+  "description": "Finds the things a video shows from the 80 classes of the COCO set (person, cat, dog, car...) with a fast detector and no language model.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-coco-objects"
+  ],
+  "timeoutSeconds": 1800,
+  "stallSeconds": 120,
+  "concurrency": 1,
+  "requirements": {
+    "cpu": 2,
+    "memoryMb": 800
+  },
+  "permissions": {
+    "env": [
+      "METIL_MODELS"
+    ],
+    "network": [
+      "github.com",
+      "release-assets.githubusercontent.com"
+    ],
+    "write": [
+      "~/.metil/models"
+    ]
+  },
+  "actions": {
+    "find": {
+      "description": "Finds the things a video shows, from the 80 classes of the COCO set (person, cat, dog, car...), with a detector and no language model. Each time a class shows up it gives one appearance with the first picture it is in and the time; a class that stays on screen is reported once, when it first shows.",
+      "title": "Find objects",
+      "category": "find",
+      "icon": "object",
+      "wants": {
+        "media": {
+          "media": "video",
+          "format": "rgb24",
+          "width": 640,
+          "everyMs": 500
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video: a stored file or a video as media.open gives it, or a path in text. Metil decodes a colour picture of it every half second.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "classes": {
+            "title": "Kinds of thing to find",
+            "type": "array",
+            "description": "What to look for. Leave it out to look for every class.",
+            "items": {
+              "type": "string",
+              "enum": [
+                "person",
+                "bicycle",
+                "car",
+                "motorcycle",
+                "airplane",
+                "bus",
+                "train",
+                "truck",
+                "boat",
+                "traffic light",
+                "fire hydrant",
+                "stop sign",
+                "parking meter",
+                "bench",
+                "bird",
+                "cat",
+                "dog",
+                "horse",
+                "sheep",
+                "cow",
+                "elephant",
+                "bear",
+                "zebra",
+                "giraffe",
+                "backpack",
+                "umbrella",
+                "handbag",
+                "tie",
+                "suitcase",
+                "frisbee",
+                "skis",
+                "snowboard",
+                "sports ball",
+                "kite",
+                "baseball bat",
+                "baseball glove",
+                "skateboard",
+                "surfboard",
+                "tennis racket",
+                "bottle",
+                "wine glass",
+                "cup",
+                "fork",
+                "knife",
+                "spoon",
+                "bowl",
+                "banana",
+                "apple",
+                "sandwich",
+                "orange",
+                "broccoli",
+                "carrot",
+                "hot dog",
+                "pizza",
+                "donut",
+                "cake",
+                "chair",
+                "couch",
+                "potted plant",
+                "bed",
+                "dining table",
+                "toilet",
+                "tv",
+                "laptop",
+                "mouse",
+                "remote",
+                "keyboard",
+                "cell phone",
+                "microwave",
+                "oven",
+                "toaster",
+                "sink",
+                "refrigerator",
+                "book",
+                "clock",
+                "vase",
+                "scissors",
+                "teddy bear",
+                "hair drier",
+                "toothbrush"
+              ]
+            },
+            "x-ui": {
+              "group": "everyday",
+              "widget": "chips"
+            }
+          },
+          "model": {
+            "title": "Model",
+            "type": "string",
+            "enum": [
+              "nano",
+              "tiny",
+              "s"
+            ],
+            "description": "The detector: nano is the fastest, s the most accurate (default nano). Downloaded once, on first use.",
+            "default": "nano",
+            "x-ui": {
+              "group": "advanced",
+              "widget": "select",
+              "enumTitles": {
+                "nano": "Nano: fastest",
+                "tiny": "Tiny: balanced",
+                "s": "Small: most accurate"
+              }
+            }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ],
+            "default": "auto",
+            "description": "Where the detector runs: auto takes the graphics card when the computer has a discrete one (on Windows, any DirectX 12 card: AMD, NVIDIA or Intel Arc) and the processor otherwise; cpu always uses the processor; gpu uses the best graphics card even if it is the integrated one (which can be slower than the processor). A card that cannot be used falls back to the processor; the result says what ran.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "auto": "Automatic",
+                "cpu": "Processor",
+                "gpu": "Graphics card"
+              }
+            }
+          },
+          "minConfidence": {
+            "title": "Least confidence",
+            "type": "number",
+            "minimum": 0.05,
+            "maximum": 1,
+            "description": "How sure the detector must be of a thing (default 0.5).",
+            "default": 0.5,
+            "x-ui": {
+              "group": "everyday",
+              "widget": "slider"
+            }
+          },
+          "gapMs": {
+            "title": "Longest gap",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 600000,
+            "description": "How long a class can be out of the pictures before it counts as gone; if it comes back that is another appearance (default 2000).",
+            "default": 2000,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
+          },
+          "minSamples": {
+            "title": "Fewest pictures",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "In how few pictures a thing is still reported, so a flicker is not (default 2, which is a second).",
+            "default": 2,
+            "x-ui": {
+              "group": "advanced"
+            }
+          }
+        },
+        "required": [
+          "media"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "appearances": {
+            "title": "Appearances",
+            "type": "array",
+            "description": "In the order they start.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "class": {
+                  "title": "Kind of thing",
+                  "type": "string",
+                  "enum": [
+                    "person",
+                    "bicycle",
+                    "car",
+                    "motorcycle",
+                    "airplane",
+                    "bus",
+                    "train",
+                    "truck",
+                    "boat",
+                    "traffic light",
+                    "fire hydrant",
+                    "stop sign",
+                    "parking meter",
+                    "bench",
+                    "bird",
+                    "cat",
+                    "dog",
+                    "horse",
+                    "sheep",
+                    "cow",
+                    "elephant",
+                    "bear",
+                    "zebra",
+                    "giraffe",
+                    "backpack",
+                    "umbrella",
+                    "handbag",
+                    "tie",
+                    "suitcase",
+                    "frisbee",
+                    "skis",
+                    "snowboard",
+                    "sports ball",
+                    "kite",
+                    "baseball bat",
+                    "baseball glove",
+                    "skateboard",
+                    "surfboard",
+                    "tennis racket",
+                    "bottle",
+                    "wine glass",
+                    "cup",
+                    "fork",
+                    "knife",
+                    "spoon",
+                    "bowl",
+                    "banana",
+                    "apple",
+                    "sandwich",
+                    "orange",
+                    "broccoli",
+                    "carrot",
+                    "hot dog",
+                    "pizza",
+                    "donut",
+                    "cake",
+                    "chair",
+                    "couch",
+                    "potted plant",
+                    "bed",
+                    "dining table",
+                    "toilet",
+                    "tv",
+                    "laptop",
+                    "mouse",
+                    "remote",
+                    "keyboard",
+                    "cell phone",
+                    "microwave",
+                    "oven",
+                    "toaster",
+                    "sink",
+                    "refrigerator",
+                    "book",
+                    "clock",
+                    "vase",
+                    "scissors",
+                    "teddy bear",
+                    "hair drier",
+                    "toothbrush"
+                  ]
+                },
+                "label": {
+                  "title": "Label",
+                  "type": "string",
+                  "description": "The same as class, under the name every timed label has."
+                },
+                "startMs": {
+                  "title": "First seen",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "When the picture where it first shows is shown, in the time of the video."
+                },
+                "endMs": {
+                  "title": "Last seen",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "When the last picture it is in stops being shown."
+                },
+                "confidence": {
+                  "title": "Confidence",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1,
+                  "description": "The surest the detector was of it in any picture of the appearance."
+                },
+                "peakCount": {
+                  "title": "Most seen together",
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "The most of this class seen together in one picture."
+                },
+                "samples": {
+                  "title": "Pictures it was seen in",
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "In how many pictures it was seen."
+                },
+                "picture": {
+                  "title": "Picture with boxes",
+                  "type": "object",
+                  "description": "The first picture of the appearance with the boxes of the class drawn on it: a stored PNG.",
+                  "properties": {
+                    "blob": {
+                      "title": "Stored file",
+                      "type": "string"
+                    },
+                    "mime": {
+                      "title": "Type of file",
+                      "type": "string"
+                    },
+                    "path": {
+                      "title": "Path",
+                      "type": "string"
+                    },
+                    "bytes": {
+                      "title": "Size in bytes",
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "blob",
+                    "mime",
+                    "path",
+                    "bytes"
+                  ]
+                }
+              },
+              "required": [
+                "class",
+                "startMs",
+                "endMs",
+                "confidence",
+                "peakCount",
+                "samples",
+                "picture",
+                "label"
+              ]
+            },
+            "x-ui": {
+              "type": "timedLabel"
+            }
+          },
+          "samples": {
+            "title": "Pictures it was seen in",
+            "type": "integer",
+            "minimum": 0,
+            "description": "How many pictures were looked at."
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "durationMs": {
+            "title": "Time in view",
+            "type": "integer",
+            "minimum": 0
+          },
+          "device": {
+            "title": "What it ran on",
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "What the detector really ran on: device (cpu or directml:N), name (the graphics card, if one was used) and fallback (why the graphics card was not used, if it was asked for or could have been).",
+            "properties": {
+              "device": {
+                "title": "Device",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "name": {
+                "title": "Graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "fallback": {
+                "title": "Why not the graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "appearances",
+          "samples",
+          "model",
+          "durationMs"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong, or media is missing or not a video Metil decoded for the plugin."
+        },
+        {
+          "code": 404,
+          "description": "A file is not there."
+        },
+        {
+          "code": 422,
+          "description": "The video has no picture, a file cannot be read, or the model cannot be loaded."
+        },
+        {
+          "code": 503,
+          "description": "The model could not be downloaded (it is fetched once, on first use). Trying again may work."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    }
+  }
+}

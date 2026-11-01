@@ -1,0 +1,220 @@
+{
+  "name": "sound-graph",
+  "version": "0.1.0",
+  "title": "Sound graph",
+  "description": "Draws the waves of a sound as a picture, with stretches marked on it.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-sound-graph"
+  ],
+  "timeoutSeconds": 300,
+  "concurrency": 4,
+  "actions": {
+    "waveform": {
+      "description": "Draws the waves of a sound as an SVG picture, with the stretches you give marked behind them and a time axis under them.",
+      "title": "Draw the sound waves",
+      "category": "transform",
+      "icon": "waveform",
+      "wants": {
+        "audio": {
+          "media": "audio",
+          "sampleRate": 16000,
+          "channels": 1
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "audio": {
+            "title": "Sound",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The sound: a stored file (an object with an absolute file path) or a path in text.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "width": {
+            "title": "Width in pixels",
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 10000,
+            "description": "Width of the picture in pixels (default 1200).",
+            "default": 1200,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "px"
+            }
+          },
+          "height": {
+            "title": "Height in pixels",
+            "type": "integer",
+            "minimum": 40,
+            "maximum": 2000,
+            "description": "Height in pixels (default 200).",
+            "default": 200,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "px"
+            }
+          },
+          "color": {
+            "title": "Colour of the waves",
+            "type": "string",
+            "maxLength": 64,
+            "description": "Color of the waves (default #2b6cb0).",
+            "default": "#2b6cb0",
+            "x-ui": {
+              "group": "advanced",
+              "widget": "color"
+            }
+          },
+          "background": {
+            "title": "Background colour",
+            "type": "string",
+            "maxLength": 64,
+            "description": "Background color, or none (default #ffffff).",
+            "default": "#ffffff",
+            "x-ui": {
+              "group": "advanced",
+              "widget": "color"
+            }
+          },
+          "normalize": {
+            "title": "Make the loudest point fill the height",
+            "type": "boolean",
+            "description": "Stretch the waves so the loudest point touches the edge (default false: a quiet sound looks quiet).",
+            "default": false,
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "showTime": {
+            "title": "Show the time axis",
+            "type": "boolean",
+            "description": "Draw the time axis (default true).",
+            "default": true,
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "title": {
+            "title": "Title of the picture",
+            "type": "string",
+            "maxLength": 200,
+            "description": "Title of the picture, for people who cannot see it.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "regions": {
+            "title": "Stretches to mark",
+            "type": "array",
+            "maxItems": 5000,
+            "description": "Stretches to mark. The sentences of a transcript work as they are: their text is the label.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "title": "Start",
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "endMs": {
+                  "title": "End",
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "label": {
+                  "title": "Label",
+                  "type": "string"
+                },
+                "text": {
+                  "title": "Label",
+                  "type": "string",
+                  "description": "Used as the label when there is none."
+                },
+                "color": {
+                  "title": "Colour of the waves",
+                  "type": "string",
+                  "maxLength": 64
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs"
+              ]
+            },
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "sampleRate": {
+            "title": "Rate to listen at",
+            "type": "integer",
+            "minimum": 4000,
+            "maximum": 192000,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "Hz"
+            }
+          }
+        },
+        "required": [
+          "audio"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "svg": {
+            "title": "Picture (SVG)",
+            "type": "string",
+            "description": "The picture, as the text of an SVG file."
+          },
+          "width": {
+            "title": "Width in pixels",
+            "type": "integer"
+          },
+          "height": {
+            "title": "Height in pixels",
+            "type": "integer"
+          },
+          "durationMs": {
+            "title": "Length",
+            "type": "integer"
+          },
+          "sampleRate": {
+            "title": "Rate to listen at",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "svg",
+          "width",
+          "height",
+          "durationMs",
+          "sampleRate"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong or audio is missing."
+        },
+        {
+          "code": 404,
+          "description": "The sound file is not there."
+        },
+        {
+          "code": 422,
+          "description": "The file is not a sound this plugin can read."
+        }
+      ]
+    }
+  }
+}

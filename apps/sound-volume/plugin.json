@@ -1,0 +1,418 @@
+{
+  "name": "sound-volume",
+  "version": "0.1.0",
+  "title": "Sound volume",
+  "description": "Measures how loud the sound is over time and where it is silent.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-sound-volume"
+  ],
+  "timeoutSeconds": 300,
+  "concurrency": 4,
+  "actions": {
+    "map": {
+      "description": "How loud the sound is over time: level and peak per window, and the level of the low, mid and high bands.",
+      "title": "Measure the volume",
+      "category": "find",
+      "icon": "volume",
+      "wants": {
+        "audio": {
+          "media": "audio",
+          "sampleRate": 44100,
+          "channels": 1
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "audio": {
+            "title": "Sound",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The sound: a stored file (an object with an absolute file path) or a path in text.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "windowMs": {
+            "title": "Window length",
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 60000,
+            "description": "How long each window is (default 1000).",
+            "default": 1000,
+            "x-ui": {
+              "group": "everyday",
+              "unit": "ms"
+            }
+          },
+          "sampleRate": {
+            "title": "Rate to listen at",
+            "type": "integer",
+            "minimum": 4000,
+            "maximum": 192000,
+            "description": "The rate to listen at; the highest frequency that can be told is half of it. Default: the sound's own.",
+            "x-ui": {
+              "group": "advanced",
+              "unit": "Hz"
+            }
+          },
+          "bands": {
+            "title": "Split into bands",
+            "type": "boolean",
+            "description": "Split each window into low, mid and high (default true).",
+            "default": true,
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "lowMidHz": {
+            "title": "Low ends at",
+            "type": "number",
+            "minimum": 1,
+            "description": "Below this is low (default 250).",
+            "default": 250,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "Hz"
+            }
+          },
+          "midHighHz": {
+            "title": "High starts at",
+            "type": "number",
+            "minimum": 1,
+            "description": "From this up is high (default 4000).",
+            "default": 4000,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "Hz"
+            }
+          }
+        },
+        "required": [
+          "audio"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "sampleRate": {
+            "title": "Rate listened at",
+            "type": "integer"
+          },
+          "durationMs": {
+            "title": "Length of the sound",
+            "type": "integer"
+          },
+          "windowMs": {
+            "title": "Window length",
+            "type": "integer"
+          },
+          "bandsHz": {
+            "title": "Band limits",
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "lowBelow": {
+                "title": "Low below",
+                "type": "number"
+              },
+              "highFrom": {
+                "title": "High from",
+                "type": "number"
+              }
+            }
+          },
+          "windows": {
+            "title": "Windows",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "title": "Start of the window",
+                  "type": "integer"
+                },
+                "endMs": {
+                  "title": "End of the window",
+                  "type": "integer"
+                },
+                "rmsDb": {
+                  "title": "Average loudness",
+                  "type": "number",
+                  "description": "How loud it sounds on average, in dB relative to full scale (0 is the loudest, -100 is silence)."
+                },
+                "value": {
+                  "title": "Value",
+                  "type": "number",
+                  "description": "The same as rmsDb, under the name every series has."
+                },
+                "peakDb": {
+                  "title": "Loudest instant",
+                  "type": "number",
+                  "description": "The loudest single instant, in dB."
+                },
+                "bands": {
+                  "title": "Split into bands",
+                  "type": "object",
+                  "properties": {
+                    "low": {
+                      "title": "Low",
+                      "type": "number"
+                    },
+                    "mid": {
+                      "title": "Middle",
+                      "type": "number"
+                    },
+                    "high": {
+                      "title": "High",
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "rmsDb",
+                "peakDb",
+                "value"
+              ]
+            },
+            "x-ui": {
+              "type": "series"
+            }
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "object",
+            "properties": {
+              "averageRmsDb": {
+                "title": "Average loudness",
+                "type": "number"
+              },
+              "peakDb": {
+                "title": "Loudest instant",
+                "type": "number"
+              },
+              "loudest": {
+                "title": "Loudest moment",
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "startMs": {
+                    "title": "Start of the window",
+                    "type": "integer"
+                  },
+                  "endMs": {
+                    "title": "End of the window",
+                    "type": "integer"
+                  },
+                  "rmsDb": {
+                    "title": "Average loudness",
+                    "type": "number"
+                  }
+                }
+              },
+              "quietest": {
+                "title": "Quietest moment",
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "startMs": {
+                    "title": "Start of the window",
+                    "type": "integer"
+                  },
+                  "endMs": {
+                    "title": "End of the window",
+                    "type": "integer"
+                  },
+                  "rmsDb": {
+                    "title": "Average loudness",
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "sampleRate",
+          "durationMs",
+          "windowMs",
+          "windows",
+          "summary"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong or audio is missing."
+        },
+        {
+          "code": 404,
+          "description": "The sound file is not there."
+        },
+        {
+          "code": 422,
+          "description": "The file is not a sound this plugin can read."
+        }
+      ]
+    },
+    "silences": {
+      "description": "The stretches where the sound stays below a level for at least a time.",
+      "title": "Find silences",
+      "category": "find",
+      "icon": "silence",
+      "wants": {
+        "audio": {
+          "media": "audio",
+          "sampleRate": 44100,
+          "channels": 1
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "audio": {
+            "title": "Sound",
+            "type": [
+              "object",
+              "string"
+            ],
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "thresholdDb": {
+            "title": "Silence below",
+            "type": "number",
+            "minimum": -100,
+            "maximum": 0,
+            "description": "Quieter than this is silence (default -50).",
+            "default": -50,
+            "x-ui": {
+              "group": "everyday",
+              "unit": "dB"
+            }
+          },
+          "minMs": {
+            "title": "Shortest silence",
+            "type": "integer",
+            "minimum": 0,
+            "description": "Shorter stretches are ignored (default 500).",
+            "default": 500,
+            "x-ui": {
+              "group": "everyday",
+              "unit": "ms"
+            }
+          },
+          "windowMs": {
+            "title": "Window length",
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 10000,
+            "description": "How finely the sound is looked at (default 100).",
+            "default": 100,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
+          },
+          "sampleRate": {
+            "title": "Rate to listen at",
+            "type": "integer",
+            "minimum": 4000,
+            "maximum": 192000,
+            "x-ui": {
+              "group": "advanced",
+              "unit": "Hz"
+            }
+          }
+        },
+        "required": [
+          "audio"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "durationMs": {
+            "title": "Length of the silence",
+            "type": "integer"
+          },
+          "thresholdDb": {
+            "title": "Silence below",
+            "type": "number"
+          },
+          "minMs": {
+            "title": "Shortest silence",
+            "type": "integer"
+          },
+          "silences": {
+            "title": "Quiet stretches",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "title": "Start of the silence",
+                  "type": "integer"
+                },
+                "endMs": {
+                  "title": "End of the silence",
+                  "type": "integer"
+                },
+                "durationMs": {
+                  "title": "Length of the silence",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "durationMs"
+              ]
+            },
+            "x-ui": {
+              "type": "timed"
+            }
+          },
+          "totalSilenceMs": {
+            "title": "Total silence",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "silences",
+          "totalSilenceMs"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong or audio is missing."
+        },
+        {
+          "code": 404,
+          "description": "The sound file is not there."
+        },
+        {
+          "code": 422,
+          "description": "The file is not a sound this plugin can read."
+        }
+      ]
+    }
+  }
+}

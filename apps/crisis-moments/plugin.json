@@ -1,0 +1,279 @@
+{
+  "name": "crisis-moments",
+  "version": "0.1.0",
+  "title": "Moments to review",
+  "description": "Finds moments in a video that a person should look at, such as shouting, an alarm, a sudden loud sound or words of alarm. It uses fixed rules on what other steps found. It never decides that something happened.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-crisis-moments"
+  ],
+  "timeoutSeconds": 60,
+  "concurrency": 4,
+  "actions": {
+    "find": {
+      "title": "Find moments to review",
+      "category": "find",
+      "icon": "alert",
+      "description": "Joins what was said, the sounds heard and how loud it was into moments that may need a look. Give at least one of the three lists. A moment with more than one kind of evidence is more sure.",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "title": "Sentences said",
+            "description": "What was said, with times (for example the sentences of speech-to-text).",
+            "type": "array",
+            "x-ui": {
+              "group": "everyday",
+              "kind": "list",
+              "type": "timedText"
+            },
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "type": "integer"
+                },
+                "endMs": {
+                  "type": "integer"
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "text"
+              ]
+            }
+          },
+          "labels": {
+            "title": "Sounds or things found",
+            "description": "Sounds or things found, with times (for example the events of sound-events).",
+            "type": "array",
+            "x-ui": {
+              "group": "everyday",
+              "kind": "list",
+              "type": "timedLabel"
+            },
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "type": "integer"
+                },
+                "endMs": {
+                  "type": "integer"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "confidence": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "label"
+              ]
+            }
+          },
+          "volume": {
+            "title": "Loudness over time",
+            "description": "The level over time in dB (for example the windows of sound-volume).",
+            "type": "array",
+            "x-ui": {
+              "group": "everyday",
+              "kind": "list",
+              "type": "series"
+            },
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "type": "integer"
+                },
+                "endMs": {
+                  "type": "integer"
+                },
+                "value": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "value"
+              ]
+            }
+          },
+          "keywords": {
+            "title": "Words of alarm",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Words or phrases that flag a sentence, as whole words. Replaces the built-in English list.",
+            "x-ui": {
+              "group": "advanced",
+              "widget": "phrases"
+            }
+          },
+          "soundNames": {
+            "title": "Sounds that flag a moment",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Parts of sound names that flag a found sound. Replaces the built-in list (scream, shout, siren, alarm, glass...).",
+            "x-ui": {
+              "group": "advanced",
+              "widget": "phrases"
+            }
+          },
+          "loudnessJumpDb": {
+            "title": "Sudden loud sound",
+            "type": "number",
+            "minimum": 1,
+            "maximum": 60,
+            "default": 15,
+            "description": "How many dB above the usual level a window must be (default 15).",
+            "x-ui": {
+              "group": "everyday",
+              "unit": "dB"
+            }
+          },
+          "mergeGapMs": {
+            "title": "Join hints closer than",
+            "type": "integer",
+            "minimum": 0,
+            "default": 2000,
+            "description": "Hints this close in time make one moment (default 2000).",
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
+          },
+          "minMs": {
+            "title": "Shortest moment",
+            "type": "integer",
+            "minimum": 0,
+            "default": 0,
+            "description": "Shorter moments are dropped (default 0).",
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
+          },
+          "threshold": {
+            "title": "Least sure to show",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.5,
+            "description": "Moments less sure than this are dropped (default 0.5).",
+            "x-ui": {
+              "group": "everyday",
+              "widget": "slider"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "title": "Number of moments",
+            "type": "integer",
+            "x-ui": {
+              "kind": "number"
+            }
+          },
+          "moments": {
+            "title": "Moments to review",
+            "type": "array",
+            "x-ui": {
+              "type": "timedLabel",
+              "kind": "list"
+            },
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "title": "Start of the moment",
+                  "type": "integer"
+                },
+                "endMs": {
+                  "title": "End of the moment",
+                  "type": "integer"
+                },
+                "label": {
+                  "title": "Why it was flagged",
+                  "type": "string"
+                },
+                "confidence": {
+                  "title": "How sure",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "sources": {
+                  "title": "Inputs that agree",
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "text",
+                      "labels",
+                      "volume"
+                    ]
+                  }
+                },
+                "evidence": {
+                  "title": "Evidence",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "source",
+                      "detail"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "label",
+                "confidence",
+                "sources",
+                "evidence"
+              ]
+            }
+          }
+        },
+        "required": [
+          "count",
+          "moments"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "No list was given, or a list or a setting is wrong."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "name": "music-sync",
+  "version": "0.1.0",
+  "title": "Music sync",
+  "description": "Finds where a music starts inside a video's sound, so a better copy of the music can replace it.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-music-sync"
+  ],
+  "timeoutSeconds": 600,
+  "concurrency": 2,
+  "requirements": {
+    "cpu": 1,
+    "memoryMb": 1500
+  },
+  "actions": {
+    "findOffset": {
+      "title": "Find where the music starts",
+      "category": "find",
+      "icon": "music",
+      "description": "Tells how the music lies on a video's timeline by comparing the two sounds, however different their quality: how late it starts and, when the video runs at another speed, how much slower or faster. Give offsetMs and speed to media.replaceAudio to put a high-quality copy of the music in the video.",
+      "wants": {
+        "video": {
+          "media": "audio",
+          "sampleRate": 8000,
+          "channels": 1
+        },
+        "music": {
+          "media": "audio",
+          "sampleRate": 8000,
+          "channels": 1
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "video": {
+            "title": "Video with the music in low quality",
+            "type": [
+              "object",
+              "string"
+            ],
+            "x-ui": {
+              "group": "everyday"
+            },
+            "description": "The video, or any sound, that carries the music in low quality."
+          },
+          "music": {
+            "title": "Music in good quality",
+            "type": [
+              "object",
+              "string"
+            ],
+            "x-ui": {
+              "group": "everyday"
+            },
+            "description": "The music in good quality: a sound file or a video."
+          },
+          "minScoreSigma": {
+            "title": "How sure the match must be",
+            "type": "number",
+            "minimum": 2,
+            "maximum": 100,
+            "default": 30,
+            "description": "How far the best match over the whole length must stand out from chance. Below it the call still succeeds if three or more pieces of the music agree on a speed, and fails with 422 (no match) otherwise, so a wrong music is never put in a video.",
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "minOverlapMs": {
+            "title": "Least they must share",
+            "type": "integer",
+            "minimum": 500,
+            "maximum": 1800000,
+            "default": 5000,
+            "description": "The least the two sounds must share.",
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
+          }
+        },
+        "required": [
+          "video",
+          "music"
+        ]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "offsetMs": {
+            "title": "Music starts at",
+            "type": "integer",
+            "description": "Where the music's start falls on the video's timeline, in milliseconds. Negative when the video starts partway into the music. Give it to media.replaceAudio as offsetMs.",
+            "x-ui": {
+              "unit": "ms"
+            }
+          },
+          "score": {
+            "title": "Match strength",
+            "type": "number",
+            "description": "How far the match over the whole length stands out from chance, in standard deviations (a real copy at the same speed scores in the hundreds or more; unrelated music can reach about 15). 0 when only pieces of the music matched, as with a video at another speed."
+          },
+          "overlapMs": {
+            "title": "Shared length",
+            "type": "integer",
+            "description": "How much of the music lies inside the video.",
+            "x-ui": {
+              "unit": "ms"
+            }
+          },
+          "speed": {
+            "title": "Speed of the video against the music",
+            "type": "number",
+            "description": "How much longer the video takes than the music for the same stretch: 1 for the same speed, 1.05 when the video plays the music 5% slower. Give it to media.replaceAudio as speed, with keep to say which one keeps its speed."
+          },
+          "piecesOnLine": {
+            "title": "Pieces that agreed",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "How many pieces of the music agreed on the speed; null when too few were found to tell (the speed is then 1)."
+          }
+        },
+        "required": [
+          "offsetMs",
+          "speed",
+          "score",
+          "overlapMs",
+          "piecesOnLine"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong or video or music is missing."
+        },
+        {
+          "code": 404,
+          "description": "A file is not there."
+        },
+        {
+          "code": 413,
+          "description": "A sound is longer than 30 minutes."
+        },
+        {
+          "code": 422,
+          "description": "No match (not the same music), the sounds are silent, or a file is not a sound this plugin can read."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    }
+  }
+}

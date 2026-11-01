@@ -1,0 +1,262 @@
+{
+  "name": "example-hits",
+  "version": "0.1.0",
+  "title": "Example plugin",
+  "description": "A plugin for testing how the core copes: it pretends to find things, fails, hangs and crashes on request.",
+  "protocol": 2,
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-example-hits"
+  ],
+  "timeoutSeconds": 60,
+  "concurrency": 8,
+  "actions": {
+    "find": {
+      "description": "Pretends to find something every everyMs, lasting lengthMs, in a video of durationMs.",
+      "title": "Pretend to find",
+      "category": "test",
+      "icon": "flask",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "durationMs": {
+            "title": "Length",
+            "type": "integer",
+            "minimum": 0,
+            "description": "Length of the video in milliseconds."
+          },
+          "everyMs": {
+            "title": "A hit every",
+            "type": "integer",
+            "minimum": 1,
+            "description": "A hit every this many milliseconds (default 1000)."
+          },
+          "lengthMs": {
+            "title": "Length of a hit",
+            "type": "integer",
+            "minimum": 0,
+            "description": "How long a hit lasts (default 500)."
+          },
+          "label": {
+            "title": "Label of each hit",
+            "type": "string",
+            "description": "The label of every hit (default hit)."
+          }
+        },
+        "required": [
+          "durationMs"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "hits": {
+            "title": "Hits",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "title": "Start",
+                  "type": "integer"
+                },
+                "endMs": {
+                  "title": "End",
+                  "type": "integer"
+                },
+                "label": {
+                  "title": "Label of each hit",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "label"
+              ]
+            }
+          }
+        },
+        "required": [
+          "hits"
+        ]
+      }
+    },
+    "size": {
+      "description": "The size in bytes of a stored file.",
+      "title": "Size of a file",
+      "category": "test",
+      "icon": "flask",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "audio": {
+            "title": "Sound",
+            "type": "object",
+            "properties": {
+              "file": {
+                "title": "File",
+                "type": "string",
+                "description": "The absolute path Metil gives a stored file."
+              }
+            },
+            "required": [
+              "file"
+            ]
+          }
+        },
+        "required": [
+          "audio"
+        ]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "bytes": {
+            "title": "Size in bytes",
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "bytes"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "audio has no file."
+        },
+        {
+          "code": 404,
+          "description": "The file is not there."
+        }
+      ]
+    },
+    "sleep": {
+      "description": "Waits, and ends with the error cancelled when the call is cancelled.",
+      "title": "Wait",
+      "category": "test",
+      "icon": "flask",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "ms": {
+            "title": "Time to wait",
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "ms"
+        ]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "waitedMs": {
+            "title": "Time waited",
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "waitedMs"
+        ]
+      }
+    },
+    "pid": {
+      "description": "The number of the program's process, so a host can tell copies apart.",
+      "title": "Process number",
+      "category": "test",
+      "icon": "flask",
+      "inputs": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "pid": {
+            "title": "Process number",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "pid"
+        ]
+      }
+    },
+    "interpret": {
+      "description": "Decides what a wrapped service's answer means: a failure (with a code) or the result.",
+      "title": "Interpret an answer",
+      "category": "test",
+      "icon": "flask",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "title": "Answer",
+            "description": "What the service answered."
+          }
+        },
+        "required": [
+          "response"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "description": "The answer itself, when it is not a failure.",
+        "additionalProperties": true
+      },
+      "failures": [
+        {
+          "code": "SERVICE_ERROR",
+          "description": "The answer is flagged error although its status is below 400."
+        },
+        {
+          "code": 429,
+          "description": "The service answered 429 (can be tried again)."
+        },
+        {
+          "code": 502,
+          "description": "The service answered nothing."
+        }
+      ]
+    },
+    "fail": {
+      "description": "Always fails, for testing how a host copes.",
+      "title": "Always fail",
+      "category": "test",
+      "icon": "flask",
+      "inputs": {
+        "type": "object"
+      },
+      "failures": [
+        {
+          "code": "ALWAYS_FAILS",
+          "description": "Always."
+        }
+      ]
+    },
+    "crash": {
+      "description": "Ends the program without answering, for testing how a host copes.",
+      "title": "Crash",
+      "category": "test",
+      "icon": "flask",
+      "inputs": {
+        "type": "object"
+      }
+    },
+    "hang": {
+      "description": "Never answers and ignores a cancel, for testing how a host copes.",
+      "title": "Hang",
+      "category": "test",
+      "icon": "flask",
+      "inputs": {
+        "type": "object"
+      }
+    }
+  }
+}
