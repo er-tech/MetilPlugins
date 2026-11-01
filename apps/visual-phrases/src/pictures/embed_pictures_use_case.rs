@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use videoplugins_onnx_device::DeviceChoice;
-use videoplugins_plugin_sdk::Failure;
+use metilplugins_onnx_device::DeviceChoice;
+use metilplugins_plugin_sdk::Failure;
 
 use crate::matching::normalize;
 use crate::session::{embed_pictures, DIMENSIONS};

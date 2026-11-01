@@ -6,7 +6,7 @@
   "protocol": 2,
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/videoplugins-sound-volume"
+    "../../dist/cargo/release/metilplugins-sound-volume"
   ],
   "timeoutSeconds": 300,
   "concurrency": 4,

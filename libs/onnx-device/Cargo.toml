@@ -1,5 +1,5 @@
 [package]
-name = "videoplugins-onnx-device"
+name = "metilplugins-onnx-device"
 version = "0.0.0"
 edition = "2021"
 publish = false

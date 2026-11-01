@@ -1,5 +1,5 @@
 use serde_json::Value;
-use videoplugins_plugin_sdk::Failure;
+use metilplugins_plugin_sdk::Failure;
 
 use super::audioset_classes_config::AUDIOSET_CLASSES;
 

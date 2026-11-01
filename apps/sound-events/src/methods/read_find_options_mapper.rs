@@ -1,6 +1,6 @@
 use serde_json::Value;
-use videoplugins_onnx_device::DeviceChoice;
-use videoplugins_plugin_sdk::{flag, number, text, whole_number, Failure};
+use metilplugins_onnx_device::DeviceChoice;
+use metilplugins_plugin_sdk::{flag, number, text, whole_number, Failure};
 
 use crate::classes::select_labels;
 

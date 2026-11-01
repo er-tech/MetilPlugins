@@ -1,5 +1,5 @@
 [package]
-name = "videoplugins-sound-events"
+name = "metilplugins-sound-events"
 version = "0.0.0"
 edition = "2021"
 publish = false
@@ -11,8 +11,8 @@ kind = "app"
 [dependencies]
 ort = "=2.0.0-rc.15"
 serde_json = "1"
-videoplugins-model-cache = { path = "../../libs/model-cache" }
-videoplugins-onnx-device = { path = "../../libs/onnx-device" }
-videoplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
-videoplugins-sound-reader = { path = "../../libs/sound-reader" }
-videoplugins-work-files = { path = "../../libs/work-files" }
+metilplugins-model-cache = { path = "../../libs/model-cache" }
+metilplugins-onnx-device = { path = "../../libs/onnx-device" }
+metilplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
+metilplugins-sound-reader = { path = "../../libs/sound-reader" }
+metilplugins-work-files = { path = "../../libs/work-files" }

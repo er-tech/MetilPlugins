@@ -4,8 +4,8 @@ use std::sync::{Mutex, MutexGuard, OnceLock};
 use ort::environment::Environment;
 use ort::session::Session;
 use ort::value::Tensor;
-use videoplugins_onnx_device::{open_session, DeviceChoice, DeviceReport};
-use videoplugins_plugin_sdk::Failure;
+use metilplugins_onnx_device::{open_session, DeviceChoice, DeviceReport};
+use metilplugins_plugin_sdk::Failure;
 
 /// How many classes the model scores in each frame.
 pub const CLASSES: usize = 521;

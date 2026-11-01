@@ -1,8 +1,8 @@
 use serde_json::{json, Value};
-use videoplugins_onnx_device::DeviceChoice;
-use videoplugins_plugin_sdk::{Cancel, Failure};
-use videoplugins_sound_reader::{read_audio_region, resample, write_audio_region, Sound};
-use videoplugins_work_files::write_wav_file;
+use metilplugins_onnx_device::DeviceChoice;
+use metilplugins_plugin_sdk::{Cancel, Failure};
+use metilplugins_sound_reader::{read_audio_region, resample, write_audio_region, Sound};
+use metilplugins_work_files::write_wav_file;
 
 use crate::enhance::{enhance_voice, level_db, split_voice};
 use crate::models::locate_models;
@@ -11,7 +11,7 @@ use crate::tables::read_tables;
 
 use super::read_extract_options_mapper::read_extract_options;
 
-/// The rate the model works at, and the one the manifest asks VideoCraw to decode to.
+/// The rate the model works at, and the one the manifest asks Metil to decode to.
 const MODEL_RATE: u32 = 48_000;
 
 /// The `extract` action: the voice of a video and the rest, as two tracks.
@@ -19,7 +19,7 @@ const MODEL_RATE: u32 = 48_000;
 /// Params: `media` (the sound of a video, decoded by the host to 48 kHz, one channel), `keep`,
 /// `sampleRate`, `rest` and `files` (see `read_extract_options`). It gives
 /// `{ voice, rest, voiceDb, restDb, durationMs }`: `voice` and `rest` are the tracks described as
-/// VideoCraw describes decoded sound, so the next plugin (speech, sounds) is given one as it is
+/// Metil describes decoded sound, so the next plugin (speech, sounds) is given one as it is
 /// (good for this run only); `voiceDb` and `restDb` say how loud they are. With `files` each track
 /// also comes as a WAV in the result, as `voiceFile` and `restFile`.
 pub fn extract_voice(params: &Value, cancel: &Cancel) -> Result<Value, Failure> {
@@ -34,7 +34,7 @@ pub fn extract_voice(params: &Value, cancel: &Cancel) -> Result<Value, Failure> 
         .ok_or_else(|| {
             Failure::status(
                 400,
-                "media must be sound VideoCraw decoded for this plugin (it asks for 48 kHz sound)",
+                "media must be sound Metil decoded for this plugin (it asks for 48 kHz sound)",
             )
         })?;
     if sound.sample_rate != MODEL_RATE {
@@ -49,7 +49,7 @@ pub fn extract_voice(params: &Value, cancel: &Cancel) -> Result<Value, Failure> 
     let folder = cancel.work_dir().ok_or_else(|| {
         Failure::status(
             503,
-            "VideoCraw gave this plugin no place to write the tracks (it needs the outputs feature)",
+            "Metil gave this plugin no place to write the tracks (it needs the outputs feature)",
         )
     })?;
 

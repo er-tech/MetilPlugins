@@ -1,5 +1,5 @@
 use serde_json::Value;
-use videoplugins_plugin_sdk::{Cancel, Failure};
+use metilplugins_plugin_sdk::{Cancel, Failure};
 
 use super::find_sounds_use_case::find_sounds;
 

@@ -1,5 +1,5 @@
 [package]
-name = "videoplugins-frame-reader"
+name = "metilplugins-frame-reader"
 version = "0.0.0"
 edition = "2021"
 publish = false

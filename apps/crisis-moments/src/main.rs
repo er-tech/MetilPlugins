@@ -5,7 +5,7 @@
 mod methods;
 mod moments;
 
-use videoplugins_plugin_sdk::serve_stdio;
+use metilplugins_plugin_sdk::serve_stdio;
 
 fn main() {
     serve_stdio(|action, params, _cancel| methods::run_method(action, params));

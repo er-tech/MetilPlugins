@@ -6,7 +6,7 @@
   "protocol": 2,
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/videoplugins-crisis-moments"
+    "../../dist/cargo/release/metilplugins-crisis-moments"
   ],
   "timeoutSeconds": 60,
   "concurrency": 4,

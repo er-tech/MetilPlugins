@@ -1,5 +1,5 @@
 [package]
-name = "videoplugins-sound-volume"
+name = "metilplugins-sound-volume"
 version = "0.0.0"
 edition = "2021"
 publish = false
@@ -11,5 +11,5 @@ kind = "app"
 [dependencies]
 rustfft = "6"
 serde_json = "1"
-videoplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
-videoplugins-sound-reader = { path = "../../libs/sound-reader" }
+metilplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
+metilplugins-sound-reader = { path = "../../libs/sound-reader" }

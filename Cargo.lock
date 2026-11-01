@@ -584,6 +584,192 @@ dependencies = [
 ]
 
 [[package]]
+name = "metilplugins-appearances"
+version = "0.0.0"
+
+[[package]]
+name = "metilplugins-coco-objects"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-appearances",
+ "metilplugins-frame-reader",
+ "metilplugins-model-cache",
+ "metilplugins-onnx-device",
+ "metilplugins-plugin-sdk",
+ "metilplugins-work-files",
+ "ort",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-crisis-moments"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-plugin-sdk",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-example-hits"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-plugin-sdk",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-frame-reader"
+version = "0.0.0"
+dependencies = [
+ "memmap2",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-model-cache"
+version = "0.0.0"
+dependencies = [
+ "sha2",
+ "ureq",
+]
+
+[[package]]
+name = "metilplugins-music-sync"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-plugin-sdk",
+ "metilplugins-sound-reader",
+ "rustfft",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-onnx-device"
+version = "0.0.0"
+dependencies = [
+ "ort",
+ "serde_json",
+ "windows",
+]
+
+[[package]]
+name = "metilplugins-plugin-sdk"
+version = "0.0.0"
+dependencies = [
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-sound-clean"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-plugin-sdk",
+ "metilplugins-sound-reader",
+ "rustfft",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-sound-events"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-model-cache",
+ "metilplugins-onnx-device",
+ "metilplugins-plugin-sdk",
+ "metilplugins-sound-reader",
+ "metilplugins-work-files",
+ "ort",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-sound-graph"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-plugin-sdk",
+ "metilplugins-sound-reader",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-sound-reader"
+version = "0.0.0"
+dependencies = [
+ "memmap2",
+ "serde_json",
+ "symphonia",
+]
+
+[[package]]
+name = "metilplugins-sound-volume"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-plugin-sdk",
+ "metilplugins-sound-reader",
+ "rustfft",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-thumbnail"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-frame-reader",
+ "metilplugins-plugin-sdk",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-video-upscale"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-frame-reader",
+ "metilplugins-model-cache",
+ "metilplugins-onnx-device",
+ "metilplugins-plugin-sdk",
+ "metilplugins-work-files",
+ "ort",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-visual-phrases"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-appearances",
+ "metilplugins-frame-reader",
+ "metilplugins-model-cache",
+ "metilplugins-onnx-device",
+ "metilplugins-plugin-sdk",
+ "metilplugins-work-files",
+ "ort",
+ "serde_json",
+ "tokenizers",
+]
+
+[[package]]
+name = "metilplugins-voice-extractor"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-model-cache",
+ "metilplugins-onnx-device",
+ "metilplugins-plugin-sdk",
+ "metilplugins-sound-reader",
+ "metilplugins-work-files",
+ "ort",
+ "realfft",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-work-files"
+version = "0.0.0"
+dependencies = [
+ "png",
+ "serde_json",
+]
+
+[[package]]
 name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1601,192 +1787,6 @@ name = "version_check"
 version = "0.9.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
-
-[[package]]
-name = "videoplugins-appearances"
-version = "0.0.0"
-
-[[package]]
-name = "videoplugins-coco-objects"
-version = "0.0.0"
-dependencies = [
- "ort",
- "serde_json",
- "videoplugins-appearances",
- "videoplugins-frame-reader",
- "videoplugins-model-cache",
- "videoplugins-onnx-device",
- "videoplugins-plugin-sdk",
- "videoplugins-work-files",
-]
-
-[[package]]
-name = "videoplugins-crisis-moments"
-version = "0.0.0"
-dependencies = [
- "serde_json",
- "videoplugins-plugin-sdk",
-]
-
-[[package]]
-name = "videoplugins-example-hits"
-version = "0.0.0"
-dependencies = [
- "serde_json",
- "videoplugins-plugin-sdk",
-]
-
-[[package]]
-name = "videoplugins-frame-reader"
-version = "0.0.0"
-dependencies = [
- "memmap2",
- "serde_json",
-]
-
-[[package]]
-name = "videoplugins-model-cache"
-version = "0.0.0"
-dependencies = [
- "sha2",
- "ureq",
-]
-
-[[package]]
-name = "videoplugins-music-sync"
-version = "0.0.0"
-dependencies = [
- "rustfft",
- "serde_json",
- "videoplugins-plugin-sdk",
- "videoplugins-sound-reader",
-]
-
-[[package]]
-name = "videoplugins-onnx-device"
-version = "0.0.0"
-dependencies = [
- "ort",
- "serde_json",
- "windows",
-]
-
-[[package]]
-name = "videoplugins-plugin-sdk"
-version = "0.0.0"
-dependencies = [
- "serde_json",
-]
-
-[[package]]
-name = "videoplugins-sound-clean"
-version = "0.0.0"
-dependencies = [
- "rustfft",
- "serde_json",
- "videoplugins-plugin-sdk",
- "videoplugins-sound-reader",
-]
-
-[[package]]
-name = "videoplugins-sound-events"
-version = "0.0.0"
-dependencies = [
- "ort",
- "serde_json",
- "videoplugins-model-cache",
- "videoplugins-onnx-device",
- "videoplugins-plugin-sdk",
- "videoplugins-sound-reader",
- "videoplugins-work-files",
-]
-
-[[package]]
-name = "videoplugins-sound-graph"
-version = "0.0.0"
-dependencies = [
- "serde_json",
- "videoplugins-plugin-sdk",
- "videoplugins-sound-reader",
-]
-
-[[package]]
-name = "videoplugins-sound-reader"
-version = "0.0.0"
-dependencies = [
- "memmap2",
- "serde_json",
- "symphonia",
-]
-
-[[package]]
-name = "videoplugins-sound-volume"
-version = "0.0.0"
-dependencies = [
- "rustfft",
- "serde_json",
- "videoplugins-plugin-sdk",
- "videoplugins-sound-reader",
-]
-
-[[package]]
-name = "videoplugins-thumbnail"
-version = "0.0.0"
-dependencies = [
- "serde_json",
- "videoplugins-frame-reader",
- "videoplugins-plugin-sdk",
-]
-
-[[package]]
-name = "videoplugins-video-upscale"
-version = "0.0.0"
-dependencies = [
- "ort",
- "serde_json",
- "videoplugins-frame-reader",
- "videoplugins-model-cache",
- "videoplugins-onnx-device",
- "videoplugins-plugin-sdk",
- "videoplugins-work-files",
-]
-
-[[package]]
-name = "videoplugins-visual-phrases"
-version = "0.0.0"
-dependencies = [
- "ort",
- "serde_json",
- "tokenizers",
- "videoplugins-appearances",
- "videoplugins-frame-reader",
- "videoplugins-model-cache",
- "videoplugins-onnx-device",
- "videoplugins-plugin-sdk",
- "videoplugins-work-files",
-]
-
-[[package]]
-name = "videoplugins-voice-extractor"
-version = "0.0.0"
-dependencies = [
- "ort",
- "realfft",
- "serde_json",
- "videoplugins-model-cache",
- "videoplugins-onnx-device",
- "videoplugins-plugin-sdk",
- "videoplugins-sound-reader",
- "videoplugins-work-files",
-]
-
-[[package]]
-name = "videoplugins-work-files"
-version = "0.0.0"
-dependencies = [
- "png",
- "serde_json",
-]
 
 [[package]]
 name = "wasi"

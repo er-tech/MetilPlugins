@@ -6,7 +6,7 @@
   "protocol": 2,
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/videoplugins-video-upscale"
+    "../../dist/cargo/release/metilplugins-video-upscale"
   ],
   "timeoutSeconds": 14400,
   "stallSeconds": 600,
@@ -17,20 +17,20 @@
   },
   "permissions": {
     "env": [
-      "VIDEOCRAW_MODELS",
-      "VIDEOCRAW_FFMPEG"
+      "METIL_MODELS",
+      "METIL_FFMPEG"
     ],
     "network": [
       "huggingface.co",
       "us.aws.cdn.hf.co"
     ],
     "write": [
-      "~/.videocraw/models"
+      "~/.metil/models"
     ]
   },
   "actions": {
     "upscale": {
-      "description": "Makes a video larger. VideoCraw decodes every picture of it; the plugin makes each one four times larger with the network you choose (cut in pieces, so large pictures fit in the memory of the graphics card), scales to the size you ask for and encodes an MP4 with FFmpeg. The new video has no sound: the plugin sees pictures only, so add the sound of the source again in a later step.",
+      "description": "Makes a video larger. Metil decodes every picture of it; the plugin makes each one four times larger with the network you choose (cut in pieces, so large pictures fit in the memory of the graphics card), scales to the size you ask for and encodes an MP4 with FFmpeg. The new video has no sound: the plugin sees pictures only, so add the sound of the source again in a later step.",
       "title": "Upscale video",
       "category": "transform",
       "icon": "scale",
@@ -49,7 +49,7 @@
               "object",
               "string"
             ],
-            "description": "The video: a stored file or a video as media.open gives it, or a path in text. VideoCraw decodes every colour picture of it, so use a short clip or a stretch of a video.",
+            "description": "The video: a stored file or a video as media.open gives it, or a path in text. Metil decodes every colour picture of it, so use a short clip or a stretch of a video.",
             "x-ui": {
               "group": "everyday"
             }
@@ -233,7 +233,7 @@
       "failures": [
         {
           "code": 400,
-          "description": "A param is wrong, the new video would be too large, or media is missing or not a video VideoCraw decoded for the plugin."
+          "description": "A param is wrong, the new video would be too large, or media is missing or not a video Metil decoded for the plugin."
         },
         {
           "code": 404,

@@ -1,5 +1,5 @@
 use serde_json::Value;
-use videoplugins_plugin_sdk::{number, whole_number, Failure};
+use metilplugins_plugin_sdk::{number, whole_number, Failure};
 
 use super::find_options_contract::{FindOptions, DEFAULT_KEYWORDS, DEFAULT_SOUND_NAMES};
 

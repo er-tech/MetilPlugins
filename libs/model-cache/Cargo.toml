@@ -1,5 +1,5 @@
 [package]
-name = "videoplugins-model-cache"
+name = "metilplugins-model-cache"
 version = "0.0.0"
 edition = "2021"
 publish = false

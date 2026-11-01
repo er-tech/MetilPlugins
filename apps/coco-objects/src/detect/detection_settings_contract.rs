@@ -1,4 +1,4 @@
-use videoplugins_onnx_device::DeviceChoice;
+use metilplugins_onnx_device::DeviceChoice;
 
 /// What one look at a picture is told besides the picture: where the detector runs, how sure it
 /// must be of a thing, and which of the 80 classes count.

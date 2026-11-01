@@ -1,12 +1,12 @@
 # video-upscale
 
-Makes a video larger, two or four times on each side, with a [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN) network that adds detail, or with plain Lanczos scaling. A VideoCraw plugin written in Rust. It uses **no language model**. It runs on the graphics card when the host grants one.
+Makes a video larger, two or four times on each side, with a [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN) network that adds detail, or with plain Lanczos scaling. A Metil plugin written in Rust. It uses **no language model**. It runs on the graphics card when the host grants one.
 
 ## `upscale`
 
 | Input | |
 |---|---|
-| `media` | the video: a video as `media.open` gives it, a stored file, or a path in text. VideoCraw decodes every colour picture of it |
+| `media` | the video: a video as `media.open` gives it, a stored file, or a path in text. Metil decodes every colour picture of it |
 | `model` | `general-x4v3` (default), `animevideo-v3`, `x4plus` or `lanczos` (see below) |
 | `scale` | `2` or `4` (default 4). A network always makes four; with 2 the result is scaled down to half of that |
 | `device` | `auto` (default), `cpu`, `gpu` or `gpu:N`. `auto` uses the card the host grants |
@@ -33,11 +33,11 @@ Real-CUGAN, another network for anime, is not here: no ONNX file of it could be 
 ## What to know
 
 - **No sound.** The plugin gets pictures, not the source file, so the new video is silent. Add the sound of the source in a later step of the flow.
-- **Every picture is decoded.** A 1080p picture is 6 MB, so a minute of video is about 11 GB for the host to decode, and VideoCraw refuses a decode that is too large. Use a short clip, or a stretch of a video.
+- **Every picture is decoded.** A 1080p picture is 6 MB, so a minute of video is about 11 GB for the host to decode, and Metil refuses a decode that is too large. Use a short clip, or a stretch of a video.
 - **Slow.** A network makes four pixels for each pixel of the source: a 1080p picture becomes 4K. Use the graphics card (`device`), and a larger `tile` for `general-x4v3` if it has the memory.
 - **Pieces.** A picture is cut into overlapping square pieces; each answer loses 16 pixels of edge, so no seam shows. Fixed-size networks (`animevideo-v3`, `x4plus`) have the size built in.
-- **FFmpeg.** The plugin starts FFmpeg to write the file: it uses `VIDEOCRAW_FFMPEG` (a folder with `ffmpeg` in it, or the program) or the system path, and needs the `libx264` encoder. The frame rate is the average of the video's.
-- **The first call downloads the model** from Hugging Face, checks its sum, and keeps it in `~/.videocraw/models/video-upscale` (or in the folder `VIDEOCRAW_MODELS` names).
+- **FFmpeg.** The plugin starts FFmpeg to write the file: it uses `METIL_FFMPEG` (a folder with `ffmpeg` in it, or the program) or the system path, and needs the `libx264` encoder. The frame rate is the average of the video's.
+- **The first call downloads the model** from Hugging Face, checks its sum, and keeps it in `~/.metil/models/video-upscale` (or in the folder `METIL_MODELS` names).
 
 ## Where the models come from
 
@@ -49,10 +49,10 @@ The program is MIT. Real-ESRGAN code and weights are BSD-3-Clause; ONNX Runtime 
 
 ## Failures
 
-`400` a param is wrong, the new video is too large or `media` is not a video VideoCraw decoded for the plugin, `404` a file is not there, `422` a file cannot be read, the model cannot be loaded, or FFmpeg is missing or failed, `503` the model could not be downloaded. [plugin.json](plugin.json) lists them with the schemas.
+`400` a param is wrong, the new video is too large or `media` is not a video Metil decoded for the plugin, `404` a file is not there, `422` a file cannot be read, the model cannot be loaded, or FFmpeg is missing or failed, `503` the model could not be downloaded. [plugin.json](plugin.json) lists them with the schemas.
 
 ## Build
 
 ```sh
-smith build -p video-upscale          # or: cargo build --release -p videoplugins-video-upscale
+smith build -p video-upscale          # or: cargo build --release -p metilplugins-video-upscale
 ```

@@ -1,4 +1,4 @@
-use videoplugins_model_cache::ModelFile;
+use metilplugins_model_cache::ModelFile;
 
 /// DeepFilterNet3 (version 0.5.6 of the official model, Apache-2.0 or MIT) as the ONNX graph of
 /// `soniqo/DeepFilterNet3-ONNX` (MIT). It is only the neural network: it takes features of the

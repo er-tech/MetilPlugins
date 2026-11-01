@@ -1,6 +1,6 @@
 use serde_json::{json, Value};
-use videoplugins_frame_reader::{read_video_region, PixelFormat};
-use videoplugins_plugin_sdk::{whole_number, Cancel, Failure};
+use metilplugins_frame_reader::{read_video_region, PixelFormat};
+use metilplugins_plugin_sdk::{whole_number, Cancel, Failure};
 
 use crate::pick::{choose_picks, score_picture, Candidate};
 
@@ -22,7 +22,7 @@ pub fn pick_thumbnails(params: &Value, cancel: &Cancel) -> Result<Value, Failure
         .ok_or_else(|| {
             Failure::status(
                 400,
-                "media must be a video VideoCraw decoded for this plugin (it asks for pictures)",
+                "media must be a video Metil decoded for this plugin (it asks for pictures)",
             )
         })?;
     if video.format != PixelFormat::Gray8 {

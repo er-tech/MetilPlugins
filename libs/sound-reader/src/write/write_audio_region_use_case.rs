@@ -9,8 +9,8 @@ use crate::read::Sound;
 static WRITTEN: AtomicU64 = AtomicU64::new(0);
 
 /// Writes `sound` in `folder` as raw little-endian 32-bit float samples, one channel, in a file
-/// that no other call of this process uses, and gives its description in the form VideoCraw hands
-/// over decoded sound: the next plugin is given it as it is. `folder` is what VideoCraw offered
+/// that no other call of this process uses, and gives its description in the form Metil hands
+/// over decoded sound: the next plugin is given it as it is. `folder` is what Metil offered
 /// the plugin to write in; `sound.start_ms` says where the sound starts in the source, so the next
 /// plugin answers in the time of the source.
 pub fn write_audio_region(folder: &Path, name: &str, sound: &Sound) -> io::Result<Value> {

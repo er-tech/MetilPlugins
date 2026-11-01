@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use videoplugins_onnx_device::DeviceChoice;
-use videoplugins_plugin_sdk::{Cancel, Failure};
+use metilplugins_onnx_device::DeviceChoice;
+use metilplugins_plugin_sdk::{Cancel, Failure};
 
 use crate::tables::Tables;
 
@@ -90,7 +90,7 @@ mod tests {
         let Ok(home) = std::env::var("USERPROFILE").or_else(|_| std::env::var("HOME")) else {
             return;
         };
-        let folder = PathBuf::from(home).join(".videocraw/models/voice-extractor");
+        let folder = PathBuf::from(home).join(".metil/models/voice-extractor");
         let (Ok(bytes), network) = (
             std::fs::read(folder.join("deepfilter-auxiliary.bin")),
             folder.join("deepfilter.onnx"),

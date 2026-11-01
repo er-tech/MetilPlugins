@@ -4,10 +4,10 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from videoplugins_speech_to_text.actions import run_action
-from videoplugins_speech_to_text.serve import Failure
-from videoplugins_speech_to_text.transcription import transcribe_media
-from videoplugins_speech_to_text.transcription.transcribe_media_use_case import TranscribeOptions
+from metilplugins_speech_to_text.actions import run_action
+from metilplugins_speech_to_text.serve import Failure
+from metilplugins_speech_to_text.transcription import transcribe_media
+from metilplugins_speech_to_text.transcription.transcribe_media_use_case import TranscribeOptions
 
 
 @dataclass

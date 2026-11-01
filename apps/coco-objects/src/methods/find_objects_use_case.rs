@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
 use serde_json::{json, Value};
-use videoplugins_appearances::{track_appearances, Presence, Sample};
-use videoplugins_frame_reader::{read_video_region, PixelFormat};
-use videoplugins_onnx_device::DeviceChoice;
-use videoplugins_plugin_sdk::{Cancel, Failure};
-use videoplugins_work_files::write_png_file;
+use metilplugins_appearances::{track_appearances, Presence, Sample};
+use metilplugins_frame_reader::{read_video_region, PixelFormat};
+use metilplugins_onnx_device::DeviceChoice;
+use metilplugins_plugin_sdk::{Cancel, Failure};
+use metilplugins_work_files::write_png_file;
 
 use crate::classes::COCO_CLASSES;
 use crate::detect::{detect_objects, device_report, Detection, DetectionSettings};
@@ -34,7 +34,7 @@ pub fn find_objects(params: &Value, cancel: &Cancel) -> Result<Value, Failure> {
         .ok_or_else(|| {
             Failure::status(
                 400,
-                "media must be a video VideoCraw decoded for this plugin (it asks for pictures)",
+                "media must be a video Metil decoded for this plugin (it asks for pictures)",
             )
         })?;
     if video.format != PixelFormat::Rgb24 {
@@ -92,7 +92,7 @@ pub fn find_objects(params: &Value, cancel: &Cancel) -> Result<Value, Failure> {
         let work_dir = cancel.work_dir().ok_or_else(|| {
             Failure::status(
                 422,
-                "VideoCraw gave this plugin no folder to write pictures in",
+                "Metil gave this plugin no folder to write pictures in",
             )
         })?;
         let mut picture = video

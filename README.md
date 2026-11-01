@@ -1,18 +1,18 @@
-# VideoPlugins
+# MetilPlugins
 
-Plugins for [VideoCraw](https://github.com/er-tech/Metil), the tool that extracts data from video: image, sound, text, context and search.
+Plugins for [Metil](https://github.com/er-tech/Metil), the tool that extracts data from video: image, sound, text, context and search.
 
-VideoCraw's core does very little itself (it reads recipes, opens a video, extracts audio and keeps the results). Everything that finds something in the media is a plugin: a separate program that VideoCraw starts when a recipe calls it. A plugin can be written in any language. This repository holds the plugins that are developed alongside VideoCraw, and the documentation of how to write one.
+Metil's core does very little itself (it reads recipes, opens a video, extracts audio and keeps the results). Everything that finds something in the media is a plugin: a separate program that Metil starts when a recipe calls it. A plugin can be written in any language. This repository holds the plugins that are developed alongside Metil, and the documentation of how to write one.
 
 This repository is in early development. Work happens on the `dev` branch; `main` waits for a first release.
 
 ## Writing a plugin
 
-Read [docs/plugin-protocol.md](docs/plugin-protocol.md): the manifest (`plugin.json`), the messages a plugin exchanges with VideoCraw, and an example exchange. A plugin needs nothing from this repository to work; it only has to speak the protocol.
+Read [docs/plugin-protocol.md](docs/plugin-protocol.md): the manifest (`plugin.json`), the messages a plugin exchanges with Metil, and an example exchange. A plugin needs nothing from this repository to work; it only has to speak the protocol.
 
-To hand a plugin to someone, pack it as a `.vcw` file: [docs/vcw-format.md](docs/vcw-format.md) says what goes in it and what an installer checks (`videocraw plugins install cat-sounds.vcw`).
+To hand a plugin to someone, pack it as a `.mtp` file: [docs/mtp-format.md](docs/mtp-format.md) says what goes in it and what an installer checks (`metil plugins install cat-sounds.mtp`).
 
-With Claude Code, open this repository and ask for the `plugin-author` agent (or the `write-a-plugin` skill): both are in `.claude/` and work from these documents, and use the `vcw` tool and its MCP server when they are installed.
+With Claude Code, open this repository and ask for the `plugin-author` agent (or the `write-a-plugin` skill): both are in `.claude/` and work from these documents, and use the `metil-plugin` tool and its MCP server when they are installed.
 
 Then [docs/writing-good-plugins.md](docs/writing-good-plugins.md): guidance, not rules, on what makes a plugin pleasant to use in a workflow (report failures as failures, handle `cancel`, stay predictable).
 
@@ -34,7 +34,7 @@ Then [docs/writing-good-plugins.md](docs/writing-good-plugins.md): guidance, not
 | [crisis-moments](apps/crisis-moments) | Rust | finds moments a person should look at (shouting, an alarm, a sudden loud sound, words of alarm) from what other steps found: sentences, sounds and loudness; fixed rules, no model; "moments to review", never a verdict |
 | [example-hits](apps/example-hits) | Rust | the reference plugin: pretends to find things |
 
-Shared code: [libs/plugin-sdk](libs/plugin-sdk) speaks the protocol for a Rust plugin (answers `hello` with its capabilities, runs every call on its own thread, cancel, progress, the work folder), [libs/sound-reader](libs/sound-reader) reads the sound VideoCraw decoded (or any common audio file) and writes a sound for the next plugin, and [libs/frame-reader](libs/frame-reader) reads the pictures VideoCraw decoded. The speech plugin has the same in Python.
+Shared code: [libs/plugin-sdk](libs/plugin-sdk) speaks the protocol for a Rust plugin (answers `hello` with its capabilities, runs every call on its own thread, cancel, progress, the work folder), [libs/sound-reader](libs/sound-reader) reads the sound Metil decoded (or any common audio file) and writes a sound for the next plugin, and [libs/frame-reader](libs/frame-reader) reads the pictures Metil decoded. The speech plugin has the same in Python.
 
 ## Layout
 
@@ -47,10 +47,10 @@ apps/
 docs/
   plugin-protocol.md      the protocol, version 2
   writing-good-plugins.md guidance for plugin authors
-  vcw-format.md           the .vcw package: one plugin in one file
+  mtp-format.md           the .mtp package: one plugin in one file
 ```
 
-The repository is a [MonoSmith](https://github.com/monosmith-app/monosmith) workspace, so each plugin is a smith project (`smith add app <name> --lang <language>`) and `smith lint`, `smith test` and `smith build` run for all of them. Give VideoCraw the `apps` folder with `--plugins apps`.
+The repository is a [MonoSmith](https://github.com/monosmith-app/monosmith) workspace, so each plugin is a smith project (`smith add app <name> --lang <language>`) and `smith lint`, `smith test` and `smith build` run for all of them. Give Metil the `apps` folder with `--plugins apps`.
 
 [apps/example-hits](apps/example-hits) is a reference plugin in Rust that pretends to find things; copy it to start your own.
 

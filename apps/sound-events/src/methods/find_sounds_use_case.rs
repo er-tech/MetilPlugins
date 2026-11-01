@@ -1,8 +1,8 @@
 use serde_json::{json, Value};
-use videoplugins_onnx_device::DeviceChoice;
-use videoplugins_plugin_sdk::{Cancel, Failure};
-use videoplugins_sound_reader::read_audio_region;
-use videoplugins_work_files::write_wav_file;
+use metilplugins_onnx_device::DeviceChoice;
+use metilplugins_plugin_sdk::{Cancel, Failure};
+use metilplugins_sound_reader::read_audio_region;
+use metilplugins_work_files::write_wav_file;
 
 use crate::classes::AUDIOSET_CLASSES;
 use crate::events::{event_times, merge_frames};
@@ -11,7 +11,7 @@ use crate::models::locate_model;
 
 use super::read_find_options_mapper::read_find_options;
 
-/// The rate the tagger listens at, and the one the manifest asks VideoCraw to decode to.
+/// The rate the tagger listens at, and the one the manifest asks Metil to decode to.
 const RATE: u32 = 16_000;
 /// How far apart two frames start, in milliseconds.
 const HOP_MS: u64 = (HOP as u64) * 1000 / (RATE as u64);
@@ -38,7 +38,7 @@ pub fn find_sounds(params: &Value, cancel: &Cancel) -> Result<Value, Failure> {
         .ok_or_else(|| {
             Failure::status(
                 400,
-                "media must be sound VideoCraw decoded for this plugin (it asks for 16 kHz sound)",
+                "media must be sound Metil decoded for this plugin (it asks for 16 kHz sound)",
             )
         })?;
     if sound.sample_rate != RATE {
@@ -82,7 +82,7 @@ pub fn find_sounds(params: &Value, cancel: &Cancel) -> Result<Value, Failure> {
             let work_dir = cancel.work_dir().ok_or_else(|| {
                 Failure::status(
                     422,
-                    "VideoCraw gave this plugin no folder to write clips in",
+                    "Metil gave this plugin no folder to write clips in",
                 )
             })?;
             let from = start.saturating_sub(options.clip_pad_ms);

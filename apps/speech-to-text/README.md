@@ -1,6 +1,6 @@
 # speech-to-text
 
-The sentences said in a video or a sound, with the time each one starts and ends. A VideoCraw plugin written in **Python**, because that is where the speech recognition is: it uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper) (the Whisper models on CTranslate2), which runs on an ordinary processor and reads the sound of most video and audio files by itself.
+The sentences said in a video or a sound, with the time each one starts and ends. A Metil plugin written in **Python**, because that is where the speech recognition is: it uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper) (the Whisper models on CTranslate2), which runs on an ordinary processor and reads the sound of most video and audio files by itself.
 
 ## `transcribe`
 
@@ -45,7 +45,7 @@ python -m venv .venv
 pip install -e apps/speech-to-text
 ```
 
-`plugin.json` starts `python -m videoplugins_speech_to_text`, so run VideoCraw from a shell where that `python` is the one with the package (the environment above, activated). In this repository, smith's own `.venv` at the root works the same way.
+`plugin.json` starts `python -m metilplugins_speech_to_text`, so run Metil from a shell where that `python` is the one with the package (the environment above, activated). In this repository, smith's own `.venv` at the root works the same way.
 
 The first call downloads the model (once; it goes to the Hugging Face cache folder of the user) and loads it, which takes a while; later calls in the same run reuse it. Nothing leaves the machine except that download: the recording is never uploaded.
 
@@ -53,5 +53,5 @@ The first call downloads the model (once; it goes to the Hugging Face cache fold
 
 - Only one call is served at a time (`concurrency` 1): a model uses all the processor cores already.
 - The speech is recognised on the processor with 8-bit numbers (`int8`). A graphics card would be faster; it is not used yet.
-- To try it on a real recording, set `VIDEOPLUGINS_SPEECH_SAMPLE` to a video or sound with English speech and run `smith test -p speech-to-text`: one test then runs a real model (it is skipped otherwise).
+- To try it on a real recording, set `METILPLUGINS_SPEECH_SAMPLE` to a video or sound with English speech and run `smith test -p speech-to-text`: one test then runs a real model (it is skipped otherwise).
 - Names, numbers and punctuation are what the model writes; check anything that matters.

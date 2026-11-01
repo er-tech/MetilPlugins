@@ -1,6 +1,6 @@
-//! The plugin as VideoCraw starts it: the handshake, a call that is wrong (which must come back as
+//! The plugin as Metil starts it: the handshake, a call that is wrong (which must come back as
 //! an error and not a result), an action it does not have, and the end. Looking at pictures needs
-//! the model, which is downloaded on first use: that is tried by hand and by VideoCraw's own tests.
+//! the model, which is downloaded on first use: that is tried by hand and by Metil's own tests.
 
 use std::io::{BufRead, BufReader, Write};
 use std::process::{Command, Stdio};
@@ -8,7 +8,7 @@ use std::process::{Command, Stdio};
 use serde_json::{json, Value};
 
 fn talk(messages: &[Value]) -> Vec<Value> {
-    let mut plugin = Command::new(env!("CARGO_BIN_EXE_videoplugins-visual-phrases"))
+    let mut plugin = Command::new(env!("CARGO_BIN_EXE_metilplugins-visual-phrases"))
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()

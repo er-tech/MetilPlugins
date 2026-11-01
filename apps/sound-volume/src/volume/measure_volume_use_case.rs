@@ -1,4 +1,4 @@
-use videoplugins_sound_reader::Sound;
+use metilplugins_sound_reader::Sound;
 
 use super::band_levels_algorithm::{BandAnalyser, BandEdges};
 use super::loudness_algorithm::{peak_db, rms_db};

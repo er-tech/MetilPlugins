@@ -1,5 +1,5 @@
 [package]
-name = "videoplugins-thumbnail"
+name = "metilplugins-thumbnail"
 version = "0.0.0"
 edition = "2021"
 publish = false
@@ -10,5 +10,5 @@ kind = "app"
 
 [dependencies]
 serde_json = "1"
-videoplugins-frame-reader = { path = "../../libs/frame-reader" }
-videoplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
+metilplugins-frame-reader = { path = "../../libs/frame-reader" }
+metilplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
