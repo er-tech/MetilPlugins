@@ -9,4 +9,8 @@ license = "MIT"
 [workspace]
 
 [dependencies]
+ort = "=2.0.0-rc.15"
+
+# DirectML exists only on Windows; elsewhere the tool times the CPU only.
+[target.'cfg(windows)'.dependencies]
 ort = { version = "=2.0.0-rc.15", features = ["directml"] }

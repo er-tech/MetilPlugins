@@ -1,6 +1,7 @@
 """The speech recognition models that are loaded: a model is loaded once, whoever uses it."""
 
 import threading
+from importlib import import_module
 from typing import Any
 
 _models: dict[str, Any] = {}
@@ -16,7 +17,7 @@ def get_model(name: str) -> Any:
     """
     with _lock:
         if name not in _models:
-            from faster_whisper import WhisperModel  # type: ignore[import-untyped]  # no stubs; heavy, so loaded on first use
-
-            _models[name] = WhisperModel(name, device="cpu", compute_type="int8")
+            # Heavy, so loaded on first use; imported by name because the package has stubs on some installs only.
+            whisper_model = import_module("faster_whisper").WhisperModel
+            _models[name] = whisper_model(name, device="cpu", compute_type="int8")
         return _models[name]
