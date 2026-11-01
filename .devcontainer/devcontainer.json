@@ -12,5 +12,5 @@
       "version": "1.99.1"
     }
   },
-  "postCreateCommand": "python3 -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ --user monosmith==2.0.0-beta.12 && PATH=\"$HOME/.local/bin\":\"$PATH\" smith ci setup"
+  "postCreateCommand": "python3 -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ --user monosmith==2.0.0-beta.13 && PATH=\"$HOME/.local/bin\":\"$PATH\" smith ci setup"
 }
