@@ -124,5 +124,7 @@ registry = "none"
 
 [projects.speech-to-text.release]
 build = "sh tools/pack-plugin.sh speech-to-text python"
+# The build only zips the plugin: the assets job does not install its Python packages.
+install = false
 assets = ["out/speech-to-text-*.mtp"]
 platforms = ["linux-x64"]
