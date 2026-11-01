@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use videoplugins_onnx_device::DeviceChoice;
-use videoplugins_plugin_sdk::Failure;
+use metilplugins_onnx_device::DeviceChoice;
+use metilplugins_plugin_sdk::Failure;
 
 use crate::models::{ModelSpec, NETWORK_SCALE};
 use crate::tiles::{cut_tile, paste_tile, tiles_along, Placement, TILE_MARGIN};

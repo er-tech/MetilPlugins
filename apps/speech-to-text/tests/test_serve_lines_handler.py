@@ -3,7 +3,7 @@ import threading
 import time
 from typing import Any
 
-from videoplugins_speech_to_text.serve import Call, Failure, serve_lines
+from metilplugins_speech_to_text.serve import Call, Failure, serve_lines
 
 
 def plugin(action: str, params: dict[str, Any], cancel: threading.Event) -> dict[str, Any]:

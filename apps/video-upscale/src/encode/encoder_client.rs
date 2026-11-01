@@ -2,7 +2,7 @@ use std::io::Write;
 use std::path::Path;
 use std::process::{Child, ChildStdin, Command, Stdio};
 
-use videoplugins_plugin_sdk::Failure;
+use metilplugins_plugin_sdk::Failure;
 
 use super::encoder_settings_contract::EncoderSettings;
 use super::ffmpeg_arguments_algorithm::ffmpeg_arguments;
@@ -31,7 +31,7 @@ impl Encoder {
                 Failure::status(
                     422,
                     format!(
-                        "FFmpeg could not be started from {}: {error}. Install it or set VIDEOCRAW_FFMPEG",
+                        "FFmpeg could not be started from {}: {error}. Install it or set METIL_FFMPEG",
                         program.display()
                     ),
                 )

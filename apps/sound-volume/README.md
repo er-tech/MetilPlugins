@@ -1,6 +1,6 @@
 # sound-volume
 
-How loud a sound is, over time, and in which frequencies. A VideoCraw plugin written in Rust, so it is one program with nothing to install: it reads mp3, wav, flac, ogg, aac and alac (and the sound of an mp4) by itself.
+How loud a sound is, over time, and in which frequencies. A Metil plugin written in Rust, so it is one program with nothing to install: it reads mp3, wav, flac, ogg, aac and alac (and the sound of an mp4) by itself.
 
 ## Actions
 
@@ -8,7 +8,7 @@ How loud a sound is, over time, and in which frequencies. A VideoCraw plugin wri
 
 | Input | |
 |---|---|
-| `audio` | the sound: a stored file as VideoCraw passes it (an object with an absolute `file`), or a path in text |
+| `audio` | the sound: a stored file as Metil passes it (an object with an absolute `file`), or a path in text |
 | `windowMs` | how long each window is, 10 to 60000 (default 1000) |
 | `sampleRate` | the rate to listen at, 4000 to 192000; the sound is resampled to it first, and the highest frequency that can be told is half of it (default: the sound's own) |
 | `bands` | split each window into low, mid and high (default `true`) |
@@ -53,7 +53,7 @@ Levels are in **dB relative to full scale**: 0 is the loudest a sound can be, ev
 ## Build
 
 ```sh
-smith build -p sound-volume          # or: cargo build --release -p videoplugins-sound-volume
+smith build -p sound-volume          # or: cargo build --release -p metilplugins-sound-volume
 ```
 
-`plugin.json` starts `dist/cargo/release/videoplugins-sound-volume` from this folder. Give VideoCraw the `apps` folder with `--plugins`.
+`plugin.json` starts `dist/cargo/release/metilplugins-sound-volume` from this folder. Give Metil the `apps` folder with `--plugins`.

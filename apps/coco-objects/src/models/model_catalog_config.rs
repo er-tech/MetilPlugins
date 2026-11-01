@@ -1,4 +1,4 @@
-use videoplugins_model_cache::ModelFile;
+use metilplugins_model_cache::ModelFile;
 
 /// A detector the plugin can use: the file (where to get it, how to check it) and the size of the
 /// square picture it looks at.

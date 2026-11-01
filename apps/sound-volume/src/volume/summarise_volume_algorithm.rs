@@ -2,7 +2,7 @@ use serde_json::{json, Value};
 
 use super::loudness_algorithm::{peak_db, rms_db};
 use super::volume_window_contract::{round_db, VolumeWindow};
-use videoplugins_sound_reader::Sound;
+use metilplugins_sound_reader::Sound;
 
 /// The sound in a few numbers: how loud it is overall, its loudest instant, and the loudest and
 /// quietest windows. `null` for the windows when there are none.

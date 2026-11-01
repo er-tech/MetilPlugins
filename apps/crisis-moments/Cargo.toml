@@ -1,5 +1,5 @@
 [package]
-name = "videoplugins-crisis-moments"
+name = "metilplugins-crisis-moments"
 version = "0.0.0"
 edition = "2021"
 publish = false
@@ -10,4 +10,4 @@ kind = "app"
 
 [dependencies]
 serde_json = "1"
-videoplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
+metilplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }

@@ -15,7 +15,7 @@ _LANGUAGE = re.compile(r"^[a-z]{2,3}(-[A-Za-z]{2,4})?$")
 
 
 def read_media(params: dict[str, Any]) -> tuple[Path | np.ndarray, int]:
-    """What to listen to, and where it starts in the source in milliseconds: the samples VideoCraw
+    """What to listen to, and where it starts in the source in milliseconds: the samples Metil
     decoded (a region, which may be a stretch of the source), or else the file `media` names, as a
     stored file or a video (an object with an absolute `file`) or a path in text, from 0. A file
     that is not there is a 404."""

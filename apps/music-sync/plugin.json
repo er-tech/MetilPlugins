@@ -6,7 +6,7 @@
   "protocol": 2,
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/videoplugins-music-sync"
+    "../../dist/cargo/release/metilplugins-music-sync"
   ],
   "timeoutSeconds": 600,
   "concurrency": 2,

@@ -1,5 +1,5 @@
 use serde_json::Value;
-use videoplugins_plugin_sdk::Failure;
+use metilplugins_plugin_sdk::Failure;
 
 use super::draw_waveform_use_case::draw_waveform;
 

@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use videoplugins_onnx_device::DeviceChoice;
-use videoplugins_plugin_sdk::{Cancel, Failure};
+use metilplugins_onnx_device::DeviceChoice;
+use metilplugins_plugin_sdk::{Cancel, Failure};
 
 use super::yamnet_store::{run_yamnet, CLASSES};
 
@@ -70,7 +70,7 @@ mod tests {
         let home = std::env::var("USERPROFILE")
             .or_else(|_| std::env::var("HOME"))
             .ok()?;
-        let file = PathBuf::from(home).join(".videocraw/models/sound-events/yamnet.onnx");
+        let file = PathBuf::from(home).join(".metil/models/sound-events/yamnet.onnx");
         file.is_file().then_some(file)
     }
 

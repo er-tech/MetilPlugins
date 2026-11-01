@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
-use videoplugins_model_cache::locate_model as locate_file;
-use videoplugins_plugin_sdk::{Cancel, Failure};
+use metilplugins_model_cache::locate_model as locate_file;
+use metilplugins_plugin_sdk::{Cancel, Failure};
 
 use super::model_catalog_config::ModelSpec;
 

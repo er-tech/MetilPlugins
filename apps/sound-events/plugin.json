@@ -6,7 +6,7 @@
   "protocol": 2,
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/videoplugins-sound-events"
+    "../../dist/cargo/release/metilplugins-sound-events"
   ],
   "timeoutSeconds": 1800,
   "stallSeconds": 120,
@@ -17,14 +17,14 @@
   },
   "permissions": {
     "env": [
-      "VIDEOCRAW_MODELS"
+      "METIL_MODELS"
     ],
     "network": [
       "huggingface.co",
       "us.aws.cdn.hf.co"
     ],
     "write": [
-      "~/.videocraw/models"
+      "~/.metil/models"
     ]
   },
   "actions": {
@@ -49,7 +49,7 @@
               "object",
               "string"
             ],
-            "description": "The video or sound: a stored file or a video as media.open gives it, or a path in text. VideoCraw decodes its sound to 16 kHz, one channel.",
+            "description": "The video or sound: a stored file or a video as media.open gives it, or a path in text. Metil decodes its sound to 16 kHz, one channel.",
             "x-ui": {
               "group": "everyday"
             }
@@ -1345,7 +1345,7 @@
       "failures": [
         {
           "code": 400,
-          "description": "A param is wrong, or media is missing or not sound VideoCraw decoded for the plugin."
+          "description": "A param is wrong, or media is missing or not sound Metil decoded for the plugin."
         },
         {
           "code": 404,

@@ -1,6 +1,6 @@
 use serde_json::{json, Value};
 
-use videoplugins_plugin_sdk::Failure;
+use metilplugins_plugin_sdk::Failure;
 
 /// Decides what a wrapped service's answer means. This is the plugin's job: the host never reads a
 /// result to find out whether it failed.

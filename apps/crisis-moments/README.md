@@ -1,6 +1,6 @@
 # crisis-moments
 
-Finds moments in a video that a person should look at: shouting, an alarm, a sudden loud sound, or words of alarm. A VideoCraw plugin written in Rust. It uses fixed rules on what other steps found. It has no model, needs no network and downloads nothing.
+Finds moments in a video that a person should look at: shouting, an alarm, a sudden loud sound, or words of alarm. A Metil plugin written in Rust. It uses fixed rules on what other steps found. It has no model, needs no network and downloads nothing.
 
 **What it is not.** It does not decide that a crisis happened, and it does not judge anyone. It makes a short list of "moments to review" and says why. It will flag moments that are fine (films, music, sport, a loud laugh) and miss some that are not. It is not a medical device or a safety system. Do not use it to decide anything about a person.
 
@@ -54,7 +54,7 @@ Give at least one of the three lists. A list that is given but empty is fine: it
 
 ## What it was tested on
 
-Unit tests with made-up lists for each rule, and one run through the VideoCraw core on a test video with a steady tone (no moments, as expected). It has not been measured on real recordings, so its error rates are not known. Measure it on your own material before you rely on it.
+Unit tests with made-up lists for each rule, and one run through the Metil core on a test video with a steady tone (no moments, as expected). It has not been measured on real recordings, so its error rates are not known. Measure it on your own material before you rely on it.
 
 ## Privacy
 
@@ -62,4 +62,4 @@ It reads the words people said and the sounds heard, but only as lists that earl
 
 ## Later (not built)
 
-An optional emotion input, a movement input, and an optional language-model check of the middle-confidence moments only. See VideoPlugins issue 10.
+An optional emotion input, a movement input, and an optional language-model check of the middle-confidence moments only. See MetilPlugins issue 10.

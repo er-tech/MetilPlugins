@@ -8,7 +8,7 @@
   "command": [
     "python",
     "-m",
-    "videoplugins_speech_to_text"
+    "metilplugins_speech_to_text"
   ],
   "timeoutSeconds": 3600,
   "concurrency": 1,

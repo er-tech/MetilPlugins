@@ -1,5 +1,5 @@
 use tokenizers::Tokenizer;
-use videoplugins_plugin_sdk::Failure;
+use metilplugins_plugin_sdk::Failure;
 
 use crate::matching::normalize;
 use crate::models::ModelPaths;

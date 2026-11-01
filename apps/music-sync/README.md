@@ -1,6 +1,6 @@
 # music-sync
 
-Finds where a music starts inside a video's sound, and how much faster or slower the video plays it. A VideoCraw plugin written in Rust, so it is one program with nothing to install.
+Finds where a music starts inside a video's sound, and how much faster or slower the video plays it. A Metil plugin written in Rust, so it is one program with nothing to install.
 
 The use it was made for: a video has its music in low quality, you have the same music in good quality. This plugin says how late the good copy has to start to line up with the video; `media.replaceAudio` (with its `offsetMs`, `speed` and `keep`) then makes a new video with the original pictures and the good music.
 
@@ -51,7 +51,7 @@ A video with no music of its name fails the step and says which (or is left out 
 `examples/replace-music.json` is the whole flow: put the videos in `videos/` and the good-quality musics in `music/`, each music named like its video (`song.mkv` and `song.flac`), and run it from that folder:
 
 ```
-videocraw run replace-music.json --out result.json --plugins <VideoPlugins>/apps
+metil run replace-music.json --out result.json --plugins <MetilPlugins>/apps
 ```
 
 The new videos are `<name>-better.mp4` next to `result.json`, and the result lists the offset, speed and score of each. In the editor, open the same file; the folders and filters are set in the two "List files" steps.
@@ -65,7 +65,7 @@ When `speed` is not 1 the two cannot both keep their speed. `media.replaceAudio`
 
 ## How it works
 
-Both sounds are decoded by VideoCraw to 8 kHz mono and compared with phase correlation (every frequency counts the same, only its timing matters), which survives a copy with a different tone, volume or noise.
+Both sounds are decoded by Metil to 8 kHz mono and compared with phase correlation (every frequency counts the same, only its timing matters), which survives a copy with a different tone, volume or noise.
 
 1. The best delay over the whole length, and a line through ten 10-second pieces of the music found in the video, which gives the speed when it is a little off 1.
 2. When no line confirms the speed (the video runs at another speed, so the whole-length match is smeared), speeds from 0.85 to 1.25 in steps of 0.001 are tried: five pieces of the music are stretched by each and looked for in the video at a quarter of the rate, and the speed where most pieces agree on the start wins.

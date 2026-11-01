@@ -1,4 +1,4 @@
-use videoplugins_onnx_device::DeviceChoice;
+use metilplugins_onnx_device::DeviceChoice;
 
 use crate::models::ModelSpec;
 

@@ -1,4 +1,4 @@
-use videoplugins_onnx_device::DeviceChoice;
+use metilplugins_onnx_device::DeviceChoice;
 
 /// What a call to `find` asked for, checked and with the defaults filled in.
 #[derive(Debug, Clone, PartialEq)]

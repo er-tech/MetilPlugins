@@ -1,6 +1,6 @@
 use serde_json::Value;
-use videoplugins_onnx_device::DeviceChoice;
-use videoplugins_plugin_sdk::{number, text, whole_number, Failure};
+use metilplugins_onnx_device::DeviceChoice;
+use metilplugins_plugin_sdk::{number, text, whole_number, Failure};
 
 use super::find_options_contract::FindOptions;
 

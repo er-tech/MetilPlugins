@@ -1,8 +1,8 @@
 use serde_json::{json, Value};
-use videoplugins_frame_reader::{read_video_region, PixelFormat, VideoRegion};
-use videoplugins_onnx_device::DeviceChoice;
-use videoplugins_plugin_sdk::{Cancel, Failure};
-use videoplugins_work_files::unique_work_file_name;
+use metilplugins_frame_reader::{read_video_region, PixelFormat, VideoRegion};
+use metilplugins_onnx_device::DeviceChoice;
+use metilplugins_plugin_sdk::{Cancel, Failure};
+use metilplugins_work_files::unique_work_file_name;
 
 use crate::encode::{ffmpeg_program, frame_rate, Encoder, EncoderSettings};
 use crate::models::{locate_model, ModelSpec, NETWORK_SCALE};
@@ -37,7 +37,7 @@ pub fn upscale_video(params: &Value, cancel: &Cancel) -> Result<Value, Failure> 
         .ok_or_else(|| {
             Failure::status(
                 400,
-                "media must be a video VideoCraw decoded for this plugin (it asks for pictures)",
+                "media must be a video Metil decoded for this plugin (it asks for pictures)",
             )
         })?;
     if video.format != PixelFormat::Rgb24 {
@@ -64,7 +64,7 @@ pub fn upscale_video(params: &Value, cancel: &Cancel) -> Result<Value, Failure> 
     let work_dir = cancel.work_dir().ok_or_else(|| {
         Failure::status(
             422,
-            "VideoCraw gave this plugin no folder to write the video in",
+            "Metil gave this plugin no folder to write the video in",
         )
     })?;
     let file = locate_model(options.model, cancel)?;
@@ -86,7 +86,7 @@ pub fn upscale_video(params: &Value, cancel: &Cancel) -> Result<Value, Failure> 
         out_height: target_height,
         frame_rate: frame_rate(video.frames.len(), video.start_ms, video.end_ms),
     };
-    let program = ffmpeg_program(std::env::var_os("VIDEOCRAW_FFMPEG"));
+    let program = ffmpeg_program(std::env::var_os("METIL_FFMPEG"));
     let mut encoder = Encoder::start(&program, &settings, &output)?;
     let fed = feed_pictures(
         &video,

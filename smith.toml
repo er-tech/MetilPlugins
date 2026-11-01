@@ -4,9 +4,9 @@
 schema = 1
 
 [workspace]
-name = "videoplugins"
+name = "metilplugins"
 # npm scope for Node packages
-scope = "@videoplugins"
+scope = "@metilplugins"
 # Go module path prefix for Go projects
 module_prefix = "github.com/er-tech/MetilPlugins"
 
@@ -56,13 +56,13 @@ node = "node-jest"     # ESLint with @monosmith/eslint-config, and Jest
 # [projects.web.tasks.build]
 # depends_on = ["^build", "codegen"]
 
-# Each plugin releases on main as a .vcw package per platform (a Python one is a single "any" package).
-# vcw is private: the pipeline checks VideoCraw out beside this repository (secret METIL_TOKEN) and the build makes vcw from it.
+# Each plugin releases on main as a .mtp package per platform (a Python one is a single "any" package).
+# metil-plugin is private: the pipeline checks Metil out beside this repository (secret METIL_TOKEN) and the build makes metil-plugin from it.
 [[ci.sibling_repos]]
 repo = "er-tech/Metil"
 ref = "main"
-env = "VIDEOCRAW"
-pre_build = "cargo build --release -p videocraw-vcw"
+env = "METIL"
+pre_build = "cargo build --release -p metil-plugin"
 token_secret = "METIL_TOKEN"
 
 [release]
@@ -70,55 +70,55 @@ github_releases = true
 
 [projects.coco-objects.release]
 build = "sh tools/pack-plugin.sh coco-objects"
-assets = ["out/coco-objects-*.vcw"]
+assets = ["out/coco-objects-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
 [projects.video-upscale.release]
 build = "sh tools/pack-plugin.sh video-upscale"
-assets = ["out/video-upscale-*.vcw"]
+assets = ["out/video-upscale-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
 [projects.music-sync.release]
 build = "sh tools/pack-plugin.sh music-sync"
-assets = ["out/music-sync-*.vcw"]
+assets = ["out/music-sync-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
 [projects.sound-clean.release]
 build = "sh tools/pack-plugin.sh sound-clean"
-assets = ["out/sound-clean-*.vcw"]
+assets = ["out/sound-clean-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
 [projects.sound-events.release]
 build = "sh tools/pack-plugin.sh sound-events"
-assets = ["out/sound-events-*.vcw"]
+assets = ["out/sound-events-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
 [projects.sound-graph.release]
 build = "sh tools/pack-plugin.sh sound-graph"
-assets = ["out/sound-graph-*.vcw"]
+assets = ["out/sound-graph-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
 [projects.sound-volume.release]
 build = "sh tools/pack-plugin.sh sound-volume"
-assets = ["out/sound-volume-*.vcw"]
+assets = ["out/sound-volume-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
 [projects.thumbnail.release]
 build = "sh tools/pack-plugin.sh thumbnail"
-assets = ["out/thumbnail-*.vcw"]
+assets = ["out/thumbnail-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
 [projects.visual-phrases.release]
 build = "sh tools/pack-plugin.sh visual-phrases"
-assets = ["out/visual-phrases-*.vcw"]
+assets = ["out/visual-phrases-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
 [projects.voice-extractor.release]
 build = "sh tools/pack-plugin.sh voice-extractor"
-assets = ["out/voice-extractor-*.vcw"]
+assets = ["out/voice-extractor-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
 
 [projects.speech-to-text.release]
 build = "sh tools/pack-plugin.sh speech-to-text python"
-assets = ["out/speech-to-text-*.vcw"]
+assets = ["out/speech-to-text-*.mtp"]
 platforms = ["linux-x64"]

@@ -1,4 +1,4 @@
-"""Reads the sound VideoCraw decoded for this plugin."""
+"""Reads the sound Metil decoded for this plugin."""
 
 import os
 from dataclasses import dataclass
@@ -23,7 +23,7 @@ class AudioRegion:
 def read_audio_region(value: Any) -> AudioRegion | None:
     """The samples a region describes, or `None` when `value` is not a region (a path or a file).
 
-    A region is what VideoCraw hands over for an input the manifest lists under `wants`: raw
+    A region is what Metil hands over for an input the manifest lists under `wants`: raw
     little-endian 32-bit float samples in a file the core decoded once, described by `file`,
     `format`, `sampleRate`, `channels`, `sampleCount`, `startMs` and `offsetBytes`. The file is
     mapped read-only (the operating system shares its pages with every process that reads it) and

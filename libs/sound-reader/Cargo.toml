@@ -1,5 +1,5 @@
 [package]
-name = "videoplugins-sound-reader"
+name = "metilplugins-sound-reader"
 version = "0.0.0"
 edition = "2021"
 publish = false

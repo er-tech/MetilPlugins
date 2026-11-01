@@ -32,7 +32,7 @@ mod tests {
         let home = std::env::var("USERPROFILE")
             .or_else(|_| std::env::var("HOME"))
             .ok()?;
-        let file = PathBuf::from(home).join(".videocraw/models/visual-phrases/tokenizer.json");
+        let file = PathBuf::from(home).join(".metil/models/visual-phrases/tokenizer.json");
         Tokenizer::from_file(file).ok()
     }
 
