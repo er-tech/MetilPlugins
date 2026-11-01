@@ -119,10 +119,10 @@ jobs:
             os: windows-latest
           - platform: macos-arm64
             os: macos-latest
-          - platform: macos-x64
-            os: macos-15-intel
           - platform: linux-x64
             os: ubuntu-latest
+          - platform: macos-x64
+            os: macos-15-intel
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
