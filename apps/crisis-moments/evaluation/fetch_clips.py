@@ -18,24 +18,22 @@ from pathlib import Path
 HERE = Path(__file__).parent
 
 #: One clip for each case: the name, what to search for, and whether a person should look at it.
+#: Sounds of danger that are not a person (an alarm, a siren, gunshots, an explosion) are not what the
+#: plugin looks for, so they are clips it must leave alone.
 CASES = [
-    ("alarm", "fire alarm sound effect", True),
-    ("siren", "ambulance siren sound", True),
     ("scream", "woman screaming sound effect", True),
-    ("crying", "baby crying", True),
-    ("gunshot", "gunshot sound effect", True),
-    ("explosion", "explosion sound effect", True),
-    ("help-words", "short film actor shouting help emergency", True),
-    ("talk", "interview speaking calmly", False),
-    ("piano", "piano classical music", False),
-    ("rock", "rock band live music", False),
-    ("applause", "crowd applause cheering", False),
-    ("laughter", "laughing laughter", False),
-    ("rain", "rain forest ambience", False),
-    ("guitar", "acoustic guitar playing", False),
+    ("crying", "crying sound effect", True),
+    ("sobbing", "woman sobbing sound effect", True),
+    ("heartbeat", "dramatic heartbeat sound effect", False),
+    ("punch", "punch hit sound effect", True),
+    ("argument", "angry shouting argument", True),
+    ("alarm", "fire alarm sound effect", False),
+    ("siren", "ambulance siren sound", False),
+    ("gunshot", "gunshot sound effect", False),
+    ("explosion", "explosion sound effect", False),
     ("stadium", "football stadium crowd", False),
-    ("ocean", "ocean waves sound", False),
-    ("lecture", "lecture presentation talk", False),
+    ("rock", "rock band live music", False),
+    ("laughter", "laughing laughter", False),
 ]
 
 #: Clips from Wikimedia Commons (free licences), cut to their first 60 seconds: the name, the file
@@ -58,20 +56,22 @@ def fetch(case: tuple[str, str, bool], folder: Path) -> dict | None:
             "yt-dlp", "--ignore-errors", "--no-warnings", "--max-downloads", "1",
             "--match-filter", "license*=Creative Commons & duration<=90",
             "-f", "bestaudio", "-o", str(target),
-            "--print", "after_move:%(id)s|%(duration)s|%(license)s|%(uploader)s|%(title)s|%(filepath)s",
+            "--print", "after_move:%(.{id,duration,license,uploader,title,filepath})j",
             f"ytsearch40:{term}",
         ],
         capture_output=True, text=True, timeout=900, check=False,
     )
     for line in done.stdout.splitlines():
-        parts = line.split("|")
-        if len(parts) == 6 and len(parts[0]) == 11:
-            video, duration, licence, uploader, title, path = parts
+        try:
+            found = json.loads(line)
+        except ValueError:
+            continue
+        if len(found.get("id", "")) == 11:
             return {
                 "name": name, "search": term, "shouldFlag": flag,
-                "url": f"https://www.youtube.com/watch?v={video}", "title": title,
-                "uploader": uploader, "licence": licence, "seconds": float(duration),
-                "file": Path(path).name,
+                "url": f"https://www.youtube.com/watch?v={found['id']}", "title": found["title"],
+                "uploader": found["uploader"], "licence": found["license"],
+                "seconds": float(found["duration"]), "file": Path(found["filepath"]).name,
             }
     return None
 
@@ -105,11 +105,27 @@ def fetch_commons(case: tuple[str, str, bool], folder: Path) -> dict | None:
     }
 
 
+def restore(clip: dict, folder: Path) -> None:
+    """Downloads again a clip of the lock file whose file is not in `folder` (by its address)."""
+    if (folder / clip["file"]).exists():
+        return
+    if clip["url"].startswith("https://www.youtube.com/"):
+        target = folder / f"{clip['name']}.%(ext)s"
+        subprocess.run(
+            ["yt-dlp", "--ignore-errors", "--no-warnings", "-f", "bestaudio", "-o", str(target), clip["url"]],
+            capture_output=True, text=True, timeout=600, check=False,
+        )
+    elif clip["url"].startswith("https://commons.wikimedia.org/"):
+        fetch_commons((clip["name"], clip["title"], clip["shouldFlag"]), folder)
+
+
 def main() -> None:
     folder = Path(sys.argv[1])
     folder.mkdir(parents=True, exist_ok=True)
     lock = HERE / "clips.lock.json"
     kept = {clip["name"]: clip for clip in json.loads(lock.read_text(encoding="utf-8"))} if lock.exists() else {}
+    for clip in list(kept.values()):
+        restore(clip, folder)
     with ThreadPoolExecutor(max_workers=5) as pool:
         fetched = list(pool.map(lambda case: fetch(case, folder), [c for c in CASES if c[0] not in kept]))
         free = list(pool.map(lambda case: fetch_commons(case, folder), [c for c in COMMONS if c[0] not in kept]))

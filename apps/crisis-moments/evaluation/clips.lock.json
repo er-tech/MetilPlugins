@@ -2,7 +2,7 @@
   {
     "name": "alarm",
     "search": "fire alarm sound effect",
-    "shouldFlag": true,
+    "shouldFlag": false,
     "url": "https://www.youtube.com/watch?v=UbG6GaDU_m8",
     "title": "Pool Alarm EHSC",
     "uploader": "Jordi Costa Torregrosa",
@@ -13,7 +13,7 @@
   {
     "name": "siren",
     "search": "ambulance siren sound",
-    "shouldFlag": true,
+    "shouldFlag": false,
     "url": "https://www.youtube.com/watch?v=g8bdycR6YnI",
     "title": "Ambulance Running on Road, Free to Use this Video",
     "uploader": "Free Video Library",
@@ -35,7 +35,7 @@
   {
     "name": "gunshot",
     "search": "gunshot sound effect",
-    "shouldFlag": true,
+    "shouldFlag": false,
     "url": "https://www.youtube.com/watch?v=M8rO9xay4hs",
     "title": "Top 10 Pistol Gun Shot Sound Effects [Super HQ]",
     "uploader": "Isolation Music",
@@ -46,7 +46,7 @@
   {
     "name": "explosion",
     "search": "explosion sound effect",
-    "shouldFlag": true,
+    "shouldFlag": false,
     "url": "https://www.youtube.com/watch?v=HTXiJpCDiH4",
     "title": "Big Explosion Sound Effect",
     "uploader": "Lightning Editor",
@@ -121,17 +121,6 @@
     "file": "thunder.wav"
   },
   {
-    "name": "spoken-alarm",
-    "search": "Help! Somebody call the police! There is a fire and he is bleeding!",
-    "shouldFlag": true,
-    "url": "made by make_speech_clips.py",
-    "title": "Help! Somebody call the police! There is a fire and he is bleeding!",
-    "uploader": "synthetic voice of Windows (default)",
-    "licence": "none (synthetic speech)",
-    "seconds": 8.0,
-    "file": "spoken-alarm.wav"
-  },
-  {
     "name": "spoken-chore",
     "search": "Can you help me carry the groceries to the car? Thank you very much.",
     "shouldFlag": false,
@@ -155,10 +144,10 @@
   },
   {
     "name": "falado-socorro",
-    "search": "Socorro! Chamem a pol\u00edcia! Tem um inc\u00eandio e ele est\u00e1 sangrando!",
+    "search": "Socorro! N\u00e3o consigo respirar! Estou com medo!",
     "shouldFlag": true,
     "url": "made by make_speech_clips.py",
-    "title": "Socorro! Chamem a pol\u00edcia! Tem um inc\u00eandio e ele est\u00e1 sangrando!",
+    "title": "Socorro! N\u00e3o consigo respirar! Estou com medo!",
     "uploader": "synthetic voice of Windows (Microsoft Maria Desktop)",
     "licence": "none (synthetic speech)",
     "seconds": 8.0,
@@ -185,5 +174,104 @@
     "licence": "none (synthetic speech)",
     "seconds": 8.0,
     "file": "falado-tempo.wav"
+  },
+  {
+    "name": "heartbeat",
+    "search": "heavy breathing panic sound effect (the first Creative Commons result is a heartbeat, used as a clip to leave alone)",
+    "shouldFlag": false,
+    "url": "https://www.youtube.com/watch?v=9zw6eZEBp30",
+    "title": "Dramatic Heartbeat Sound Effect",
+    "uploader": "SOUNFFECTX",
+    "licence": "Creative Commons Attribution license (reuse allowed)",
+    "seconds": 23.0,
+    "file": "heartbeat.webm"
+  },
+  {
+    "name": "spoken-distress",
+    "search": "Help! I can't breathe! I'm going to die!",
+    "shouldFlag": true,
+    "url": "made by make_speech_clips.py",
+    "title": "Help! I can't breathe! I'm going to die!",
+    "uploader": "synthetic voice of Windows (default)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "spoken-distress.wav"
+  },
+  {
+    "name": "spoken-self-harm",
+    "search": "I can't go on. I just want to die.",
+    "shouldFlag": true,
+    "url": "made by make_speech_clips.py",
+    "title": "I can't go on. I just want to die.",
+    "uploader": "synthetic voice of Windows (default)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "spoken-self-harm.wav"
+  },
+  {
+    "name": "spoken-aggression",
+    "search": "Shut up! I'll kill you! Get out of here!",
+    "shouldFlag": true,
+    "url": "made by make_speech_clips.py",
+    "title": "Shut up! I'll kill you! Get out of here!",
+    "uploader": "synthetic voice of Windows (default)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "spoken-aggression.wav"
+  },
+  {
+    "name": "spoken-fire-call",
+    "search": "Hello, I want to report a small fire in the kitchen. The firefighters are on the way.",
+    "shouldFlag": false,
+    "url": "made by make_speech_clips.py",
+    "title": "Hello, I want to report a small fire in the kitchen. The firefighters are on the way.",
+    "uploader": "synthetic voice of Windows (default)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "spoken-fire-call.wav"
+  },
+  {
+    "name": "falado-ameaca",
+    "search": "Cala a boca! Eu vou te matar! Sai daqui!",
+    "shouldFlag": true,
+    "url": "made by make_speech_clips.py",
+    "title": "Cala a boca! Eu vou te matar! Sai daqui!",
+    "uploader": "synthetic voice of Windows (Microsoft Maria Desktop)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "falado-ameaca.wav"
+  },
+  {
+    "name": "crying",
+    "search": "crying sound effect",
+    "shouldFlag": true,
+    "url": "https://www.youtube.com/watch?v=-k0Vdzc_fo8",
+    "title": "Scary Sound | Tiyanak | Baby Crying in a Dark Corridor | Nakakatakot",
+    "uploader": "The Sound Source",
+    "licence": "Creative Commons Attribution license (reuse allowed)",
+    "seconds": 11.0,
+    "file": "crying.webm"
+  },
+  {
+    "name": "sobbing",
+    "search": "woman sobbing sound effect",
+    "shouldFlag": true,
+    "url": "https://www.youtube.com/watch?v=W1on9vEA37U",
+    "title": "Woman Crying Sound | Realistic Crying SFX",
+    "uploader": "Free Sounds Library",
+    "licence": "Creative Commons Attribution license (reuse allowed)",
+    "seconds": 16.0,
+    "file": "sobbing.webm"
+  },
+  {
+    "name": "punch",
+    "search": "punch hit sound effect",
+    "shouldFlag": true,
+    "url": "https://www.youtube.com/watch?v=ctcNX1LwDjY",
+    "title": "Hard Hit Sound Effect | Powerful Impact Punch and Smash Sounds",
+    "uploader": "Free Sounds Library",
+    "licence": "Creative Commons Attribution license (reuse allowed)",
+    "seconds": 5.0,
+    "file": "punch.webm"
   }
 ]

@@ -6,6 +6,7 @@ as a "flag". A clip a person should look at (`shouldFlag`) that gets a flag is a
 none is a miss; a clip a person should not look at that gets a flag is a false alarm.
 
 Usage: python evaluate.py <folder with the clips> <metil program> <languages, like en,pt,es,fr,de>
+[settings of crisis-moments.find as JSON, like '{"threshold": 0.4}']
 Needs FFmpeg, the plugins built (cargo build --release for the three Rust ones), and a Python with
 faster-whisper first on PATH for speech-to-text.
 """
@@ -34,10 +35,13 @@ def make_video(source: Path, target: Path) -> None:
     )
 
 
-def run_flow(metil: str, video: Path, languages: list[str], work: Path) -> list[dict]:
+def run_flow(
+    metil: str, video: Path, languages: list[str], settings: dict, work: Path
+) -> list[dict]:
     """The moments the flow finds in `video`; an empty list when it finds none."""
     flow = json.loads(FLOW.read_text(encoding="utf-8"))
     flow["actions"]["Moments"]["inputs"]["languages"] = languages
+    flow["actions"]["Moments"]["inputs"].update(settings)
     flow["triggers"]["t"]["inputs"]["start"] = [{"path": str(video)}]
     flow_file = work / "flow.mtf"
     flow_file.write_text(json.dumps(flow), encoding="utf-8")
@@ -55,6 +59,7 @@ def run_flow(metil: str, video: Path, languages: list[str], work: Path) -> list[
 def main() -> None:
     folder, metil = Path(sys.argv[1]), sys.argv[2]
     languages = sys.argv[3].split(",") if len(sys.argv) > 3 else ["en"]
+    settings = json.loads(sys.argv[4]) if len(sys.argv) > 4 else {}
     clips = json.loads((HERE / "clips.lock.json").read_text(encoding="utf-8"))
     rows = []
     with tempfile.TemporaryDirectory() as temporary:
@@ -65,7 +70,7 @@ def main() -> None:
                 continue
             video = work / f"{clip['name']}.mp4"
             make_video(source, video)
-            moments = run_flow(metil, video, languages, work)
+            moments = run_flow(metil, video, languages, settings, work)
             rows.append((clip, moments))
             labels = ", ".join(f"{m['label']} {m['confidence']:.2f}" for m in moments) or "none"
             print(f"{clip['name']:16} should flag: {str(clip['shouldFlag']):5}  found: {labels}", flush=True)

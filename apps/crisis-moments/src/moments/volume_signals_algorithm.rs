@@ -1,8 +1,9 @@
 use super::signal_contract::{Signal, Source};
 use super::timed_item_contract::TimedItem;
 
-/// The reason written for a window that is much louder than the rest.
-const REASON: &str = "sudden loud sound";
+/// The reason written for a window that is much louder than the rest. It never names a moment:
+/// loudness only supports hints from words and sounds.
+const REASON: &str = "loud sound";
 
 /// The middle of the values. For an even count it is the mean of the two in the middle.
 fn median(values: &[f64]) -> f64 {
