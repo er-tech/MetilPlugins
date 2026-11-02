@@ -1,0 +1,189 @@
+[
+  {
+    "name": "alarm",
+    "search": "fire alarm sound effect",
+    "shouldFlag": true,
+    "url": "https://www.youtube.com/watch?v=UbG6GaDU_m8",
+    "title": "Pool Alarm EHSC",
+    "uploader": "Jordi Costa Torregrosa",
+    "licence": "Creative Commons Attribution license (reuse allowed)",
+    "seconds": 65.0,
+    "file": "alarm.webm"
+  },
+  {
+    "name": "siren",
+    "search": "ambulance siren sound",
+    "shouldFlag": true,
+    "url": "https://www.youtube.com/watch?v=g8bdycR6YnI",
+    "title": "Ambulance Running on Road, Free to Use this Video",
+    "uploader": "Free Video Library",
+    "licence": "Creative Commons Attribution license (reuse allowed)",
+    "seconds": 12.0,
+    "file": "siren.webm"
+  },
+  {
+    "name": "scream",
+    "search": "woman screaming sound effect",
+    "shouldFlag": true,
+    "url": "https://www.youtube.com/watch?v=8sXNXpdQaew",
+    "title": "Free No Copyright Female Girl Screaming sound effect fx",
+    "uploader": "Free Copyright Free Sounds - For Video Contents",
+    "licence": "Creative Commons Attribution license (reuse allowed)",
+    "seconds": 4.0,
+    "file": "scream.webm"
+  },
+  {
+    "name": "gunshot",
+    "search": "gunshot sound effect",
+    "shouldFlag": true,
+    "url": "https://www.youtube.com/watch?v=M8rO9xay4hs",
+    "title": "Top 10 Pistol Gun Shot Sound Effects [Super HQ]",
+    "uploader": "Isolation Music",
+    "licence": "Creative Commons Attribution license (reuse allowed)",
+    "seconds": 77.0,
+    "file": "gunshot.webm"
+  },
+  {
+    "name": "explosion",
+    "search": "explosion sound effect",
+    "shouldFlag": true,
+    "url": "https://www.youtube.com/watch?v=HTXiJpCDiH4",
+    "title": "Big Explosion Sound Effect",
+    "uploader": "Lightning Editor",
+    "licence": "Creative Commons Attribution license (reuse allowed)",
+    "seconds": 8.0,
+    "file": "explosion.webm"
+  },
+  {
+    "name": "stadium",
+    "search": "football stadium crowd",
+    "shouldFlag": false,
+    "url": "https://www.youtube.com/watch?v=zrMv0_YC7XQ",
+    "title": "14.06.2024, EURO 2024 Germany   Scotland 5-1  Freed from Desire at EURO2024",
+    "uploader": "MrSport.ro",
+    "licence": "Creative Commons Attribution license (reuse allowed)",
+    "seconds": 40.0,
+    "file": "stadium.webm"
+  },
+  {
+    "name": "piano-1920s",
+    "search": "File:\"It all depends on you\" by Franklyn Baur and Jesse Crawford.wav",
+    "shouldFlag": false,
+    "url": "https://commons.wikimedia.org/wiki/File%3A%22It_all_depends_on_you%22_by_Franklyn_Baur_and_Jesse_Crawford.wav",
+    "title": "File:\"It all depends on you\" by Franklyn Baur and Jesse Crawford.wav",
+    "uploader": "B. G. De Sylva, Lew Brown and Ray Henderson",
+    "licence": "Public domain",
+    "seconds": 60.0,
+    "file": "piano-1920s.wav"
+  },
+  {
+    "name": "spoken-article",
+    "search": "File:En-Butterfly(Loona song)-article.ogg",
+    "shouldFlag": false,
+    "url": "https://commons.wikimedia.org/wiki/File%3AEn-Butterfly%28Loona_song%29-article.ogg",
+    "title": "File:En-Butterfly(Loona song)-article.ogg",
+    "uploader": "Speaker: -dangiome\n\nAuthors of the article",
+    "licence": "CC BY-SA 4.0",
+    "seconds": 60.0,
+    "file": "spoken-article.ogg"
+  },
+  {
+    "name": "brass-band",
+    "search": "File:March Grandioso - Concert Band - United States Air Force Band of the Rockies.mp3",
+    "shouldFlag": false,
+    "url": "https://commons.wikimedia.org/wiki/File%3AMarch_Grandioso_-_Concert_Band_-_United_States_Air_Force_Band_of_the_Rockies.mp3",
+    "title": "File:March Grandioso - Concert Band - United States Air Force Band of the Rockies.mp3",
+    "uploader": "Composition: Roland F. Seitz; Performance: United States Air",
+    "licence": "Public domain",
+    "seconds": 60.0,
+    "file": "brass-band.mp3"
+  },
+  {
+    "name": "applause",
+    "search": "File:277021 sandermotions applause-2.wav",
+    "shouldFlag": false,
+    "url": "https://commons.wikimedia.org/wiki/File%3A277021_sandermotions_applause-2.wav",
+    "title": "File:277021 sandermotions applause-2.wav",
+    "uploader": "Sandermotions",
+    "licence": "CC0",
+    "seconds": 60.0,
+    "file": "applause.wav"
+  },
+  {
+    "name": "thunder",
+    "search": "File:Thunder.wav",
+    "shouldFlag": false,
+    "url": "https://commons.wikimedia.org/wiki/File%3AThunder.wav",
+    "title": "File:Thunder.wav",
+    "uploader": "Subhashish Panigrahi",
+    "licence": "CC BY-SA 4.0",
+    "seconds": 60.0,
+    "file": "thunder.wav"
+  },
+  {
+    "name": "spoken-alarm",
+    "search": "Help! Somebody call the police! There is a fire and he is bleeding!",
+    "shouldFlag": true,
+    "url": "made by make_speech_clips.py",
+    "title": "Help! Somebody call the police! There is a fire and he is bleeding!",
+    "uploader": "synthetic voice of Windows (default)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "spoken-alarm.wav"
+  },
+  {
+    "name": "spoken-chore",
+    "search": "Can you help me carry the groceries to the car? Thank you very much.",
+    "shouldFlag": false,
+    "url": "made by make_speech_clips.py",
+    "title": "Can you help me carry the groceries to the car? Thank you very much.",
+    "uploader": "synthetic voice of Windows (default)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "spoken-chore.wav"
+  },
+  {
+    "name": "spoken-weather",
+    "search": "Tomorrow the weather will be sunny with a light wind from the west.",
+    "shouldFlag": false,
+    "url": "made by make_speech_clips.py",
+    "title": "Tomorrow the weather will be sunny with a light wind from the west.",
+    "uploader": "synthetic voice of Windows (default)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "spoken-weather.wav"
+  },
+  {
+    "name": "falado-socorro",
+    "search": "Socorro! Chamem a pol\u00edcia! Tem um inc\u00eandio e ele est\u00e1 sangrando!",
+    "shouldFlag": true,
+    "url": "made by make_speech_clips.py",
+    "title": "Socorro! Chamem a pol\u00edcia! Tem um inc\u00eandio e ele est\u00e1 sangrando!",
+    "uploader": "synthetic voice of Windows (Microsoft Maria Desktop)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "falado-socorro.wav"
+  },
+  {
+    "name": "falado-compras",
+    "search": "Voc\u00ea pode me ajudar a carregar as compras at\u00e9 o carro? Muito obrigado.",
+    "shouldFlag": false,
+    "url": "made by make_speech_clips.py",
+    "title": "Voc\u00ea pode me ajudar a carregar as compras at\u00e9 o carro? Muito obrigado.",
+    "uploader": "synthetic voice of Windows (Microsoft Maria Desktop)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "falado-compras.wav"
+  },
+  {
+    "name": "falado-tempo",
+    "search": "Amanh\u00e3 o tempo ser\u00e1 ensolarado, com um vento leve vindo do oeste.",
+    "shouldFlag": false,
+    "url": "made by make_speech_clips.py",
+    "title": "Amanh\u00e3 o tempo ser\u00e1 ensolarado, com um vento leve vindo do oeste.",
+    "uploader": "synthetic voice of Windows (Microsoft Maria Desktop)",
+    "licence": "none (synthetic speech)",
+    "seconds": 8.0,
+    "file": "falado-tempo.wav"
+  }
+]

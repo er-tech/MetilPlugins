@@ -2,6 +2,7 @@
 
 mod find_moments_use_case;
 mod find_options_contract;
+mod keyword_lists_config;
 mod read_find_options_mapper;
 mod read_timed_list_mapper;
 mod run_method_use_case;

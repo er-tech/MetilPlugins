@@ -1,5 +1,5 @@
-use serde_json::{json, Value};
 use metilplugins_plugin_sdk::Failure;
+use serde_json::{json, Value};
 
 use super::read_find_options_mapper::read_find_options;
 use super::read_timed_list_mapper::{read_timed_list, Needs};
@@ -106,22 +106,41 @@ mod tests {
     }
 
     #[test]
-    fn one_keyword_alone_passes_the_default_threshold_but_not_a_stricter_one() {
-        let params =
-            json!({ "text": [{ "startMs": 0, "endMs": 1_000, "text": "call the police" }] });
-        assert_eq!(find_moments(&params).unwrap()["count"], 1);
-        let mut strict = params.clone();
+    fn one_keyword_alone_stays_under_the_default_threshold_and_two_pass_it() {
+        // One word such as "help" is often only a word ("can you help me carry this"): it needs
+        // another input, or a lower threshold, to count.
+        let one = json!({ "text": [{ "startMs": 0, "endMs": 1_000, "text": "call the police" }] });
+        assert_eq!(find_moments(&one).unwrap()["count"], 0);
+        let mut lenient = one.clone();
+        lenient["threshold"] = json!(0.4);
+        assert_eq!(find_moments(&lenient).unwrap()["count"], 1);
+
+        let two =
+            json!({ "text": [{ "startMs": 0, "endMs": 1_000, "text": "Help, call the police" }] });
+        assert_eq!(find_moments(&two).unwrap()["count"], 1);
+        let mut strict = two.clone();
         strict["threshold"] = json!(0.7);
         assert_eq!(find_moments(&strict).unwrap()["count"], 0);
     }
 
     #[test]
+    fn one_keyword_and_a_sound_that_agrees_pass_the_default_threshold() {
+        let params = json!({
+            "text": [{ "startMs": 0, "endMs": 2_000, "text": "Help!" }],
+            "labels": [{ "startMs": 500, "endMs": 1_500, "label": "Screaming", "confidence": 0.8 }],
+        });
+        assert_eq!(find_moments(&params).unwrap()["count"], 1);
+    }
+
+    #[test]
     fn the_evidence_says_what_was_seen() {
-        let params = json!({ "text": [{ "startMs": 0, "endMs": 1_000, "text": "Help!" }] });
+        let params = json!({
+            "text": [{ "startMs": 0, "endMs": 1_000, "text": "Help, call the police!" }]
+        });
         let result = find_moments(&params).unwrap();
         assert_eq!(
             result["moments"][0]["evidence"][0]["detail"],
-            "said \"help\""
+            "said \"help\", \"police\""
         );
     }
 }
