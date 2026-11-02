@@ -4,6 +4,7 @@
   "title": "Moments to review",
   "description": "Finds moments in a video that a person should look at, such as shouting, an alarm, a sudden loud sound or words of alarm. It uses fixed rules on what other steps found. It never decides that something happened.",
   "protocol": 2,
+  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64"],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-crisis-moments"
