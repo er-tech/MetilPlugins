@@ -1,5 +1,6 @@
 //! The actions of the plugin: reading their params and giving their results.
 
+mod make_sheet_use_case;
 mod pick_thumbnails_use_case;
 mod run_method_use_case;
 

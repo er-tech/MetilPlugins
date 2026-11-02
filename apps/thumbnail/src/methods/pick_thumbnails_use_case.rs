@@ -1,6 +1,6 @@
-use serde_json::{json, Value};
 use metilplugins_frame_reader::{read_video_region, PixelFormat};
 use metilplugins_plugin_sdk::{whole_number, Cancel, Failure};
+use serde_json::{json, Value};
 
 use crate::pick::{choose_picks, score_picture, Candidate};
 

@@ -20,6 +20,23 @@ It gives `{ picks, candidates, durationMs }`. `picks` is `[{ timeMs, score, shar
                           "inputs": { "from": "@body('Open')", "atMs": "@item().timeMs", "width": 640 } } } } }
 ```
 
+## `sheet`
+
+One picture that shows the video as a grid of small pictures from along it, spread from the start to the end: a contact sheet, to see a video at a glance.
+
+| Input | |
+|---|---|
+| `media` | the video: a video as `media.open` gives it, a stored file, or a path in text |
+| `columns` | how many pictures in a row, 1 to 12 (default 4) |
+| `count` | how many pictures, 1 to 100 (default 12), spread evenly from the first to the last |
+
+Metil decodes a colour picture of the video every five seconds (240 pixels wide), so a short video gives fewer pictures than `count`. It gives `{ sheet, columns, rows, pictureWidth, pictureHeight, pictures, durationMs }`: `sheet` is the stored PNG, and `pictures` is `[{ timeMs }]` in the order they are on the sheet, row by row, so a flow can say what is where. The sheet has no text on it.
+
+```json
+{ "Sheet": { "type": "thumbnail.sheet", "runAfter": { "Open": ["Succeeded"] },
+             "inputs": { "media": "@body('Open')", "columns": 4, "count": 12 } } }
+```
+
 ## How a picture is scored
 
 - **Sharpness** is the variance of the Laplacian (each pixel against its four neighbours): a picture with edges and texture has a large one, a blur, a fade or a flat colour a small one.
