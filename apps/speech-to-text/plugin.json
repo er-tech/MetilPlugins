@@ -267,6 +267,110 @@
           "description": "The call was cancelled."
         }
       ]
+    },
+    "detectLanguage": {
+      "description": "Says which language is spoken in a video or a sound, from its first seconds, with how sure it is and the next most likely languages. Use it before transcribe when the language is not known, or to sort videos by language.",
+      "title": "Detect the language",
+      "category": "find",
+      "icon": "audio",
+      "wants": {
+        "media": {
+          "media": "audio",
+          "sampleRate": 16000,
+          "channels": 1
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video or sound",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video or sound: an object with an absolute file path (a stored file, or a video as media.open gives it) or a path in text.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "model": {
+            "title": "Model",
+            "type": "string",
+            "maxLength": 200,
+            "description": "The speech model: tiny, base, small, medium or large-v3, with .en for English only (default tiny). Downloaded once, on first use.",
+            "default": "tiny",
+            "x-ui": {
+              "group": "everyday",
+              "widget": "select"
+            }
+          }
+        },
+        "required": [
+          "media"
+        ]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "title": "Language",
+            "type": "string",
+            "description": "The code of the most likely language, such as en or pt."
+          },
+          "languageProbability": {
+            "title": "Certainty",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "How sure the model is of that language. A sound with no speech gives a low number."
+          },
+          "candidates": {
+            "title": "Most likely languages",
+            "type": "array",
+            "description": "Up to five languages, the most likely first.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "language": {
+                  "type": "string"
+                },
+                "probability": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          }
+        }
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong or media is missing."
+        },
+        {
+          "code": 404,
+          "description": "The file is not there."
+        },
+        {
+          "code": 422,
+          "description": "No speech could be read from the file (it is damaged or has no audio)."
+        },
+        {
+          "code": 503,
+          "description": "The model could not be loaded: usually no network the first time, or a name that is not a model."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
     }
   }
 }

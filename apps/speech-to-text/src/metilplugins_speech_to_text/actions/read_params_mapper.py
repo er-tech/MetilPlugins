@@ -38,15 +38,21 @@ def read_media(params: dict[str, Any]) -> tuple[Path | np.ndarray, int]:
     return path, 0
 
 
-def read_options(params: dict[str, Any]) -> TranscribeOptions:
-    """The options of the action; what is not given has the default of `TranscribeOptions`."""
-    defaults = TranscribeOptions()
-
-    model = params.get("model", defaults.model)
+def read_model(params: dict[str, Any], default: str) -> str:
+    """The `model` param: the name of a speech model, or `default` when it is not given."""
+    model = params.get("model", default)
     if not isinstance(model, str) or not _MODEL.match(model):
         raise Failure.status(
             400, f"model must be the name of a model such as tiny or base.en, not {model!r}"
         )
+    return model
+
+
+def read_options(params: dict[str, Any]) -> TranscribeOptions:
+    """The options of the action; what is not given has the default of `TranscribeOptions`."""
+    defaults = TranscribeOptions()
+
+    model = read_model(params, defaults.model)
 
     language = params.get("language", defaults.language)
     if language is not None and not (isinstance(language, str) and _LANGUAGE.match(language)):
