@@ -4,7 +4,7 @@ Plugins for [Metil](https://github.com/er-tech/Metil), the tool that extracts da
 
 Metil's core does very little itself (it reads recipes, opens a video, extracts audio and keeps the results). Everything that finds something in the media is a plugin: a separate program that Metil starts when a recipe calls it. A plugin can be written in any language. This repository holds the plugins that are developed alongside Metil, and the documentation of how to write one.
 
-This repository is in early development. Work happens on the `dev` branch; `main` waits for a first release.
+Work happens on the `dev` branch; `main` holds what was released (each plugin has its own releases with a `.mtp` package for every platform it runs on). To add a plugin or change one, read [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Writing a plugin
 
