@@ -4,6 +4,7 @@
   "title": "Voice extractor",
   "description": "Splits the sound of a video into the voice and the rest. Optional: it does not reliably improve speech-to-text.",
   "protocol": 2,
+  "platforms": ["windows-x86_64", "linux-x86_64", "macos-aarch64"],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-voice-extractor"

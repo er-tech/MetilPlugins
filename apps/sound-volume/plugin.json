@@ -4,6 +4,7 @@
   "title": "Sound volume",
   "description": "Measures how loud the sound is over time and where it is silent.",
   "protocol": 2,
+  "platforms": ["windows-x86_64", "linux-x86_64", "macos-aarch64", "macos-x86_64"],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-sound-volume"

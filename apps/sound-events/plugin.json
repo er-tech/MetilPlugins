@@ -4,6 +4,7 @@
   "title": "Find sounds",
   "description": "Finds the sounds a video has from the 521 classes of AudioSet (speech, music, meow, bark, siren...) with a small tagger and no language model.",
   "protocol": 2,
+  "platforms": ["windows-x86_64", "linux-x86_64", "macos-aarch64"],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-sound-events"
