@@ -16,6 +16,7 @@ providers = ["github"]
 # A dev container (.devcontainer/devcontainer.json) with the toolchains CI
 # installs, at the same versions.
 devcontainer = true
+manual_release = true
 
 [dependencies]
 # One version per production dependency across the workspace, and dev tools at
