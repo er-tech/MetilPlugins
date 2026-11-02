@@ -4,7 +4,7 @@
   "title": "Sound graph",
   "description": "Draws the waves of a sound as a picture, with stretches marked on it.",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "macos-aarch64", "macos-x86_64"],
+  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64"],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-sound-graph"

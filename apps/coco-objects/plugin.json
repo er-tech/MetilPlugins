@@ -4,7 +4,7 @@
   "title": "Find objects",
   "description": "Finds the things a video shows from the 80 classes of the COCO set (person, cat, dog, car...) with a fast detector and no language model.",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "macos-aarch64"],
+  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-coco-objects"

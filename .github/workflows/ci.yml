@@ -14,14 +14,14 @@ on:
         required: false
         default: ""
       assets_source:
-        description: "With assets_tag: the code to build. current = the code of this branch as it is now, named with the tag's version (a fix reaches the files, but they carry newer code under an old number). tag = the tag's own commit, the exact code that was released. choose = stop and ask me"
+        description: "With assets_tag: the code to build. current = the code of this branch as it is now, named with the tag's version (a fix reaches the files, but they carry newer code under an old number). tag = the tag's own commit, the exact code that was released. ask me (refuses) = the run stops and names both choices; it is preselected so that nothing is built from code you did not pick"
         type: choice
         required: true
-        default: choose
+        default: "ask me (refuses)"
         options:
-          - choose
           - current
           - tag
+          - "ask me (refuses)"
 
 permissions:
   contents: write
@@ -77,7 +77,7 @@ jobs:
       - name: Install smith
         shell: bash
         run: |
-          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.21
+          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.23
           smith --version
       - name: Build Metil
         shell: bash
@@ -133,6 +133,8 @@ jobs:
             os: macos-latest
           - platform: linux-x64
             os: ubuntu-latest
+          - platform: linux-arm64
+            os: ubuntu-24.04-arm
           - platform: macos-x64
             os: macos-15-intel
     runs-on: ${{ matrix.os }}
@@ -160,7 +162,7 @@ jobs:
       - name: Install smith
         shell: bash
         run: |
-          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.21
+          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.23
           smith --version
       - name: Build Metil
         shell: bash
