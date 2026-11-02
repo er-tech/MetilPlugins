@@ -4,7 +4,13 @@
   "title": "Moments to review",
   "description": "Finds moments in a video that a person should look at, such as shouting, an alarm, a sudden loud sound or words of alarm. It uses fixed rules on what other steps found. It never decides that something happened.",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64",
+    "macos-x86_64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-crisis-moments"
@@ -110,13 +116,36 @@
               ]
             }
           },
+          "languages": {
+            "title": "Languages of the words",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "en",
+                "pt",
+                "es",
+                "fr",
+                "de"
+              ]
+            },
+            "default": [
+              "en"
+            ],
+            "description": "The built-in lists of words of alarm to use: en English, pt Portuguese, es Spanish, fr French, de German (default English only). Give every language the video has. The lists are not checked by a native speaker. Ignored when keywords is given.",
+            "x-ui": {
+              "group": "everyday",
+              "widget": "multiselect"
+            }
+          },
           "keywords": {
             "title": "Words of alarm",
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Words or phrases that flag a sentence, as whole words. Replaces the built-in English list.",
+            "description": "Words or phrases that flag a sentence, as whole words. Replaces every built-in list, whatever languages is.",
             "x-ui": {
               "group": "advanced",
               "widget": "phrases"

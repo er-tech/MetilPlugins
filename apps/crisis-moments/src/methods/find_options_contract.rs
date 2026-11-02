@@ -15,23 +15,6 @@ pub struct FindOptions {
     pub threshold: f64,
 }
 
-/// The words that flag a sentence when the user gives no list.
-pub const DEFAULT_KEYWORDS: [&str; 13] = [
-    "help",
-    "emergency",
-    "police",
-    "ambulance",
-    "fire",
-    "hurt",
-    "bleeding",
-    "dying",
-    "let go",
-    "stop it",
-    "gun",
-    "knife",
-    "don't hurt",
-];
-
 /// The parts of sound names that flag a found sound when the user gives no list.
 pub const DEFAULT_SOUND_NAMES: [&str; 13] = [
     "scream",
