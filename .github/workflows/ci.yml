@@ -7,6 +7,21 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      assets_tag:
+        description: "Run only the assets job again for this release tag (project@version), from this branch"
+        required: false
+        default: ""
+      assets_source:
+        description: "With assets_tag: the code to build. current = the code of this branch as it is now, named with the tag's version (a fix reaches the files, but they carry newer code under an old number). tag = the tag's own commit, the exact code that was released. choose = stop and ask me"
+        type: choice
+        required: true
+        default: choose
+        options:
+          - choose
+          - current
+          - tag
 
 permissions:
   contents: write
@@ -20,9 +35,10 @@ concurrency:
 
 jobs:
   ci:
+    if: ${{ inputs.assets_tag == '' }}
     runs-on: ubuntu-latest
     outputs:
-      released: ${{ steps.release.outputs.released || steps.released.outputs.done }}
+      released: ${{ steps.release.outputs.released }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -61,7 +77,7 @@ jobs:
       - name: Install smith
         shell: bash
         run: |
-          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.13
+          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.21
           smith --version
       - name: Build Metil
         shell: bash
@@ -98,10 +114,6 @@ jobs:
         run: smith ci release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Mark the release done
-        id: released
-        if: github.event_name == 'push' && github.ref_name == 'main'
-        run: echo "done=true" >> "$GITHUB_OUTPUT"
       - name: Attest build provenance
         if: github.event_name == 'push' && github.ref_name == 'main' && hashFiles('dist/release/**') != ''
         uses: actions/attest-build-provenance@v3
@@ -110,7 +122,7 @@ jobs:
 
   assets:
     needs: ci
-    if: ${{ always() && needs.ci.outputs.released == 'true' && github.event_name == 'push' && github.ref_name == 'main' }}
+    if: ${{ always() && ((needs.ci.outputs.released == 'true' && github.event_name == 'push' && github.ref_name == 'main') || (github.event_name == 'workflow_dispatch' && inputs.assets_tag != '')) }}
     strategy:
       fail-fast: false
       matrix:
@@ -148,7 +160,7 @@ jobs:
       - name: Install smith
         shell: bash
         run: |
-          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.13
+          python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.21
           smith --version
       - name: Build Metil
         shell: bash
@@ -157,7 +169,9 @@ jobs:
       - name: Setup
         run: smith ci setup --assets
       - name: Build and upload the release files
-        run: smith ci assets
+        run: smith ci assets --tag "$ASSETS_TAG" --source "$ASSETS_SOURCE"
         env:
+          ASSETS_TAG: ${{ inputs.assets_tag }}
+          ASSETS_SOURCE: ${{ inputs.assets_source }}
           SMITH_PLATFORM: ${{ matrix.platform }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
