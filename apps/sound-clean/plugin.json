@@ -4,7 +4,7 @@
   "title": "Sound cleaner",
   "description": "Takes steady noise (a hum, a fan, hiss) out of a sound and hands the cleaned sound to the next plugin.",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "macos-aarch64", "macos-x86_64"],
+  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64"],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-sound-clean"

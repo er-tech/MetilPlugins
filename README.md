@@ -4,7 +4,7 @@ Plugins for [Metil](https://github.com/er-tech/Metil), the tool that extracts da
 
 Metil's core does very little itself (it reads recipes, opens a video, extracts audio and keeps the results). Everything that finds something in the media is a plugin: a separate program that Metil starts when a recipe calls it. A plugin can be written in any language. This repository holds the plugins that are developed alongside Metil, and the documentation of how to write one.
 
-This repository is in early development. Work happens on the `dev` branch; `main` waits for a first release.
+Work happens on the `dev` branch; `main` holds what was released (each plugin has its own releases with a `.mtp` package for every platform it runs on). To add a plugin or change one, read [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Writing a plugin
 
@@ -32,6 +32,7 @@ Then [docs/writing-good-plugins.md](docs/writing-good-plugins.md): guidance, not
 | [coco-objects](apps/coco-objects) | Rust | finds the things a video shows from the 80 COCO classes (cat, person, car...) with a fast detector and no language model: one appearance for each time a class shows up, with its first picture and time |
 | [video-upscale](apps/video-upscale) | Rust | makes a video two or four times larger with a Real-ESRGAN network (general, anime or photo) or plain Lanczos scaling, with no language model; runs on the graphics card the host grants; the new video has no sound |
 | [crisis-moments](apps/crisis-moments) | Rust | finds moments a person should look at (shouting, an alarm, a sudden loud sound, words of alarm) from what other steps found: sentences, sounds and loudness; fixed rules, no model; "moments to review", never a verdict |
+| [video-audio](apps/video-audio) | Rust | writes the sound of a video as an audio file (wav, flac, opus, mp3) in the sample rate, channels, stretch and track you choose, or at a loudness you set (LUFS), with your own FFmpeg |
 | [example-hits](apps/example-hits) | Rust | the reference plugin: pretends to find things |
 
 Shared code: [libs/plugin-sdk](libs/plugin-sdk) speaks the protocol for a Rust plugin (answers `hello` with its capabilities, runs every call on its own thread, cancel, progress, the work folder), [libs/sound-reader](libs/sound-reader) reads the sound Metil decoded (or any common audio file) and writes a sound for the next plugin, and [libs/frame-reader](libs/frame-reader) reads the pictures Metil decoded. The speech plugin has the same in Python.

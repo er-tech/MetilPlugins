@@ -716,6 +716,16 @@ version = "0.0.0"
 dependencies = [
  "metilplugins-frame-reader",
  "metilplugins-plugin-sdk",
+ "metilplugins-work-files",
+ "serde_json",
+]
+
+[[package]]
+name = "metilplugins-video-audio"
+version = "0.0.0"
+dependencies = [
+ "metilplugins-plugin-sdk",
+ "metilplugins-work-files",
  "serde_json",
 ]
 

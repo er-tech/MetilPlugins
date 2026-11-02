@@ -4,7 +4,7 @@
   "title": "Music sync",
   "description": "Finds where a music starts inside a video's sound, so a better copy of the music can replace it.",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "macos-aarch64", "macos-x86_64"],
+  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64"],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-music-sync"

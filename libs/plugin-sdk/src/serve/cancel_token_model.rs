@@ -38,6 +38,14 @@ impl Cancel {
         }
     }
 
+    /// A token for a plugin's own tests: not cancelled, with `work_dir` as its work folder.
+    pub fn with_work_dir(work_dir: std::path::PathBuf) -> Cancel {
+        Cancel {
+            work_dir: Some(work_dir),
+            ..Cancel::default()
+        }
+    }
+
     /// The folder the host gave this plugin to write media in for the next plugin, for this run,
     /// when it offers one: write raw sound there and answer with its description.
     pub fn work_dir(&self) -> Option<&std::path::Path> {

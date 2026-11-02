@@ -71,52 +71,57 @@ github_releases = true
 [projects.coco-objects.release]
 build = "sh tools/pack-plugin.sh coco-objects"
 assets = ["out/coco-objects-*.mtp"]
-platforms = ["windows-x64", "macos-arm64", "linux-x64"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
 [projects.video-upscale.release]
 build = "sh tools/pack-plugin.sh video-upscale"
 assets = ["out/video-upscale-*.mtp"]
-platforms = ["windows-x64", "macos-arm64", "linux-x64"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
+
+[projects.video-audio.release]
+build = "sh tools/pack-plugin.sh video-audio"
+assets = ["out/video-audio-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.music-sync.release]
 build = "sh tools/pack-plugin.sh music-sync"
 assets = ["out/music-sync-*.mtp"]
-platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.sound-clean.release]
 build = "sh tools/pack-plugin.sh sound-clean"
 assets = ["out/sound-clean-*.mtp"]
-platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.sound-events.release]
 build = "sh tools/pack-plugin.sh sound-events"
 assets = ["out/sound-events-*.mtp"]
-platforms = ["windows-x64", "macos-arm64", "linux-x64"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
 [projects.sound-graph.release]
 build = "sh tools/pack-plugin.sh sound-graph"
 assets = ["out/sound-graph-*.mtp"]
-platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.sound-volume.release]
 build = "sh tools/pack-plugin.sh sound-volume"
 assets = ["out/sound-volume-*.mtp"]
-platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.thumbnail.release]
 build = "sh tools/pack-plugin.sh thumbnail"
 assets = ["out/thumbnail-*.mtp"]
-platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.visual-phrases.release]
 build = "sh tools/pack-plugin.sh visual-phrases"
 assets = ["out/visual-phrases-*.mtp"]
-platforms = ["windows-x64", "macos-arm64", "linux-x64"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
 [projects.voice-extractor.release]
 build = "sh tools/pack-plugin.sh voice-extractor"
 assets = ["out/voice-extractor-*.mtp"]
-platforms = ["windows-x64", "macos-arm64", "linux-x64"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
 # A plugin is released as a GitHub Release with its .mtp package, never to PyPI.
 [projects.speech-to-text]

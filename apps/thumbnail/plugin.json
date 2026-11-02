@@ -4,7 +4,13 @@
   "title": "Thumbnails",
   "description": "Chooses the pictures that show a video best.",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "macos-aarch64", "macos-x86_64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64",
+    "macos-x86_64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-thumbnail"
@@ -130,6 +136,166 @@
         "required": [
           "picks",
           "candidates",
+          "durationMs"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong, or media is missing or not a video Metil decoded for the plugin."
+        },
+        {
+          "code": 404,
+          "description": "A file is not there."
+        },
+        {
+          "code": 422,
+          "description": "The video has no picture, or a file cannot be read."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    },
+    "sheet": {
+      "description": "Makes one picture that shows a video as a grid of small pictures from along it, spread from the start to the end, and says when each one is from. Use it to see a video at a glance.",
+      "title": "Contact sheet",
+      "category": "media",
+      "icon": "image",
+      "wants": {
+        "media": {
+          "media": "video",
+          "format": "rgb24",
+          "width": 240,
+          "everyMs": 5000
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video: a stored file or a video as media.open gives it, or a path in text. Metil decodes a colour picture of it every five seconds.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "columns": {
+            "title": "Columns",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12,
+            "default": 4,
+            "description": "How many pictures in a row (default 4). A video with fewer pictures than this makes one row.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "count": {
+            "title": "How many pictures",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 12,
+            "description": "How many pictures on the sheet, spread from the start to the end of the video (default 12). A short video has one picture every five seconds, so it may give fewer.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          }
+        },
+        "required": [
+          "media"
+        ]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "sheet": {
+            "title": "Contact sheet",
+            "type": "object",
+            "description": "The sheet: a stored PNG.",
+            "properties": {
+              "blob": {
+                "title": "Stored file",
+                "type": "string"
+              },
+              "mime": {
+                "title": "Type of file",
+                "type": "string"
+              },
+              "path": {
+                "title": "Path",
+                "type": "string"
+              },
+              "bytes": {
+                "title": "Size in bytes",
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "blob",
+              "mime",
+              "path",
+              "bytes"
+            ]
+          },
+          "columns": {
+            "title": "Columns",
+            "type": "integer",
+            "minimum": 1
+          },
+          "rows": {
+            "title": "Rows",
+            "type": "integer",
+            "minimum": 1
+          },
+          "pictureWidth": {
+            "title": "Width of a picture",
+            "type": "integer",
+            "minimum": 1
+          },
+          "pictureHeight": {
+            "title": "Height of a picture",
+            "type": "integer",
+            "minimum": 1
+          },
+          "pictures": {
+            "title": "Pictures",
+            "type": "array",
+            "description": "When each picture is from, in the order they are on the sheet (row by row).",
+            "items": {
+              "type": "object",
+              "properties": {
+                "timeMs": {
+                  "title": "Moment",
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "timeMs"
+              ]
+            }
+          },
+          "durationMs": {
+            "title": "Length",
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "sheet",
+          "columns",
+          "rows",
+          "pictureWidth",
+          "pictureHeight",
+          "pictures",
           "durationMs"
         ]
       },
