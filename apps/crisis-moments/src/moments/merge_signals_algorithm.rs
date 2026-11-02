@@ -17,7 +17,9 @@ fn confidence_of(signals: &[Signal]) -> f64 {
 /// Joins hints that overlap, or are at most `gap_ms` apart, into moments, and keeps those that are
 /// at least `min_ms` long and have a confidence of at least `threshold`.
 ///
-/// The reason of a moment is the reason of its strongest hint from words or sounds, or from loudness when there is none. The moments come in time order.
+/// The reason of a moment is the reason of its strongest hint from words or sounds. Loudness only
+/// supports them: a group of hints that holds nothing but loudness is dropped, because a loud sound
+/// alone is not a person in distress. The moments come in time order.
 pub fn merge_signals(
     mut signals: Vec<Signal>,
     gap_ms: u64,
@@ -45,6 +47,9 @@ pub fn merge_signals(
         .filter_map(|mut group| {
             let start_ms = group.iter().map(|signal| signal.start_ms).min()?;
             let end_ms = group.iter().map(|signal| signal.end_ms).max()?;
+            if group.iter().all(|signal| signal.source == Source::Volume) {
+                return None;
+            }
             let confidence = confidence_of(&group);
             if end_ms - start_ms < min_ms || confidence < threshold {
                 return None;
@@ -83,11 +88,22 @@ mod tests {
     }
 
     #[test]
+    fn a_group_of_hints_that_holds_only_loudness_is_not_a_moment() {
+        let moments = merge_signals(
+            vec![signal(Source::Volume, 0, 1_000, 1.0, "loud sound")],
+            0,
+            0,
+            0.0,
+        );
+        assert!(moments.is_empty());
+    }
+
+    #[test]
     fn hints_that_overlap_become_one_moment_and_agreeing_inputs_raise_the_confidence() {
         let moments = merge_signals(
             vec![
                 signal(Source::Labels, 1_000, 3_000, 0.7, "shouting"),
-                signal(Source::Volume, 2_000, 3_000, 0.5, "sudden loud sound"),
+                signal(Source::Volume, 2_000, 3_000, 0.5, "loud sound"),
             ],
             0,
             0,
@@ -103,7 +119,7 @@ mod tests {
     fn loudness_never_names_a_moment_that_words_or_sounds_also_flag() {
         let moments = merge_signals(
             vec![
-                signal(Source::Volume, 0, 1_000, 1.0, "sudden loud sound"),
+                signal(Source::Volume, 0, 1_000, 1.0, "loud sound"),
                 signal(Source::Text, 0, 1_000, 0.6, "words of alarm"),
             ],
             0,
@@ -117,8 +133,8 @@ mod tests {
     fn two_hints_of_one_input_do_not_add_up() {
         let moments = merge_signals(
             vec![
-                signal(Source::Labels, 0, 1_000, 0.6, "alarm"),
-                signal(Source::Labels, 500, 1_500, 0.6, "alarm"),
+                signal(Source::Labels, 0, 1_000, 0.6, "crying"),
+                signal(Source::Labels, 500, 1_500, 0.6, "crying"),
             ],
             0,
             0,

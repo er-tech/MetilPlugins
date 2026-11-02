@@ -2,7 +2,7 @@
   "name": "crisis-moments",
   "version": "0.1.0",
   "title": "Moments to review",
-  "description": "Finds moments in a video that a person should look at, such as shouting, an alarm, a sudden loud sound or words of alarm. It uses fixed rules on what other steps found. It never decides that something happened.",
+  "description": "Finds moments in a video where a person may be in distress or in conflict, for a person to look at: screaming or shouting, crying, struggling to breathe, hitting sounds, words of distress or about harming oneself, and aggressive words. It uses fixed rules on what other steps found, says what was heard and never what it means. It does not tell a panic attack or a mental health crisis from anything else, and it is not a safety system.",
   "protocol": 2,
   "platforms": [
     "windows-x86_64",
@@ -21,8 +21,8 @@
     "find": {
       "title": "Find moments to review",
       "category": "find",
-      "icon": "alert",
-      "description": "Joins what was said, the sounds heard and how loud it was into moments that may need a look. Give at least one of the three lists. A moment with more than one kind of evidence is more sure.",
+      "icon": "ear",
+      "description": "Joins what was said, the sounds heard and how loud it was into moments that may need a look: screaming, shouting, crying, fast breathing, hitting sounds, words of distress (including words about harming oneself) and aggressive words. Give at least one of the three lists. A moment with more than one kind of evidence is more sure. Loudness only supports the others: a loud sound alone is not a moment. The labels describe what was heard; they never say that a crisis, a panic attack or an attack happened. Not a safety system: use it to find moments to review, not to decide anything about a person.",
       "inputs": {
         "type": "object",
         "properties": {
@@ -89,7 +89,7 @@
           },
           "volume": {
             "title": "Loudness over time",
-            "description": "The level over time in dB (for example the windows of sound-volume).",
+            "description": "The level over time in dB (for example the windows of sound-volume). It only supports the other two lists.",
             "type": "array",
             "x-ui": {
               "group": "everyday",
@@ -133,43 +133,79 @@
             "default": [
               "en"
             ],
-            "description": "The built-in lists of words of alarm to use: en English, pt Portuguese, es Spanish, fr French, de German (default English only). Give every language the video has. The lists are not checked by a native speaker. Ignored when keywords is given.",
+            "description": "The built-in lists of words to use: en English, pt Portuguese, es Spanish, fr French, de German (default English only). Give every language the video has: a language that is not listed finds nothing. The lists are written by a language model and not checked by a native speaker. A list you give yourself (distressWords, selfHarmWords, aggressionWords) replaces the built-in lists of its kind.",
             "x-ui": {
               "group": "everyday",
               "widget": "multiselect"
             }
           },
-          "keywords": {
-            "title": "Words of alarm",
+          "distressWords": {
+            "title": "Words of distress",
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Words or phrases that flag a sentence, as whole words. Replaces every built-in list, whatever languages is.",
+            "description": "Words or phrases of a person in distress (a cry for help, not being able to breathe, fear, \"stop\"), as whole words. Replaces the built-in lists of this kind, whatever languages is.",
+            "x-ui": {
+              "group": "advanced",
+              "widget": "phrases"
+            }
+          },
+          "selfHarmWords": {
+            "title": "Words about harming oneself",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Words or phrases about ending one's own life or hurting oneself. One of them is enough to make a moment. Replaces the built-in lists of this kind.",
+            "x-ui": {
+              "group": "advanced",
+              "widget": "phrases"
+            }
+          },
+          "aggressionWords": {
+            "title": "Aggressive words",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Threats and insults, as whole words. Replaces the built-in lists of this kind.",
             "x-ui": {
               "group": "advanced",
               "widget": "phrases"
             }
           },
           "soundNames": {
-            "title": "Sounds that flag a moment",
+            "title": "Sounds that count",
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Parts of sound names that flag a found sound. Replaces the built-in list (scream, shout, siren, alarm, glass...).",
+            "description": "Parts of sound names that flag a found sound. Replaces the built-in list (scream, shout, yell, cry, sob, whimper, wail, gasp, pant, slap, thump, grunt...).",
             "x-ui": {
               "group": "advanced",
               "widget": "phrases"
             }
           },
+          "wordsWindowMs": {
+            "title": "Words said close together",
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 600000,
+            "default": 10000,
+            "description": "Words of one kind said within this many milliseconds of the first one count together, even in different sentences, so \"Help! I can't breathe! I'm going to die!\" counts as three words (default 10000).",
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
+          },
           "loudnessJumpDb": {
-            "title": "Sudden loud sound",
+            "title": "Loud voice",
             "type": "number",
             "minimum": 1,
             "maximum": 60,
             "default": 15,
-            "description": "How many dB above the usual level a window must be (default 15).",
+            "description": "How many dB above the usual level a window must be to count as support for a sound or words (default 15). Loudness alone never makes a moment.",
             "x-ui": {
               "group": "everyday",
               "unit": "dB"
@@ -301,7 +337,7 @@
       "failures": [
         {
           "code": 400,
-          "description": "No list was given, or a list or a setting is wrong."
+          "description": "No list was given, or a list or a setting is wrong (a language with no list, a word that is not text)."
         }
       ]
     }
