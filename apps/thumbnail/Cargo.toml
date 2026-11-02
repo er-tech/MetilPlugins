@@ -12,3 +12,4 @@ kind = "app"
 serde_json = "1"
 metilplugins-frame-reader = { path = "../../libs/frame-reader" }
 metilplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
+metilplugins-work-files = { path = "../../libs/work-files" }
