@@ -78,6 +78,11 @@ build = "sh tools/pack-plugin.sh video-upscale"
 assets = ["out/video-upscale-*.mtp"]
 platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
+[projects.video-audio.release]
+build = "sh tools/pack-plugin.sh video-audio"
+assets = ["out/video-audio-*.mtp"]
+platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
+
 [projects.music-sync.release]
 build = "sh tools/pack-plugin.sh music-sync"
 assets = ["out/music-sync-*.mtp"]

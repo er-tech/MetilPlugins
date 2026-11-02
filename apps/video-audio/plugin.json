@@ -1,0 +1,442 @@
+{
+  "name": "video-audio",
+  "version": "0.1.0",
+  "title": "Audio files",
+  "description": "Writes the sound of a video as an audio file: the format, the sample rate, the channels, a stretch and the track you choose, or at a loudness you set.",
+  "protocol": 2,
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64",
+    "macos-x86_64"
+  ],
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/metilplugins-video-audio"
+  ],
+  "timeoutSeconds": 3600,
+  "stallSeconds": 300,
+  "concurrency": 2,
+  "requirements": {
+    "cpu": 1,
+    "memoryMb": 300
+  },
+  "permissions": {
+    "env": [
+      "METIL_FFMPEG"
+    ],
+    "run": [
+      "ffmpeg"
+    ]
+  },
+  "actions": {
+    "extract": {
+      "description": "Writes the sound of a video, or a stretch of it, as an audio file in the format, sample rate and channels you choose, from the audio track you choose. Use it when another step needs a particular kind of audio, such as 16 kHz mono for speech models.",
+      "title": "Extract the audio",
+      "category": "media",
+      "icon": "audio",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video or sound",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video or sound: an object with an absolute file path (a stored file, or a video as media.open gives it) or a path in text.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "format": {
+            "title": "Format",
+            "type": "string",
+            "enum": [
+              "wav",
+              "flac",
+              "opus",
+              "mp3"
+            ],
+            "default": "wav",
+            "description": "The kind of file: wav (plain, the default), flac (smaller, no loss), opus or mp3 (much smaller).",
+            "x-ui": {
+              "group": "everyday",
+              "widget": "select"
+            }
+          },
+          "sampleRate": {
+            "title": "Sample rate",
+            "type": "integer",
+            "minimum": 8000,
+            "maximum": 192000,
+            "description": "Samples a second. Left out, the source's (48000 for normalize). Speech models read 16000.",
+            "x-ui": {
+              "group": "more"
+            }
+          },
+          "channels": {
+            "title": "Channels",
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ],
+            "description": "1 for mono, 2 for stereo. Left out, the source's.",
+            "x-ui": {
+              "group": "more"
+            }
+          },
+          "startMs": {
+            "title": "From",
+            "type": "integer",
+            "minimum": 0,
+            "description": "Where the stretch starts, in milliseconds (default: the start).",
+            "x-ui": {
+              "group": "more"
+            }
+          },
+          "endMs": {
+            "title": "To",
+            "type": "integer",
+            "minimum": 1,
+            "description": "Where the stretch ends, in milliseconds (default: the end). It must be after the start.",
+            "x-ui": {
+              "group": "more"
+            }
+          },
+          "track": {
+            "title": "Audio track",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 31,
+            "default": 0,
+            "description": "Which sound of a video that has more than one, counting from 0.",
+            "x-ui": {
+              "group": "more"
+            }
+          }
+        },
+        "required": [
+          "media"
+        ]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "audio": {
+            "title": "Audio file",
+            "type": "object",
+            "description": "The audio: a stored file.",
+            "properties": {
+              "blob": {
+                "title": "Stored file",
+                "type": "string"
+              },
+              "mime": {
+                "title": "Type of file",
+                "type": "string"
+              },
+              "path": {
+                "title": "Path",
+                "type": "string"
+              },
+              "bytes": {
+                "title": "Size in bytes",
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "blob",
+              "mime",
+              "path",
+              "bytes"
+            ]
+          },
+          "format": {
+            "title": "Format",
+            "type": "string"
+          },
+          "sampleRate": {
+            "title": "Sample rate",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "The rate asked for; null when it is the source's."
+          },
+          "channels": {
+            "title": "Channels",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "The channels asked for; null when they are the source's."
+          },
+          "track": {
+            "title": "Audio track",
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "audio",
+          "format",
+          "track"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong or media is missing."
+        },
+        {
+          "code": 404,
+          "description": "The file is not there."
+        },
+        {
+          "code": 422,
+          "description": "FFmpeg could not be started, or could not read the audio (the file is damaged, has no such track, or has no audio)."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    },
+    "normalize": {
+      "description": "Writes the sound of a video, or a stretch of it, at a loudness you set, so videos can be compared and heard at one level. It measures the sound first and then changes it by a straight gain, so the dynamics stay. A silent sound cannot be normalised.",
+      "title": "Set the loudness",
+      "category": "media",
+      "icon": "audio",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video or sound",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video or sound: an object with an absolute file path (a stored file, or a video as media.open gives it) or a path in text.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "format": {
+            "title": "Format",
+            "type": "string",
+            "enum": [
+              "wav",
+              "flac",
+              "opus",
+              "mp3"
+            ],
+            "default": "wav",
+            "description": "The kind of file: wav (plain, the default), flac (smaller, no loss), opus or mp3 (much smaller).",
+            "x-ui": {
+              "group": "everyday",
+              "widget": "select"
+            }
+          },
+          "sampleRate": {
+            "title": "Sample rate",
+            "type": "integer",
+            "minimum": 8000,
+            "maximum": 192000,
+            "description": "Samples a second. Left out, the source's (48000 for normalize). Speech models read 16000.",
+            "x-ui": {
+              "group": "more"
+            }
+          },
+          "channels": {
+            "title": "Channels",
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ],
+            "description": "1 for mono, 2 for stereo. Left out, the source's.",
+            "x-ui": {
+              "group": "more"
+            }
+          },
+          "startMs": {
+            "title": "From",
+            "type": "integer",
+            "minimum": 0,
+            "description": "Where the stretch starts, in milliseconds (default: the start).",
+            "x-ui": {
+              "group": "more"
+            }
+          },
+          "endMs": {
+            "title": "To",
+            "type": "integer",
+            "minimum": 1,
+            "description": "Where the stretch ends, in milliseconds (default: the end). It must be after the start.",
+            "x-ui": {
+              "group": "more"
+            }
+          },
+          "track": {
+            "title": "Audio track",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 31,
+            "default": 0,
+            "description": "Which sound of a video that has more than one, counting from 0.",
+            "x-ui": {
+              "group": "more"
+            }
+          },
+          "targetLufs": {
+            "title": "Loudness",
+            "type": "number",
+            "minimum": -70,
+            "maximum": -5,
+            "default": -16,
+            "description": "The integrated loudness to reach, in LUFS (default -16: streaming and podcasts; broadcast is -23).",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "truePeakDb": {
+            "title": "Highest peak",
+            "type": "number",
+            "minimum": -9,
+            "maximum": 0,
+            "default": -1.5,
+            "description": "The highest peak allowed, in dB (default -1.5).",
+            "x-ui": {
+              "group": "more"
+            }
+          },
+          "loudnessRange": {
+            "title": "Loudness range",
+            "type": "number",
+            "minimum": 1,
+            "maximum": 20,
+            "default": 11,
+            "description": "The loudness range allowed, in LU (default 11).",
+            "x-ui": {
+              "group": "more"
+            }
+          }
+        },
+        "required": [
+          "media"
+        ]
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "audio": {
+            "title": "Audio file",
+            "type": "object",
+            "description": "The audio: a stored file.",
+            "properties": {
+              "blob": {
+                "title": "Stored file",
+                "type": "string"
+              },
+              "mime": {
+                "title": "Type of file",
+                "type": "string"
+              },
+              "path": {
+                "title": "Path",
+                "type": "string"
+              },
+              "bytes": {
+                "title": "Size in bytes",
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "blob",
+              "mime",
+              "path",
+              "bytes"
+            ]
+          },
+          "format": {
+            "title": "Format",
+            "type": "string"
+          },
+          "sampleRate": {
+            "title": "Sample rate",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "The rate asked for; null when it is the source's."
+          },
+          "channels": {
+            "title": "Channels",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "The channels asked for; null when they are the source's."
+          },
+          "track": {
+            "title": "Audio track",
+            "type": "integer",
+            "minimum": 0
+          },
+          "targetLufs": {
+            "title": "Target loudness",
+            "type": "number",
+            "description": "The loudness aimed for, in LUFS."
+          },
+          "inputLufs": {
+            "title": "Loudness before",
+            "type": "number",
+            "description": "How loud the source was, in LUFS."
+          },
+          "inputTruePeakDb": {
+            "title": "Highest peak before",
+            "type": "number",
+            "description": "The highest peak of the source, in dB."
+          },
+          "inputLoudnessRange": {
+            "title": "Loudness range before",
+            "type": "number",
+            "description": "The loudness range of the source, in LU."
+          }
+        },
+        "required": [
+          "audio",
+          "format",
+          "track",
+          "targetLufs",
+          "inputLufs",
+          "inputTruePeakDb",
+          "inputLoudnessRange"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong or media is missing."
+        },
+        {
+          "code": 404,
+          "description": "The file is not there."
+        },
+        {
+          "code": 422,
+          "description": "FFmpeg could not be started, or could not read the audio (the file is damaged, has no such track, or has no audio)."
+        },
+        {
+          "code": "CANCELLED",
+          "description": "The call was cancelled."
+        }
+      ]
+    }
+  }
+}
