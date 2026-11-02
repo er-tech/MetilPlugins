@@ -2,6 +2,25 @@
 
 The sentences said in a video or a sound, with the time each one starts and ends. A Metil plugin written in **Python**, because that is where the speech recognition is: it uses [faster-whisper](https://github.com/SYSTRAN/faster-whisper) (the Whisper models on CTranslate2), which runs on an ordinary processor and reads the sound of most video and audio files by itself.
 
+## `detectLanguage`
+
+Says which language is spoken, from the first seconds, before you decide what to do with the video (transcribe it with that language, or sort videos by language).
+
+| Input | |
+|---|---|
+| `media` | as for `transcribe` |
+| `model` | as for `transcribe` (default `tiny`; a bigger model is surer for short or noisy speech) |
+
+It gives:
+
+```json
+{ "language": "pt", "languageProbability": 0.97,
+  "candidates": [{ "language": "pt", "probability": 0.97 }, { "language": "es", "probability": 0.02 }],
+  "model": "tiny" }
+```
+
+`candidates` has up to five languages, the most likely first. A sound with no speech still gets an answer, with a low `languageProbability`: decide how sure is sure enough. The failures are those of `transcribe`.
+
 ## `transcribe`
 
 | Input | |
