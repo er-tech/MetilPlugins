@@ -7,11 +7,12 @@ use std::path::PathBuf;
 
 use serde_json::Value;
 
-const ALL: [&str; 4] = [
+const ALL: [&str; 5] = [
     "windows-x86_64",
     "macos-aarch64",
     "macos-x86_64",
     "linux-x86_64",
+    "linux-aarch64",
 ];
 
 fn workspace() -> PathBuf {

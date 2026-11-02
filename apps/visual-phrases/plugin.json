@@ -4,7 +4,7 @@
   "title": "Find what a phrase describes",
   "description": "Finds when a phrase you write (\"two cats sleeping on a couch\") describes what a video shows, with an image-text model.",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "macos-aarch64"],
+  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/metilplugins-visual-phrases"
