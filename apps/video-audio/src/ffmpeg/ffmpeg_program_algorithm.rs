@@ -1,7 +1,7 @@
 use std::ffi::OsString;
 use std::path::PathBuf;
 
-/// The FFmpeg program to start: what `METIL_FFMPEG` names (a folder with `ffmpeg` in it, or the
+/// The FFmpeg program to start: what `LOOMAS_FFMPEG` names (a folder with `ffmpeg` in it, or the
 /// program itself), and plain `ffmpeg` (the system path) when it is not set.
 pub fn ffmpeg_program(configured: Option<OsString>) -> PathBuf {
     let name = format!("ffmpeg{}", std::env::consts::EXE_SUFFIX);

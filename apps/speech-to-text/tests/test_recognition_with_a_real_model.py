@@ -1,4 +1,4 @@
-"""Listens to real speech with a real model. Skipped unless `METILPLUGINS_SPEECH_SAMPLE` names a
+"""Listens to real speech with a real model. Skipped unless `LOOMASPLUGINS_SPEECH_SAMPLE` names a
 video or sound with English speech in it: the model (about 75 MB for `tiny`) is downloaded on first
 use, so this is not part of an ordinary run."""
 
@@ -7,9 +7,9 @@ import threading
 from pathlib import Path
 
 import pytest
-from metilplugins_speech_to_text.actions import run_action
+from loomasplugins_speech_to_text.actions import run_action
 
-SAMPLE = os.environ.get("METILPLUGINS_SPEECH_SAMPLE")
+SAMPLE = os.environ.get("LOOMASPLUGINS_SPEECH_SAMPLE")
 
 
 @pytest.mark.skipif(not SAMPLE or not Path(SAMPLE).is_file(), reason="no sample with speech given")

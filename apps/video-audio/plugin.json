@@ -13,7 +13,7 @@
   ],
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/metilplugins-video-audio"
+    "../../dist/cargo/release/loomasplugins-video-audio"
   ],
   "timeoutSeconds": 3600,
   "stallSeconds": 300,
@@ -24,7 +24,7 @@
   },
   "permissions": {
     "env": [
-      "METIL_FFMPEG"
+      "LOOMAS_FFMPEG"
     ],
     "run": [
       "ffmpeg"

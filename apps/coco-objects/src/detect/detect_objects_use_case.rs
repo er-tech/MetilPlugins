@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use metilplugins_plugin_sdk::Failure;
+use loomasplugins_plugin_sdk::Failure;
 
 use crate::models::ModelSpec;
 

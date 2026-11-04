@@ -13,7 +13,7 @@
   ],
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/metilplugins-crisis-moments"
+    "../../dist/cargo/release/loomasplugins-crisis-moments"
   ],
   "timeoutSeconds": 60,
   "concurrency": 4,

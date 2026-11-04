@@ -1,5 +1,5 @@
-use metilplugins_frame_reader::{read_video_region, PixelFormat};
-use metilplugins_plugin_sdk::{whole_number, Cancel, Failure};
+use loomasplugins_frame_reader::{read_video_region, PixelFormat};
+use loomasplugins_plugin_sdk::{whole_number, Cancel, Failure};
 use serde_json::{json, Value};
 
 use crate::pick::{choose_picks, score_picture, Candidate};
@@ -22,7 +22,7 @@ pub fn pick_thumbnails(params: &Value, cancel: &Cancel) -> Result<Value, Failure
         .ok_or_else(|| {
             Failure::status(
                 400,
-                "media must be a video Metil decoded for this plugin (it asks for pictures)",
+                "media must be a video Loomas decoded for this plugin (it asks for pictures)",
             )
         })?;
     if video.format != PixelFormat::Gray8 {

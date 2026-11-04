@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
 use serde_json::{json, Value};
-use metilplugins_appearances::{track_appearances, Presence, Sample};
-use metilplugins_frame_reader::{read_video_region, PixelFormat};
-use metilplugins_onnx_device::DeviceChoice;
-use metilplugins_plugin_sdk::{Cancel, Failure};
-use metilplugins_work_files::write_png_file;
+use loomasplugins_appearances::{track_appearances, Presence, Sample};
+use loomasplugins_frame_reader::{read_video_region, PixelFormat};
+use loomasplugins_onnx_device::DeviceChoice;
+use loomasplugins_plugin_sdk::{Cancel, Failure};
+use loomasplugins_work_files::write_png_file;
 
 use crate::classes::COCO_CLASSES;
 use crate::detect::{detect_objects, device_report, Detection, DetectionSettings};
@@ -34,7 +34,7 @@ pub fn find_objects(params: &Value, cancel: &Cancel) -> Result<Value, Failure> {
         .ok_or_else(|| {
             Failure::status(
                 400,
-                "media must be a video Metil decoded for this plugin (it asks for pictures)",
+                "media must be a video Loomas decoded for this plugin (it asks for pictures)",
             )
         })?;
     if video.format != PixelFormat::Rgb24 {
@@ -92,7 +92,7 @@ pub fn find_objects(params: &Value, cancel: &Cancel) -> Result<Value, Failure> {
         let work_dir = cancel.work_dir().ok_or_else(|| {
             Failure::status(
                 422,
-                "Metil gave this plugin no folder to write pictures in",
+                "Loomas gave this plugin no folder to write pictures in",
             )
         })?;
         let mut picture = video

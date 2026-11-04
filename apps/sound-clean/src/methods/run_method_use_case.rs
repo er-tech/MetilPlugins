@@ -1,5 +1,5 @@
 use serde_json::Value;
-use metilplugins_plugin_sdk::{Cancel, Failure};
+use loomasplugins_plugin_sdk::{Cancel, Failure};
 
 use super::reduce_noise_use_case::reduce_noise_in_sound;
 

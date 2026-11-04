@@ -1,6 +1,6 @@
 use serde_json::{json, Value};
 
-use metilplugins_plugin_sdk::Failure;
+use loomasplugins_plugin_sdk::Failure;
 
 /// Gives the size in bytes of the stored file passed as `params.audio`: a stored file arrives as an
 /// object with an absolute `file` path the plugin can open.

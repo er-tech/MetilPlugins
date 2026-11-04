@@ -1,10 +1,10 @@
 use serde_json::{json, Value};
-use metilplugins_plugin_sdk::Failure;
-use metilplugins_sound_reader::load_sound_input;
+use loomasplugins_plugin_sdk::Failure;
+use loomasplugins_sound_reader::load_sound_input;
 
 use crate::volume::{find_silences, measure_volume, VolumeOptions};
 
-use metilplugins_plugin_sdk::{number, whole_number};
+use loomasplugins_plugin_sdk::{number, whole_number};
 
 /// The `silences` action: the stretches where the sound stays below a level.
 ///

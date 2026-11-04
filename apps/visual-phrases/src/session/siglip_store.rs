@@ -4,8 +4,8 @@ use std::sync::{Mutex, MutexGuard, OnceLock};
 use ort::environment::Environment;
 use ort::session::Session;
 use ort::value::Tensor;
-use metilplugins_onnx_device::{open_session, DeviceChoice, DeviceReport};
-use metilplugins_plugin_sdk::Failure;
+use loomasplugins_onnx_device::{open_session, DeviceChoice, DeviceReport};
+use loomasplugins_plugin_sdk::Failure;
 
 /// How many numbers a picture or a phrase becomes.
 pub const DIMENSIONS: usize = 768;

@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use metilplugins_plugin_sdk::{text, whole_number, Failure};
+use loomasplugins_plugin_sdk::{text, whole_number, Failure};
 use serde_json::Value;
 
 use crate::ffmpeg::{AudioFormat, AudioInput, AudioOutput};

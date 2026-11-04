@@ -4,7 +4,7 @@ use super::find_hits_algorithm::find_hits;
 use super::interpret_response_algorithm::interpret_response;
 use super::measure_file_use_case::measure_file;
 use super::wait_use_case::wait;
-use metilplugins_plugin_sdk::Failure;
+use loomasplugins_plugin_sdk::Failure;
 
 /// Runs a method of this plugin and gives its result, or the reason it failed.
 ///

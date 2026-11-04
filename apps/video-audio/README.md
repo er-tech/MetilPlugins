@@ -1,6 +1,6 @@
 # video-audio
 
-The sound of a video as an audio file, in the format, the sample rate and the loudness another step needs. A Metil plugin written in Rust: one program, nothing to install besides **FFmpeg**, which Metil already looks for (`metil doctor`). The plugin starts the FFmpeg on the system path, or the one `METIL_FFMPEG` names.
+The sound of a video as an audio file, in the format, the sample rate and the loudness another step needs. A Loomas plugin written in Rust: one program, nothing to install besides **FFmpeg**, which Loomas already looks for (`loomas doctor`). The plugin starts the FFmpeg on the system path, or the one `LOOMAS_FFMPEG` names.
 
 ## `extract`
 
@@ -35,7 +35,7 @@ It gives what `extract` gives, and `targetLufs`, `inputLufs`, `inputTruePeakDb` 
 
 ## Failures
 
-400 for a param that is wrong or a missing `media`; 404 when the file is not there; 422 when FFmpeg cannot be started (install it, or set `METIL_FFMPEG`) or cannot read the audio (a damaged file, a track the media does not have, a media with no sound); `CANCELLED` when the call was cancelled (FFmpeg is stopped).
+400 for a param that is wrong or a missing `media`; 404 when the file is not there; 422 when FFmpeg cannot be started (install it, or set `LOOMAS_FFMPEG`) or cannot read the audio (a damaged file, a track the media does not have, a media with no sound); `CANCELLED` when the call was cancelled (FFmpeg is stopped).
 
 The encoders `libopus` and `libmp3lame` come with most FFmpeg builds; with a build that lacks one, that format is a 422 that says so.
 

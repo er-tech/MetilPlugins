@@ -1,5 +1,5 @@
 use serde_json::Value;
-use metilplugins_plugin_sdk::Failure;
+use loomasplugins_plugin_sdk::Failure;
 
 use super::find_moments_use_case::find_moments;
 

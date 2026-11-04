@@ -1,4 +1,4 @@
-use metilplugins_model_cache::ModelFile;
+use loomasplugins_model_cache::ModelFile;
 
 /// YAMNet, Google's tagger of the 521 sounds of AudioSet (MobileNet v1 on a log-mel spectrogram,
 /// Apache-2.0), as an ONNX file converted from the original by someone else. It takes the raw

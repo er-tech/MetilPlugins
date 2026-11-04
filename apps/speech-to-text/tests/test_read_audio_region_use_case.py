@@ -2,8 +2,8 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from metilplugins_speech_to_text.decoded_audio import read_audio_region
-from metilplugins_speech_to_text.serve import Failure
+from loomasplugins_speech_to_text.decoded_audio import read_audio_region
+from loomasplugins_speech_to_text.serve import Failure
 
 
 def region(file: Path, channels: int, frames: int, **changes: object) -> dict[str, object]:

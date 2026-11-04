@@ -6,7 +6,7 @@
   "protocol": 2,
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/metilplugins-example-hits"
+    "../../dist/cargo/release/loomasplugins-example-hits"
   ],
   "timeoutSeconds": 60,
   "concurrency": 8,
@@ -98,7 +98,7 @@
               "file": {
                 "title": "File",
                 "type": "string",
-                "description": "The absolute path Metil gives a stored file."
+                "description": "The absolute path Loomas gives a stored file."
               }
             },
             "required": [

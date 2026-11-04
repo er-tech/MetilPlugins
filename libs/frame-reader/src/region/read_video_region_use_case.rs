@@ -9,7 +9,7 @@ use super::video_region_contract::{Frame, PixelFormat, VideoRegion};
 
 /// The pictures a description names, or `None` when `value` is not one (a path or a stored file).
 ///
-/// The description is what Metil hands over for an input the manifest lists under `wants` with
+/// The description is what Loomas hands over for an input the manifest lists under `wants` with
 /// `"media": "video"`: `kind` `video`, `file` (raw pixels, a picture after another), `format`
 /// (`rgb24` or `gray8`), `width`, `height`, `frameBytes`, `frameCount`, `offsetBytes`, `startMs`,
 /// `endMs` and `framesFile` (one JSON object a line: `index`, `ptsMs`, `durationMs`,

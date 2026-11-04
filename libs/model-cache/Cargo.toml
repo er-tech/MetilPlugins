@@ -1,5 +1,5 @@
 [package]
-name = "metilplugins-model-cache"
+name = "loomasplugins-model-cache"
 version = "0.0.0"
 edition = "2021"
 publish = false

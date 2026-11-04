@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use metilplugins_plugin_sdk::{Cancel, Failure};
-use metilplugins_work_files::unique_work_file_name;
+use loomasplugins_plugin_sdk::{Cancel, Failure};
+use loomasplugins_work_files::unique_work_file_name;
 use serde_json::{json, Value};
 
 use super::read_audio_params_mapper::{read_input, read_media_file, read_output};
@@ -20,10 +20,10 @@ pub fn extract_audio(params: &Value, cancel: &Cancel) -> Result<Value, Failure> 
     let settings = read_output(params, None)?;
     let work_dir = cancel
         .work_dir()
-        .ok_or_else(|| Failure::status(500, "Metil gave no work folder to write the audio in"))?;
+        .ok_or_else(|| Failure::status(500, "Loomas gave no work folder to write the audio in"))?;
     let output = work_dir.join(unique_work_file_name("video-audio", settings.format.name()));
 
-    let program = ffmpeg_program(std::env::var_os("METIL_FFMPEG"));
+    let program = ffmpeg_program(std::env::var_os("LOOMAS_FFMPEG"));
     run_ffmpeg(
         &program,
         &extract_arguments(&input, None, &settings, &output),
@@ -59,7 +59,7 @@ mod tests {
 
     /// Whether FFmpeg can be started here; the tests that need it say nothing when it cannot.
     fn has_ffmpeg() -> bool {
-        std::process::Command::new(ffmpeg_program(std::env::var_os("METIL_FFMPEG")))
+        std::process::Command::new(ffmpeg_program(std::env::var_os("LOOMAS_FFMPEG")))
             .arg("-version")
             .output()
             .is_ok()
@@ -74,7 +74,7 @@ mod tests {
     /// Makes a two second sound of a tone with FFmpeg itself, so no media file is kept in the tests.
     fn tone(dir: &Path) -> std::path::PathBuf {
         let file = dir.join("tone.wav");
-        let status = std::process::Command::new(ffmpeg_program(std::env::var_os("METIL_FFMPEG")))
+        let status = std::process::Command::new(ffmpeg_program(std::env::var_os("LOOMAS_FFMPEG")))
             .args(["-nostdin", "-hide_banner", "-loglevel", "error", "-y"])
             .args(["-f", "lavfi", "-i", "sine=frequency=440:duration=2"])
             .arg(&file)

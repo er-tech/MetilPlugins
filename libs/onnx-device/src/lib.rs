@@ -5,7 +5,7 @@
 //!
 //! On Windows the GPU is DirectML, which runs on any DirectX 12 GPU (AMD, NVIDIA, Intel). Adapters
 //! are listed and ranked here because DirectML's default adapter may be a slow integrated one.
-//! Research and measurements: `docs/research/gpu.md` in the Metil repository.
+//! Research and measurements: `docs/research/gpu.md` in the Loomas repository.
 
 mod adapters;
 mod device;

@@ -1,4 +1,4 @@
-//! The pictures of a video as Metil hands them over.
+//! The pictures of a video as Loomas hands them over.
 
 mod frame_error;
 mod read_video_region_use_case;
