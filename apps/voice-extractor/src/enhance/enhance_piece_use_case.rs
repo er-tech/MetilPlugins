@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use metilplugins_onnx_device::DeviceChoice;
-use metilplugins_plugin_sdk::Failure;
+use loomasplugins_onnx_device::DeviceChoice;
+use loomasplugins_plugin_sdk::Failure;
 
 use crate::network::run_network;
 use crate::spectrum::{analyse_sound, apply_deep_filter, network_features, synthesise_sound};
@@ -38,7 +38,7 @@ mod tests {
         let home = std::env::var("USERPROFILE")
             .or_else(|_| std::env::var("HOME"))
             .ok()?;
-        let folder = PathBuf::from(home).join(".metil/models/voice-extractor");
+        let folder = PathBuf::from(home).join(".loomas/models/voice-extractor");
         let tables =
             read_tables(&std::fs::read(folder.join("deepfilter-auxiliary.bin")).ok()?).ok()?;
         let network = folder.join("deepfilter.onnx");

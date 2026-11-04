@@ -1,4 +1,4 @@
-"""Starts the plugin: `python -m metilplugins_speech_to_text`. Metil does this itself."""
+"""Starts the plugin: `python -m loomasplugins_speech_to_text`. Loomas does this itself."""
 
 # Loaded here, on the main thread, before the first call: importing these native libraries from
 # the thread that serves a call hung on Windows while the main thread waited on the pipe.

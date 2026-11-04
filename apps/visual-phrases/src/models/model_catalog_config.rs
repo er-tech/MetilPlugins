@@ -1,4 +1,4 @@
-use metilplugins_model_cache::ModelFile;
+use loomasplugins_model_cache::ModelFile;
 
 /// The files of SigLIP (base, patch 16, 224 pixels), Google's image-text model (Apache-2.0), as
 /// the ONNX export of `Xenova/siglip-base-patch16-224` with the weights quantised to 8 bits. The

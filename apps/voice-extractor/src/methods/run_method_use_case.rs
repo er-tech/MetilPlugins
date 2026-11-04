@@ -1,5 +1,5 @@
 use serde_json::Value;
-use metilplugins_plugin_sdk::{Cancel, Failure};
+use loomasplugins_plugin_sdk::{Cancel, Failure};
 
 use super::extract_voice_use_case::extract_voice;
 

@@ -1,12 +1,12 @@
-# The `.mtp` package
+# The `.loomp` package
 
-A `.mtp` file is one plugin, packed for one kind of computer, in a single file you can hand to someone, keep for an offline install and pin to a version. It is a zip file with another extension. This page says what is inside and what a reader of the file must check. Format version: **1**.
+A `.loomp` file is one plugin, packed for one kind of computer, in a single file you can hand to someone, keep for an offline install and pin to a version. It is a zip file with another extension. This page says what is inside and what a reader of the file must check. Format version: **1**.
 
 ## What is in it
 
 ```
-cat-sounds-0.1.0-windows-x86_64.mtp
-  mtp.json            what the package is (format, platform)
+cat-sounds-0.1.0-windows-x86_64.loomp
+  loomp.json            what the package is (format, platform)
   checksums.sha256    the SHA-256 of every other file
   plugin.json         the plugin's manifest, as described in plugin-protocol.md
   bin/cat-sounds.exe  the program the manifest's "command" starts
@@ -15,14 +15,14 @@ cat-sounds-0.1.0-windows-x86_64.mtp
   ...                 whatever else the plugin needs to run
 ```
 
-`plugin.json` is always at the root. Its `command` is resolved against the folder the package is unpacked into, so the program and its files are packed where the command says. The file name is only a convention: `<name>-<version>-<platform>.mtp`. The `metil plugins pack` tool makes a package from a plugin folder (`--program <file>` takes the built program from a build folder, such as `dist/cargo/release/`, and packs it as `bin/<name>` with the packaged `command` pointing there, so the manifest in the repository can keep its development path); a package made by hand that follows this page is just as good.
+`plugin.json` is always at the root. Its `command` is resolved against the folder the package is unpacked into, so the program and its files are packed where the command says. The file name is only a convention: `<name>-<version>-<platform>.loomp`. The `loomas plugins pack` tool makes a package from a plugin folder (`--program <file>` takes the built program from a build folder, such as `dist/cargo/release/`, and packs it as `bin/<name>` with the packaged `command` pointing there, so the manifest in the repository can keep its development path); a package made by hand that follows this page is just as good.
 
 **Not in the package:**
 
 - *Models and weights.* They are large and have their own licences. A plugin downloads what it needs once, on first use, into a cache, and says so in its README.
-- *Runtimes* (Python, Node...). A plugin written in a language that needs one says so in its README, and `metil doctor` reports what is missing. The package carries the plugin's own code and libraries, not the language.
+- *Runtimes* (Python, Node...). A plugin written in a language that needs one says so in its README, and `loomas doctor` reports what is missing. The package carries the plugin's own code and libraries, not the language.
 
-## `mtp.json`
+## `loomp.json`
 
 ```json
 { "format": 1, "platform": "windows-x86_64" }
@@ -49,7 +49,7 @@ The list and the files must match exactly: a file without a line, a line without
 
 ## What a reader checks before it writes anything
 
-1. The zip opens, and `mtp.json`, `checksums.sha256` and `plugin.json` are in it.
+1. The zip opens, and `loomp.json`, `checksums.sha256` and `plugin.json` are in it.
 2. `format` is known and `platform` is `any` or this computer's.
 3. Every path is relative, uses `/`, has no `..` or empty part, and no drive letter. A path that could land outside the folder the package is unpacked into refuses the whole package.
 4. No entry is a symbolic link. Only files and the folders that hold them.
@@ -59,9 +59,9 @@ The list and the files must match exactly: a file without a line, a line without
 
 Only then is it unpacked, into a folder beside the final one and moved into place when it is complete, so a failed install leaves nothing half done.
 
-## Where Metil puts it
+## Where Loomas puts it
 
-`~/.metil/plugins/<name>/<version>/`, and the plugin is registered under its name in `~/.metil/config.json`, so a recipe calls it by that name. Installing the same name and version again replaces it; another version is installed beside it and becomes the registered one. `metil plugins list` shows what is installed and `metil plugins remove <name>` deletes it. Install never downloads models: it reports what the README says is needed.
+`~/.loomas/plugins/<name>/<version>/`, and the plugin is registered under its name in `~/.loomas/config.json`, so a recipe calls it by that name. Installing the same name and version again replaces it; another version is installed beside it and becomes the registered one. `loomas plugins list` shows what is installed and `loomas plugins remove <name>` deletes it. Install never downloads models: it reports what the README says is needed.
 
 ## What this does not do yet
 

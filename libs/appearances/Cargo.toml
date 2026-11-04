@@ -1,5 +1,5 @@
 [package]
-name = "metilplugins-appearances"
+name = "loomasplugins-appearances"
 version = "0.0.0"
 edition = "2021"
 publish = false

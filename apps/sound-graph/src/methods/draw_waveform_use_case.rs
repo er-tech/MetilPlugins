@@ -1,6 +1,6 @@
 use serde_json::{json, Value};
-use metilplugins_plugin_sdk::{flag, text, whole_number, Failure};
-use metilplugins_sound_reader::load_sound_input;
+use loomasplugins_plugin_sdk::{flag, text, whole_number, Failure};
+use loomasplugins_sound_reader::load_sound_input;
 
 use crate::waveform::{compute_columns, draw_waveform_svg, read_regions, SvgOptions};
 

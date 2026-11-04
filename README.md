@@ -1,18 +1,18 @@
-# MetilPlugins
+# LoomasPlugins
 
-Plugins for [Metil](https://github.com/er-tech/Metil), the tool that extracts data from video: image, sound, text, context and search.
+Plugins for [Loomas](https://github.com/er-tech/Metil), the tool that extracts data from video: image, sound, text, context and search.
 
-Metil's core does very little itself (it reads recipes, opens a video, extracts audio and keeps the results). Everything that finds something in the media is a plugin: a separate program that Metil starts when a recipe calls it. A plugin can be written in any language. This repository holds the plugins that are developed alongside Metil, and the documentation of how to write one.
+Loomas's core does very little itself (it reads recipes, opens a video, extracts audio and keeps the results). Everything that finds something in the media is a plugin: a separate program that Loomas starts when a recipe calls it. A plugin can be written in any language. This repository holds the plugins that are developed alongside Loomas, and the documentation of how to write one.
 
-Work happens on the `dev` branch; `main` holds what was released (each plugin has its own releases with a `.mtp` package for every platform it runs on). To add a plugin or change one, read [CONTRIBUTING.md](CONTRIBUTING.md).
+Work happens on the `dev` branch; `main` holds what was released (each plugin has its own releases with a `.loomp` package for every platform it runs on). To add a plugin or change one, read [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Writing a plugin
 
-Read [docs/plugin-protocol.md](docs/plugin-protocol.md): the manifest (`plugin.json`), the messages a plugin exchanges with Metil, and an example exchange. A plugin needs nothing from this repository to work; it only has to speak the protocol.
+Read [docs/plugin-protocol.md](docs/plugin-protocol.md): the manifest (`plugin.json`), the messages a plugin exchanges with Loomas, and an example exchange. A plugin needs nothing from this repository to work; it only has to speak the protocol.
 
-To hand a plugin to someone, pack it as a `.mtp` file: [docs/mtp-format.md](docs/mtp-format.md) says what goes in it and what an installer checks (`metil plugins install cat-sounds.mtp`).
+To hand a plugin to someone, pack it as a `.loomp` file: [docs/loomp-format.md](docs/loomp-format.md) says what goes in it and what an installer checks (`loomas plugins install cat-sounds.loomp`).
 
-With Claude Code, open this repository and ask for the `plugin-author` agent (or the `write-a-plugin` skill): both are in `.claude/` and work from these documents, and use the `metil` tool and its MCP server when they are installed.
+With Claude Code, open this repository and ask for the `plugin-author` agent (or the `write-a-plugin` skill): both are in `.claude/` and work from these documents, and use the `loomas` tool and its MCP server when they are installed.
 
 Then [docs/writing-good-plugins.md](docs/writing-good-plugins.md): guidance, not rules, on what makes a plugin pleasant to use in a workflow (report failures as failures, handle `cancel`, stay predictable).
 
@@ -35,7 +35,7 @@ Then [docs/writing-good-plugins.md](docs/writing-good-plugins.md): guidance, not
 | [video-audio](apps/video-audio) | Rust | writes the sound of a video as an audio file (wav, flac, opus, mp3) in the sample rate, channels, stretch and track you choose, or at a loudness you set (LUFS), with your own FFmpeg |
 | [example-hits](apps/example-hits) | Rust | the reference plugin: pretends to find things |
 
-Shared code: [libs/plugin-sdk](libs/plugin-sdk) speaks the protocol for a Rust plugin (answers `hello` with its capabilities, runs every call on its own thread, cancel, progress, the work folder), [libs/sound-reader](libs/sound-reader) reads the sound Metil decoded (or any common audio file) and writes a sound for the next plugin, and [libs/frame-reader](libs/frame-reader) reads the pictures Metil decoded. The speech plugin has the same in Python.
+Shared code: [libs/plugin-sdk](libs/plugin-sdk) speaks the protocol for a Rust plugin (answers `hello` with its capabilities, runs every call on its own thread, cancel, progress, the work folder), [libs/sound-reader](libs/sound-reader) reads the sound Loomas decoded (or any common audio file) and writes a sound for the next plugin, and [libs/frame-reader](libs/frame-reader) reads the pictures Loomas decoded. The speech plugin has the same in Python.
 
 ## Layout
 
@@ -48,10 +48,10 @@ apps/
 docs/
   plugin-protocol.md      the protocol, version 2
   writing-good-plugins.md guidance for plugin authors
-  mtp-format.md           the .mtp package: one plugin in one file
+  loomp-format.md           the .loomp package: one plugin in one file
 ```
 
-The repository is a [MonoSmith](https://github.com/monosmith-app/monosmith) workspace, so each plugin is a smith project (`smith add app <name> --lang <language>`) and `smith lint`, `smith test` and `smith build` run for all of them. Give Metil the `apps` folder with `--plugins apps`.
+The repository is a [MonoSmith](https://github.com/monosmith-app/monosmith) workspace, so each plugin is a smith project (`smith add app <name> --lang <language>`) and `smith lint`, `smith test` and `smith build` run for all of them. Give Loomas the `apps` folder with `--plugins apps`.
 
 [apps/example-hits](apps/example-hits) is a reference plugin in Rust that pretends to find things; copy it to start your own.
 

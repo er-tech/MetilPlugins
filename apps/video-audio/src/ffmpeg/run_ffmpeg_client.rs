@@ -3,7 +3,7 @@ use std::path::Path;
 use std::process::{Command, Stdio};
 use std::time::Duration;
 
-use metilplugins_plugin_sdk::{Cancel, Failure};
+use loomasplugins_plugin_sdk::{Cancel, Failure};
 
 /// How often a running FFmpeg is looked at to see if the call was cancelled.
 const POLL: Duration = Duration::from_millis(50);
@@ -30,7 +30,7 @@ pub fn run_ffmpeg(
             Failure::status(
                 422,
                 format!(
-                    "FFmpeg could not be started from {}: {error}. Install it or set METIL_FFMPEG",
+                    "FFmpeg could not be started from {}: {error}. Install it or set LOOMAS_FFMPEG",
                     program.display()
                 ),
             )
@@ -93,7 +93,7 @@ mod tests {
         let failure =
             run_ffmpeg(Path::new("no-such-ffmpeg-program"), &[], &Cancel::default()).unwrap_err();
         assert_eq!(failure.code, Some(serde_json::json!(422)));
-        assert!(failure.message.contains("METIL_FFMPEG"), "{failure:?}");
+        assert!(failure.message.contains("LOOMAS_FFMPEG"), "{failure:?}");
     }
 
     #[test]

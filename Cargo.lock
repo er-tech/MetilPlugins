@@ -537,6 +537,202 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f9f8bd3e56ce4dfc153cf470fffbfa98c7620958b312ca5c3a4b8d5181fd13c6"
 
 [[package]]
+name = "loomasplugins-appearances"
+version = "0.0.0"
+
+[[package]]
+name = "loomasplugins-coco-objects"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-appearances",
+ "loomasplugins-frame-reader",
+ "loomasplugins-model-cache",
+ "loomasplugins-onnx-device",
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-work-files",
+ "ort",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-crisis-moments"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-plugin-sdk",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-example-hits"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-plugin-sdk",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-frame-reader"
+version = "0.0.0"
+dependencies = [
+ "memmap2",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-model-cache"
+version = "0.0.0"
+dependencies = [
+ "sha2",
+ "ureq",
+]
+
+[[package]]
+name = "loomasplugins-music-sync"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-sound-reader",
+ "rustfft",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-onnx-device"
+version = "0.0.0"
+dependencies = [
+ "ort",
+ "serde_json",
+ "windows",
+]
+
+[[package]]
+name = "loomasplugins-plugin-sdk"
+version = "0.0.0"
+dependencies = [
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-sound-clean"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-sound-reader",
+ "rustfft",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-sound-events"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-model-cache",
+ "loomasplugins-onnx-device",
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-sound-reader",
+ "loomasplugins-work-files",
+ "ort",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-sound-graph"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-sound-reader",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-sound-reader"
+version = "0.0.0"
+dependencies = [
+ "memmap2",
+ "serde_json",
+ "symphonia",
+]
+
+[[package]]
+name = "loomasplugins-sound-volume"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-sound-reader",
+ "rustfft",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-thumbnail"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-frame-reader",
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-work-files",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-video-audio"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-work-files",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-video-upscale"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-frame-reader",
+ "loomasplugins-model-cache",
+ "loomasplugins-onnx-device",
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-work-files",
+ "ort",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-visual-phrases"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-appearances",
+ "loomasplugins-frame-reader",
+ "loomasplugins-model-cache",
+ "loomasplugins-onnx-device",
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-work-files",
+ "ort",
+ "serde_json",
+ "tokenizers",
+]
+
+[[package]]
+name = "loomasplugins-voice-extractor"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-model-cache",
+ "loomasplugins-onnx-device",
+ "loomasplugins-plugin-sdk",
+ "loomasplugins-sound-reader",
+ "loomasplugins-work-files",
+ "ort",
+ "realfft",
+ "serde_json",
+]
+
+[[package]]
+name = "loomasplugins-work-files"
+version = "0.0.0"
+dependencies = [
+ "png",
+ "serde_json",
+]
+
+[[package]]
 name = "lzma-rust2"
 version = "0.15.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -581,202 +777,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6b0ca1155a9ecc25aa12e8313a119f32edf0255fea2f44839c4ac0a12b2ac157"
 dependencies = [
  "libc",
-]
-
-[[package]]
-name = "metilplugins-appearances"
-version = "0.0.0"
-
-[[package]]
-name = "metilplugins-coco-objects"
-version = "0.0.0"
-dependencies = [
- "metilplugins-appearances",
- "metilplugins-frame-reader",
- "metilplugins-model-cache",
- "metilplugins-onnx-device",
- "metilplugins-plugin-sdk",
- "metilplugins-work-files",
- "ort",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-crisis-moments"
-version = "0.0.0"
-dependencies = [
- "metilplugins-plugin-sdk",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-example-hits"
-version = "0.0.0"
-dependencies = [
- "metilplugins-plugin-sdk",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-frame-reader"
-version = "0.0.0"
-dependencies = [
- "memmap2",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-model-cache"
-version = "0.0.0"
-dependencies = [
- "sha2",
- "ureq",
-]
-
-[[package]]
-name = "metilplugins-music-sync"
-version = "0.0.0"
-dependencies = [
- "metilplugins-plugin-sdk",
- "metilplugins-sound-reader",
- "rustfft",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-onnx-device"
-version = "0.0.0"
-dependencies = [
- "ort",
- "serde_json",
- "windows",
-]
-
-[[package]]
-name = "metilplugins-plugin-sdk"
-version = "0.0.0"
-dependencies = [
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-sound-clean"
-version = "0.0.0"
-dependencies = [
- "metilplugins-plugin-sdk",
- "metilplugins-sound-reader",
- "rustfft",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-sound-events"
-version = "0.0.0"
-dependencies = [
- "metilplugins-model-cache",
- "metilplugins-onnx-device",
- "metilplugins-plugin-sdk",
- "metilplugins-sound-reader",
- "metilplugins-work-files",
- "ort",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-sound-graph"
-version = "0.0.0"
-dependencies = [
- "metilplugins-plugin-sdk",
- "metilplugins-sound-reader",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-sound-reader"
-version = "0.0.0"
-dependencies = [
- "memmap2",
- "serde_json",
- "symphonia",
-]
-
-[[package]]
-name = "metilplugins-sound-volume"
-version = "0.0.0"
-dependencies = [
- "metilplugins-plugin-sdk",
- "metilplugins-sound-reader",
- "rustfft",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-thumbnail"
-version = "0.0.0"
-dependencies = [
- "metilplugins-frame-reader",
- "metilplugins-plugin-sdk",
- "metilplugins-work-files",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-video-audio"
-version = "0.0.0"
-dependencies = [
- "metilplugins-plugin-sdk",
- "metilplugins-work-files",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-video-upscale"
-version = "0.0.0"
-dependencies = [
- "metilplugins-frame-reader",
- "metilplugins-model-cache",
- "metilplugins-onnx-device",
- "metilplugins-plugin-sdk",
- "metilplugins-work-files",
- "ort",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-visual-phrases"
-version = "0.0.0"
-dependencies = [
- "metilplugins-appearances",
- "metilplugins-frame-reader",
- "metilplugins-model-cache",
- "metilplugins-onnx-device",
- "metilplugins-plugin-sdk",
- "metilplugins-work-files",
- "ort",
- "serde_json",
- "tokenizers",
-]
-
-[[package]]
-name = "metilplugins-voice-extractor"
-version = "0.0.0"
-dependencies = [
- "metilplugins-model-cache",
- "metilplugins-onnx-device",
- "metilplugins-plugin-sdk",
- "metilplugins-sound-reader",
- "metilplugins-work-files",
- "ort",
- "realfft",
- "serde_json",
-]
-
-[[package]]
-name = "metilplugins-work-files"
-version = "0.0.0"
-dependencies = [
- "png",
- "serde_json",
 ]
 
 [[package]]

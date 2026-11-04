@@ -1,6 +1,6 @@
 use serde_json::{json, Value};
-use metilplugins_plugin_sdk::{number, Cancel, Failure};
-use metilplugins_sound_reader::{load_sound_input, write_audio_region, Sound};
+use loomasplugins_plugin_sdk::{number, Cancel, Failure};
+use loomasplugins_sound_reader::{load_sound_input, write_audio_region, Sound};
 
 use crate::denoise::{level_db, reduce_noise, NoiseOptions};
 
@@ -17,7 +17,7 @@ pub fn reduce_noise_in_sound(params: &Value, cancel: &Cancel) -> Result<Value, F
     let folder = cancel.work_dir().ok_or_else(|| {
         Failure::status(
             503,
-            "Metil gave this plugin no place to write the cleaned sound (it needs the outputs feature)",
+            "Loomas gave this plugin no place to write the cleaned sound (it needs the outputs feature)",
         )
     })?;
     let sound =

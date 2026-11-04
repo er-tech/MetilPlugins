@@ -17,7 +17,7 @@ pub fn locate_model(
 ) -> Result<PathBuf, ModelError> {
     let folder = models_folder(|name| std::env::var(name).ok()).ok_or_else(|| ModelError {
         code: 422,
-        message: "no place to keep the model: set METIL_MODELS to a folder".to_string(),
+        message: "no place to keep the model: set LOOMAS_MODELS to a folder".to_string(),
         retryable: false,
     })?;
     let file = folder.join(plugin).join(model.file);

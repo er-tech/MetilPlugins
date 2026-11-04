@@ -1,5 +1,5 @@
 use serde_json::Value;
-use metilplugins_plugin_sdk::Failure;
+use loomasplugins_plugin_sdk::Failure;
 
 /// A stretch of the sound to mark on the picture: a sentence that was said, a loud moment.
 #[derive(Debug, Clone, PartialEq)]

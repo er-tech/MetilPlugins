@@ -1,4 +1,4 @@
-use metilplugins_model_cache::ModelFile;
+use loomasplugins_model_cache::ModelFile;
 
 /// How many times larger a picture a network makes. All the networks of this plugin make it four.
 pub const NETWORK_SCALE: usize = 4;

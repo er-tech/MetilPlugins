@@ -1,4 +1,4 @@
-use metilplugins_plugin_sdk::{number, whole_number, Failure};
+use loomasplugins_plugin_sdk::{number, whole_number, Failure};
 use serde_json::Value;
 
 use super::find_options_contract::{FindOptions, DEFAULT_SOUND_NAMES};

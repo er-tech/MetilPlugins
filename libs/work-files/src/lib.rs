@@ -1,6 +1,6 @@
 //! Files a plugin hands to the result. A plugin does not put the bytes of a picture or a clip in its
 //! answer: it writes the file in its work folder and answers with `{ "workFile": <path>, "mime": <type> }`,
-//! and Metil moves the file into the result's store. These write the common kinds and give
+//! and Loomas moves the file into the result's store. These write the common kinds and give
 //! that object.
 
 mod names;

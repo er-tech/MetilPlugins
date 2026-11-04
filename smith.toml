@@ -4,9 +4,9 @@
 schema = 1
 
 [workspace]
-name = "metilplugins"
+name = "loomasplugins"
 # npm scope for Node packages
-scope = "@metilplugins"
+scope = "@loomasplugins"
 # Go module path prefix for Go projects
 module_prefix = "github.com/er-tech/MetilPlugins"
 
@@ -57,79 +57,79 @@ node = "node-jest"     # ESLint with @monosmith/eslint-config, and Jest
 # [projects.web.tasks.build]
 # depends_on = ["^build", "codegen"]
 
-# Each plugin releases on main as a .mtp package per platform (a Python one is a single "any" package).
-# metil is private: the pipeline checks Metil out beside this repository (secret METIL_TOKEN) and the build makes the metil program from it.
+# Each plugin releases on main as a .loomp package per platform (a Python one is a single "any" package).
+# loomas is private: the pipeline checks Loomas out beside this repository (secret LOOMAS_TOKEN) and the build makes the loomas program from it.
 [[ci.sibling_repos]]
 repo = "er-tech/Metil"
 ref = "main"
-env = "METIL"
-pre_build = "cargo build --release -p metil-cli"
-token_secret = "METIL_TOKEN"
+env = "LOOMAS"
+pre_build = "cargo build --release -p loomas-cli"
+token_secret = "LOOMAS_TOKEN"
 
 [release]
 github_releases = true
 
 [projects.coco-objects.release]
 build = "sh tools/pack-plugin.sh coco-objects"
-assets = ["out/coco-objects-*.mtp"]
+assets = ["out/coco-objects-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
 [projects.video-upscale.release]
 build = "sh tools/pack-plugin.sh video-upscale"
-assets = ["out/video-upscale-*.mtp"]
+assets = ["out/video-upscale-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
 [projects.video-audio.release]
 build = "sh tools/pack-plugin.sh video-audio"
-assets = ["out/video-audio-*.mtp"]
+assets = ["out/video-audio-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.crisis-moments.release]
 build = "sh tools/pack-plugin.sh crisis-moments"
-assets = ["out/crisis-moments-*.mtp"]
+assets = ["out/crisis-moments-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.music-sync.release]
 build = "sh tools/pack-plugin.sh music-sync"
-assets = ["out/music-sync-*.mtp"]
+assets = ["out/music-sync-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.sound-clean.release]
 build = "sh tools/pack-plugin.sh sound-clean"
-assets = ["out/sound-clean-*.mtp"]
+assets = ["out/sound-clean-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.sound-events.release]
 build = "sh tools/pack-plugin.sh sound-events"
-assets = ["out/sound-events-*.mtp"]
+assets = ["out/sound-events-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
 [projects.sound-graph.release]
 build = "sh tools/pack-plugin.sh sound-graph"
-assets = ["out/sound-graph-*.mtp"]
+assets = ["out/sound-graph-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.sound-volume.release]
 build = "sh tools/pack-plugin.sh sound-volume"
-assets = ["out/sound-volume-*.mtp"]
+assets = ["out/sound-volume-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.thumbnail.release]
 build = "sh tools/pack-plugin.sh thumbnail"
-assets = ["out/thumbnail-*.mtp"]
+assets = ["out/thumbnail-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "macos-x64", "linux-x64", "linux-arm64"]
 
 [projects.visual-phrases.release]
 build = "sh tools/pack-plugin.sh visual-phrases"
-assets = ["out/visual-phrases-*.mtp"]
+assets = ["out/visual-phrases-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
 [projects.voice-extractor.release]
 build = "sh tools/pack-plugin.sh voice-extractor"
-assets = ["out/voice-extractor-*.mtp"]
+assets = ["out/voice-extractor-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
-# A plugin is released as a GitHub Release with its .mtp package, never to PyPI.
+# A plugin is released as a GitHub Release with its .loomp package, never to PyPI.
 [projects.speech-to-text]
 registry = "none"
 
@@ -137,5 +137,5 @@ registry = "none"
 build = "sh tools/pack-plugin.sh speech-to-text python"
 # The build only zips the plugin: the assets job does not install its Python packages.
 install = false
-assets = ["out/speech-to-text-*.mtp"]
+assets = ["out/speech-to-text-*.loomp"]
 platforms = ["linux-x64"]

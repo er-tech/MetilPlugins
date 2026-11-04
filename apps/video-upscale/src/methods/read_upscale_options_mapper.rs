@@ -1,6 +1,6 @@
 use serde_json::Value;
-use metilplugins_onnx_device::DeviceChoice;
-use metilplugins_plugin_sdk::{text, whole_number, Failure};
+use loomasplugins_onnx_device::DeviceChoice;
+use loomasplugins_plugin_sdk::{text, whole_number, Failure};
 
 use crate::models::{model_named, MODELS};
 

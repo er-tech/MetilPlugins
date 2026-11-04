@@ -1,6 +1,6 @@
 # crisis-moments
 
-Finds moments in a video where a person may be in distress or in conflict, for a person to look at: screaming or shouting, crying, struggling to breathe, the sounds of a blow, words of distress or about harming oneself, and aggressive words. A Metil plugin written in Rust. It uses fixed rules on what other steps found. It has no model, needs no network and downloads nothing.
+Finds moments in a video where a person may be in distress or in conflict, for a person to look at: screaming or shouting, crying, struggling to breathe, the sounds of a blow, words of distress or about harming oneself, and aggressive words. A Loomas plugin written in Rust. It uses fixed rules on what other steps found. It has no model, needs no network and downloads nothing.
 
 **What it is not.** It does not decide that a crisis, a panic attack or an attack happened, and it does not judge anyone. It never writes those words: it makes a short list of "moments to review" and says what was heard (`screaming`, `crying`, `words of distress`...). It will flag moments that are fine (films, music, sport, games, a loud laugh) and miss some that are not, and it cannot see anything: a fight in complete silence is invisible to it. It is not a medical device or a safety system. Do not use it to decide anything about a person.
 
@@ -65,7 +65,7 @@ Loudness only **supports** the other two: a window much louder than usual raises
 
 ## What it was tested on
 
-The unit tests use made-up lists for each rule. On top of that the whole chain was measured: `speech-to-text` (tiny model), `sound-events` and `sound-volume` feeding `crisis-moments`, through `metil run`, on 25 clips, with all five languages on. The clips, where each came from and its licence are in `evaluation/clips.lock.json`; the media is not kept in the repository. `evaluation/fetch_clips.py` and `evaluation/make_speech_clips.py` get them again, and `evaluation/evaluate.py` repeats the measurement. The flow is [examples/moments-to-review.mtf](examples/moments-to-review.mtf).
+The unit tests use made-up lists for each rule. On top of that the whole chain was measured: `speech-to-text` (tiny model), `sound-events` and `sound-volume` feeding `crisis-moments`, through `loomas run`, on 25 clips, with all five languages on. The clips, where each came from and its licence are in `evaluation/clips.lock.json`; the media is not kept in the repository. `evaluation/fetch_clips.py` and `evaluation/make_speech_clips.py` get them again, and `evaluation/evaluate.py` repeats the measurement. The flow is [examples/moments-to-review.loom](examples/moments-to-review.loom).
 
 **9 clips a person should look at: 7 found.**
 
@@ -88,6 +88,6 @@ It reads the words people said and the sounds heard, but only as lists that earl
 
 ## Later (not built)
 
-- **Movement.** A separate plugin that tracks body movements (a blow, a fall) and gives a list this plugin would count as one more kind of evidence next to words and sounds: MetilPlugins issue 53.
-- An optional emotion input (a model whose licence must be checked first) and an optional language-model check of the middle-confidence moments only. See MetilPlugins issue 10.
+- **Movement.** A separate plugin that tracks body movements (a blow, a fall) and gives a list this plugin would count as one more kind of evidence next to words and sounds: LoomasPlugins issue 53.
+- An optional emotion input (a model whose licence must be checked first) and an optional language-model check of the middle-confidence moments only. See LoomasPlugins issue 10.
 - Lists in more languages, and a check of all the lists by native speakers.

@@ -5,9 +5,9 @@ from typing import Any
 
 import numpy as np
 import pytest
-from metilplugins_speech_to_text.actions import run_action
-from metilplugins_speech_to_text.language_detection import detect_language
-from metilplugins_speech_to_text.serve import Failure
+from loomasplugins_speech_to_text.actions import run_action
+from loomasplugins_speech_to_text.language_detection import detect_language
+from loomasplugins_speech_to_text.serve import Failure
 
 RANKED = [("es", 0.021), ("pt", 0.9712), ("en", 0.004), ("fr", 0.003), ("de", 0.002), ("it", 0.001)]
 
@@ -32,7 +32,7 @@ def test_the_language_has_its_certainty_and_the_five_most_likely_candidates() ->
     assert [c["language"] for c in answer["candidates"]] == ["pt", "es", "en", "fr", "de"]
     assert answer["candidates"][0] == {"language": "pt", "probability": 0.971}
     assert answer["model"] == "tiny"
-    assert model.calls[0] is samples  # the samples Metil decoded are used as they are
+    assert model.calls[0] is samples  # the samples Loomas decoded are used as they are
 
 
 def test_a_model_that_cannot_be_loaded_is_a_503_and_unreadable_audio_a_422() -> None:

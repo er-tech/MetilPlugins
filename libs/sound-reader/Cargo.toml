@@ -1,5 +1,5 @@
 [package]
-name = "metilplugins-sound-reader"
+name = "loomasplugins-sound-reader"
 version = "0.0.0"
 edition = "2021"
 publish = false

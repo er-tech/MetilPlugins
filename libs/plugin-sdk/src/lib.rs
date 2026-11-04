@@ -1,8 +1,8 @@
-//! The seed of the Rust SDK for Metil plugins: it speaks the protocol (see
+//! The seed of the Rust SDK for Loomas plugins: it speaks the protocol (see
 //! docs/plugin-protocol.md) so a plugin only writes its actions.
 //!
 //! ```no_run
-//! use metilplugins_plugin_sdk::{serve_stdio, Failure};
+//! use loomasplugins_plugin_sdk::{serve_stdio, Failure};
 //!
 //! serve_stdio(|action, params, cancel| match action {
 //!     "echo" => Ok(params.clone()),
