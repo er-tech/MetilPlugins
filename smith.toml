@@ -8,7 +8,7 @@ name = "loomasplugins"
 # npm scope for Node packages
 scope = "@loomasplugins"
 # Go module path prefix for Go projects
-module_prefix = "github.com/er-tech/MetilPlugins"
+module_prefix = "github.com/loomas-apps/LoomasPlugins"
 
 [ci]
 # Pipelines to generate: "github", "azure", "gitlab", or several.
@@ -60,7 +60,7 @@ node = "node-jest"     # ESLint with @monosmith/eslint-config, and Jest
 # Each plugin releases on main as a .loomp package per platform (a Python one is a single "any" package).
 # loomas is private: the pipeline checks Loomas out beside this repository (secret LOOMAS_TOKEN) and the build makes the loomas program from it.
 [[ci.sibling_repos]]
-repo = "er-tech/Metil"
+repo = "loomas-apps/Loomas"
 ref = "main"
 env = "LOOMAS"
 pre_build = "cargo build --release -p loomas-cli"

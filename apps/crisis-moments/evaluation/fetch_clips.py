@@ -79,7 +79,7 @@ def fetch(case: tuple[str, str, bool], folder: Path) -> dict | None:
 def fetch_commons(case: tuple[str, str, bool], folder: Path) -> dict | None:
     """Downloads one file of Wikimedia Commons, with its licence; `None` when it cannot be fetched."""
     name, title, flag = case
-    headers = {"User-Agent": "loomas-crisis-eval/0.1 (https://github.com/er-tech/MetilPlugins)"}
+    headers = {"User-Agent": "loomas-crisis-eval/0.1 (https://github.com/loomas-apps/LoomasPlugins)"}
     query = urllib.parse.urlencode(
         {"action": "query", "titles": title, "prop": "imageinfo", "format": "json",
          "iiprop": "url|extmetadata"}

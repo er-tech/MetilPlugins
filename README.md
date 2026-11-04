@@ -1,6 +1,6 @@
 # LoomasPlugins
 
-Plugins for [Loomas](https://github.com/er-tech/Metil), the tool that extracts data from video: image, sound, text, context and search.
+Plugins for [Loomas](https://github.com/loomas-apps/Loomas), the tool that extracts data from video: image, sound, text, context and search.
 
 Loomas's core does very little itself (it reads recipes, opens a video, extracts audio and keeps the results). Everything that finds something in the media is a plugin: a separate program that Loomas starts when a recipe calls it. A plugin can be written in any language. This repository holds the plugins that are developed alongside Loomas, and the documentation of how to write one.
 

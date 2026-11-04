@@ -49,10 +49,10 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: Check out er-tech/Metil
+      - name: Check out loomas-apps/Loomas
         uses: actions/checkout@v7
         with:
-          repository: er-tech/Metil
+          repository: loomas-apps/Loomas
           path: Loomas
           ref: 'main'
           token: ${{ secrets.LOOMAS_TOKEN }}
@@ -154,10 +154,10 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: Check out er-tech/Metil
+      - name: Check out loomas-apps/Loomas
         uses: actions/checkout@v7
         with:
-          repository: er-tech/Metil
+          repository: loomas-apps/Loomas
           path: Loomas
           ref: 'main'
           token: ${{ secrets.LOOMAS_TOKEN }}
