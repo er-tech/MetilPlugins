@@ -1,0 +1,41 @@
+{
+  "name": "moments-to-review",
+  "triggers": {
+    "t": { "type": "Videos", "inputs": { "start": [{ "path": "video.mp4" }] } }
+  },
+  "actions": {
+    "Open": { "type": "media.open", "inputs": { "path": "@triggerBody().path" } },
+    "Speech": {
+      "type": "speech-to-text.transcribe",
+      "runAfter": { "Open": ["Succeeded"] },
+      "inputs": { "media": "@body('Open')", "model": "tiny" }
+    },
+    "Sounds": {
+      "type": "sound-events.find",
+      "runAfter": { "Open": ["Succeeded"] },
+      "inputs": { "media": "@body('Open')" }
+    },
+    "Loudness": {
+      "type": "sound-volume.map",
+      "runAfter": { "Open": ["Succeeded"] },
+      "inputs": { "audio": "@body('Open')" }
+    },
+    "Moments": {
+      "type": "crisis-moments.find",
+      "runAfter": {
+        "Speech": ["Succeeded"],
+        "Sounds": ["Succeeded"],
+        "Loudness": ["Succeeded"]
+      },
+      "inputs": {
+        "text": "@body('Speech').sentences",
+        "labels": "@body('Sounds').events",
+        "volume": "@body('Loudness').windows",
+        "languages": ["en"]
+      }
+    }
+  },
+  "outputs": {
+    "moments": { "value": "@body('Moments').moments" }
+  }
+}
