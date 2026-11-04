@@ -9,7 +9,7 @@ use crate::read::Sound;
 
 /// The sound a region describes, or `None` when `value` is not a region (a path or a stored file).
 ///
-/// A region is what Metil hands over for an input the manifest lists under `wants`: raw
+/// A region is what Loomas hands over for an input the manifest lists under `wants`: raw
 /// little-endian 32-bit float samples in a file the core decoded once, described by `file`,
 /// `format` (`f32le`), `sampleRate`, `channels`, `sampleCount`, `startMs` and `offsetBytes`. The file is mapped
 /// read-only, so the operating system shares its pages with every other process that reads it, and

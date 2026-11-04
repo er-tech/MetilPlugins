@@ -1,4 +1,4 @@
-use metilplugins_onnx_device::DeviceChoice;
+use loomasplugins_onnx_device::DeviceChoice;
 
 use crate::models::ModelSpec;
 

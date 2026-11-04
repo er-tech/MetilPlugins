@@ -8,7 +8,7 @@ Written 2026-10-26. This page records **what the plugins in this repository use 
 |---|---|---|
 | The Rust crates below | linked into the Rust plugins (`sound-volume`, `sound-graph`, `sound-clean`, `thumbnail`, `example-hits`, `coco-objects`, `sound-events`, `visual-phrases`, `voice-extractor`, `music-sync`, `video-upscale`) | permissive, except the **symphonia** crates (MPL-2.0, see the notes) |
 | The Python packages below | installed for `speech-to-text` | permissive, except `tqdm` and `certifi` (MPL-2.0) |
-| **FFmpeg** | **not packaged.** Metil decodes the media and hands it over. Only `video-upscale` starts the user's own FFmpeg (found through `METIL_FFMPEG` or the system path) to write the new video | the plugins carry no decoder of their own except what is said below; FFmpeg's licence is the one of the build the user installed |
+| **FFmpeg** | **not packaged.** Loomas decodes the media and hands it over. Only `video-upscale` starts the user's own FFmpeg (found through `LOOMAS_FFMPEG` or the system path) to write the new video | the plugins carry no decoder of their own except what is said below; FFmpeg's licence is the one of the build the user installed |
 | **ONNX Runtime** | linked into `coco-objects`, `sound-events`, `visual-phrases`, `voice-extractor` and `video-upscale` by the `ort` crate, which fetches the build Microsoft publishes when the plugin is built (nothing extra ships next to the program) | MIT; its own notices list the third-party code in the build: to be read before `coco-objects` is distributed |
 | Sound model | **not packaged.** `sound-events` downloads YAMNet (an ONNX conversion of Google's model, 16 MB) from Hugging Face, once, and checks its sha256 | YAMNet is Apache-2.0 (Google); the conversion's page says Apache-2.0 too: to be confirmed against the original before the plugin is distributed |
 | Image-text model | **not packaged.** `visual-phrases` downloads SigLIP (base, patch 16, 224 pixels; the 8-bit ONNX files of the `Xenova/siglip-base-patch16-224` conversion, about 205 MB) from Hugging Face, once, and checks the sha256 of each file | SigLIP is Apache-2.0 (Google), and the conversion's page does not say otherwise: to be confirmed against the original before the plugin is distributed |
@@ -19,15 +19,15 @@ Written 2026-10-26. This page records **what the plugins in this repository use 
 
 ## Notes
 
-- **symphonia (MPL-2.0).** The sound reader (`libs/sound-reader`) uses it to read mp3, wav, flac, ogg, aac and alac files when a plugin is given a file and not the sound Metil decoded. MPL-2.0 is a file-level copyleft: using the crates unmodified, in a program of another licence, is allowed; the notice and the source of *those files* (not of the plugin) have to be available to whoever gets the program. The plugins do not modify them.
+- **symphonia (MPL-2.0).** The sound reader (`libs/sound-reader`) uses it to read mp3, wav, flac, ogg, aac and alac files when a plugin is given a file and not the sound Loomas decoded. MPL-2.0 is a file-level copyleft: using the crates unmodified, in a program of another licence, is allowed; the notice and the source of *those files* (not of the plugin) have to be available to whoever gets the program. The plugins do not modify them.
 - **ring, rustls and the root certificates (webpki).** `coco-objects`, `sound-events`, `visual-phrases` and `voice-extractor` download their models (through `libs/model-cache`) with `ureq`, which brings `ring` (Apache-2.0 AND ISC; it carries code derived from BoringSSL and OpenSSL, whose notices go with it), `rustls` and the certificate list of `webpki-roots` (CDLA-Permissive-2.0). The `openssl` crates in the list come only from the build script of `ort-sys` (it downloads ONNX Runtime when the plugin is built); a build dependency is not linked into the program.
-- **av (PyAV, BSD-3-Clause).** `faster-whisper` depends on it to decode audio when it is given a file. Its binary wheels carry FFmpeg libraries, whose own licence (LGPL, or GPL if built with GPL parts) is separate from the BSD licence of the Python wrapper: to be checked for the wheel that is installed before the plugin is distributed. When Metil hands the plugin decoded samples, none of it is used.
+- **av (PyAV, BSD-3-Clause).** `faster-whisper` depends on it to decode audio when it is given a file. Its binary wheels carry FFmpeg libraries, whose own licence (LGPL, or GPL if built with GPL parts) is separate from the BSD licence of the Python wrapper: to be checked for the wheel that is installed before the plugin is distributed. When Loomas hands the plugin decoded samples, none of it is used.
 - **tqdm and certifi (MPL-2.0).** Same file-level terms as above; used unmodified.
 - **Build tools** (ruff, mypy, pytest, and so on) are not part of what a plugin ships and are left out of the lists.
 
 ## The packages
 
-Regenerate with `python tools/list_licences.py <this repository> --python <its python> faster-whisper numpy` from the Metil repository (the script is there); it reads what each package says and does not read licence texts.
+Regenerate with `python tools/list_licences.py <this repository> --python <its python> faster-whisper numpy` from the Loomas repository (the script is there); it reads what each package says and does not read licence texts.
 
 ### Rust crates
 
@@ -302,7 +302,7 @@ Regenerate with `python tools/list_licences.py <this repository> --python <its p
 
 ## Policy for adding a dependency to a plugin
 
-Each plugin has its own licence, chosen for that plugin (decision of the maintainer, 2026-10-28): MIT where its dependencies allow it, and a copyleft licence such as the GPL where a dependency requires it. A plugin is a separate program that Metil starts and talks to; the core never links plugin code, so the licence of a plugin does not reach the core. What a plugin needs to hold to: its licence is written in its folder, every dependency's licence is compatible with it (this page lists them), and a dependency under a stricter licence than the plugin's is a written decision (an issue or a line here) before it goes in. Metil's own rule for the core stays stricter and is in its `docs/licences.md`. A model or data file is recorded with its licence next to the plugin that uses it.
+Each plugin has its own licence, chosen for that plugin (decision of the maintainer, 2026-10-28): MIT where its dependencies allow it, and a copyleft licence such as the GPL where a dependency requires it. A plugin is a separate program that Loomas starts and talks to; the core never links plugin code, so the licence of a plugin does not reach the core. What a plugin needs to hold to: its licence is written in its folder, every dependency's licence is compatible with it (this page lists them), and a dependency under a stricter licence than the plugin's is a written decision (an issue or a line here) before it goes in. Loomas's own rule for the core stays stricter and is in its `docs/licences.md`. A model or data file is recorded with its licence next to the plugin that uses it.
 
 ## Still open
 

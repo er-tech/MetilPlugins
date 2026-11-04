@@ -7,7 +7,7 @@
   "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64", "macos-x86_64"],
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/metilplugins-sound-clean"
+    "../../dist/cargo/release/loomasplugins-sound-clean"
   ],
   "timeoutSeconds": 300,
   "concurrency": 4,
@@ -81,7 +81,7 @@
           "audio": {
             "title": "Cleaned sound",
             "type": "object",
-            "description": "The cleaned sound, described as Metil describes decoded sound (kind audio, f32le, file, sampleRate, channels, sampleCount, startMs...). Give it to an action that wants sound; it is good for this run only.",
+            "description": "The cleaned sound, described as Loomas describes decoded sound (kind audio, f32le, file, sampleRate, channels, sampleCount, startMs...). Give it to an action that wants sound; it is good for this run only.",
             "x-ui": {
               "kind": "sound"
             }
@@ -113,7 +113,7 @@
         },
         {
           "code": 503,
-          "description": "Metil gave the plugin no place to write the cleaned sound (it does not offer the outputs feature)."
+          "description": "Loomas gave the plugin no place to write the cleaned sound (it does not offer the outputs feature)."
         },
         {
           "code": "CANCELLED",

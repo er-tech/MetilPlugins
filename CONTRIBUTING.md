@@ -1,12 +1,12 @@
 # Contributing
 
-Thank you for adding a plugin or improving one. This page says how work flows in this repository. What a plugin is and how it talks to Metil is in [docs/plugin-protocol.md](docs/plugin-protocol.md) and [docs/writing-good-plugins.md](docs/writing-good-plugins.md).
+Thank you for adding a plugin or improving one. This page says how work flows in this repository. What a plugin is and how it talks to Loomas is in [docs/plugin-protocol.md](docs/plugin-protocol.md) and [docs/writing-good-plugins.md](docs/writing-good-plugins.md).
 
 ## Start a plugin
 
-1. Make a working plugin to start from: `metil plugins new <name>` (a Python plugin with one action) or copy [apps/example-hits](apps/example-hits) (Rust).
+1. Make a working plugin to start from: `loomas plugins new <name>` (a Python plugin with one action) or copy [apps/example-hits](apps/example-hits) (Rust).
 2. Put it in `apps/<name>/` and register it in the workspace: `smith add app <name> --lang <language>`.
-3. Check it: `metil plugins check apps/<name>` starts the plugin and reports problems (they fail the check) and advice (they do not).
+3. Check it: `loomas plugins check apps/<name>` starts the plugin and reports problems (they fail the check) and advice (they do not).
 4. Run the same checks as CI: `smith lint`, `smith test` and `smith build` for the plugin (`-p <name>`).
 
 A plugin brings its own runtime and dependencies, or documents them in its README. Nothing in one plugin's folder may depend on another plugin's folder. Shared Rust code lives in `libs/`.
@@ -23,7 +23,7 @@ Models and weights are never packaged: the plugin declares them and downloads th
 
 - Work on a branch from `dev` and open a pull request to `dev`. `main` holds what was released.
 - Write conventional commit headers with the plugin as the scope: `feat(thumbnail): ...` makes a minor release of that plugin, `fix(thumbnail): ...` a patch, `docs`, `chore`, `test` and `refactor` release nothing. A change to shared code in `libs/` releases the plugins that use it.
-- A release is a merge commit from `dev` to `main`. smith reads the commits since each plugin's last tag, makes the tag (`<name>@<version>`), a GitHub Release and one `.mtp` package for each platform.
+- A release is a merge commit from `dev` to `main`. smith reads the commits since each plugin's last tag, makes the tag (`<name>@<version>`), a GitHub Release and one `.loomp` package for each platform.
 - Every decision, idea and task is a GitHub issue. Close the issue when the release that finishes it is out, with a comment that names the release.
 
 ## Tests and documents

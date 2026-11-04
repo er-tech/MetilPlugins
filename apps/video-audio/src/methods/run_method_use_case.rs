@@ -1,4 +1,4 @@
-use metilplugins_plugin_sdk::{Cancel, Failure};
+use loomasplugins_plugin_sdk::{Cancel, Failure};
 use serde_json::Value;
 
 use super::extract_audio_use_case::extract_audio;

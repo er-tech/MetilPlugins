@@ -7,7 +7,7 @@
   "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/metilplugins-coco-objects"
+    "../../dist/cargo/release/loomasplugins-coco-objects"
   ],
   "timeoutSeconds": 1800,
   "stallSeconds": 120,
@@ -18,14 +18,14 @@
   },
   "permissions": {
     "env": [
-      "METIL_MODELS"
+      "LOOMAS_MODELS"
     ],
     "network": [
       "github.com",
       "release-assets.githubusercontent.com"
     ],
     "write": [
-      "~/.metil/models"
+      "~/.loomas/models"
     ]
   },
   "actions": {
@@ -51,7 +51,7 @@
               "object",
               "string"
             ],
-            "description": "The video: a stored file or a video as media.open gives it, or a path in text. Metil decodes a colour picture of it every half second.",
+            "description": "The video: a stored file or a video as media.open gives it, or a path in text. Loomas decodes a colour picture of it every half second.",
             "x-ui": {
               "group": "everyday"
             }
@@ -471,7 +471,7 @@
       "failures": [
         {
           "code": 400,
-          "description": "A param is wrong, or media is missing or not a video Metil decoded for the plugin."
+          "description": "A param is wrong, or media is missing or not a video Loomas decoded for the plugin."
         },
         {
           "code": 404,

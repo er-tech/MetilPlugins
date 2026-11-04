@@ -7,7 +7,7 @@
   "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
   "effect": "pure",
   "command": [
-    "../../dist/cargo/release/metilplugins-voice-extractor"
+    "../../dist/cargo/release/loomasplugins-voice-extractor"
   ],
   "timeoutSeconds": 1800,
   "stallSeconds": 120,
@@ -18,14 +18,14 @@
   },
   "permissions": {
     "env": [
-      "METIL_MODELS"
+      "LOOMAS_MODELS"
     ],
     "network": [
       "huggingface.co",
       "us.aws.cdn.hf.co"
     ],
     "write": [
-      "~/.metil/models"
+      "~/.loomas/models"
     ]
   },
   "actions": {
@@ -50,7 +50,7 @@
               "object",
               "string"
             ],
-            "description": "The video or sound: a stored file or a video as media.open gives it, or a path in text. Metil decodes its sound to 48 kHz, one channel.",
+            "description": "The video or sound: a stored file or a video as media.open gives it, or a path in text. Loomas decodes its sound to 48 kHz, one channel.",
             "x-ui": {
               "group": "everyday"
             }
@@ -134,7 +134,7 @@
           "voice": {
             "title": "Voice track",
             "type": "object",
-            "description": "The track, described as Metil describes decoded sound (kind audio, f32le, file, sampleRate, channels, sampleCount, startMs...). Give it to an action that wants sound; it is good for this run only.",
+            "description": "The track, described as Loomas describes decoded sound (kind audio, f32le, file, sampleRate, channels, sampleCount, startMs...). Give it to an action that wants sound; it is good for this run only.",
             "x-ui": {
               "kind": "sound"
             }
@@ -142,7 +142,7 @@
           "rest": {
             "title": "Everything else",
             "type": "object",
-            "description": "The track, described as Metil describes decoded sound (kind audio, f32le, file, sampleRate, channels, sampleCount, startMs...). Give it to an action that wants sound; it is good for this run only.",
+            "description": "The track, described as Loomas describes decoded sound (kind audio, f32le, file, sampleRate, channels, sampleCount, startMs...). Give it to an action that wants sound; it is good for this run only.",
             "x-ui": {
               "kind": "sound",
               "when": {
@@ -283,7 +283,7 @@
       "failures": [
         {
           "code": 400,
-          "description": "A param is wrong, or media is missing or not sound Metil decoded for the plugin."
+          "description": "A param is wrong, or media is missing or not sound Loomas decoded for the plugin."
         },
         {
           "code": 404,
@@ -295,7 +295,7 @@
         },
         {
           "code": 503,
-          "description": "A model file could not be downloaded (they are fetched once, on first use), or Metil gave the plugin no place to write the tracks. Trying again may work for the first."
+          "description": "A model file could not be downloaded (they are fetched once, on first use), or Loomas gave the plugin no place to write the tracks. Trying again may work for the first."
         },
         {
           "code": "CANCELLED",

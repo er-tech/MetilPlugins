@@ -1,5 +1,5 @@
 [package]
-name = "metilplugins-sound-graph"
+name = "loomasplugins-sound-graph"
 version = "0.0.0"
 edition = "2021"
 publish = false
@@ -10,5 +10,5 @@ kind = "app"
 
 [dependencies]
 serde_json = "1"
-metilplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
-metilplugins-sound-reader = { path = "../../libs/sound-reader" }
+loomasplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
+loomasplugins-sound-reader = { path = "../../libs/sound-reader" }

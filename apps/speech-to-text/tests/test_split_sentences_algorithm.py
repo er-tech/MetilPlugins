@@ -1,4 +1,4 @@
-from metilplugins_speech_to_text.transcription import Word, split_sentences
+from loomasplugins_speech_to_text.transcription import Word, split_sentences
 
 
 def words(*items: tuple[float, float, str], probability: float = 0.9) -> list[Word]:

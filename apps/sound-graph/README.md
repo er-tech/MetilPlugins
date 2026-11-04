@@ -1,12 +1,12 @@
 # sound-graph
 
-Draws the waves of a sound as an SVG picture. A Metil plugin written in Rust: one program, nothing to install. It reads mp3, wav, flac, ogg, aac and alac (and the sound of an mp4) by itself.
+Draws the waves of a sound as an SVG picture. A Loomas plugin written in Rust: one program, nothing to install. It reads mp3, wav, flac, ogg, aac and alac (and the sound of an mp4) by itself.
 
 ## `waveform`
 
 | Input | |
 |---|---|
-| `audio` | the sound: a stored file as Metil passes it (an object with an absolute `file`), or a path in text |
+| `audio` | the sound: a stored file as Loomas passes it (an object with an absolute `file`), or a path in text |
 | `width`, `height` | the size in pixels, 100 to 10000 and 40 to 2000 (default 1200 by 200) |
 | `color`, `background` | colors of the waves (default `#2b6cb0`) and the background (default `#ffffff`, or `none`) |
 | `normalize` | stretch the waves so the loudest point touches the edge (default `false`, so a quiet sound looks quiet) |
@@ -15,7 +15,7 @@ Draws the waves of a sound as an SVG picture. A Metil plugin written in Rust: on
 | `regions` | stretches to mark behind the waves: `{ startMs, endMs, label?, color? }`. The sentences of a transcript (`{ startMs, endMs, text }`) work as they are: the text is the label |
 | `sampleRate` | listen at this rate (4000 to 192000) instead of the sound's own |
 
-It gives `{ svg, width, height, durationMs, sampleRate }`. `svg` is the text of an SVG file: save it with Metil's `data.saveText` action, or put it in a page.
+It gives `{ svg, width, height, durationMs, sampleRate }`. `svg` is the text of an SVG file: save it with Loomas's `data.saveText` action, or put it in a page.
 
 ```json
 { "type": "sound-graph.waveform",
@@ -34,7 +34,7 @@ The sound is divided into one column for each pixel of the width, and the lowest
 ## Build
 
 ```sh
-smith build -p sound-graph          # or: cargo build --release -p metilplugins-sound-graph
+smith build -p sound-graph          # or: cargo build --release -p loomasplugins-sound-graph
 ```
 
-`plugin.json` starts `dist/cargo/release/metilplugins-sound-graph` from this folder. Give Metil the `apps` folder with `--plugins`.
+`plugin.json` starts `dist/cargo/release/loomasplugins-sound-graph` from this folder. Give Loomas the `apps` folder with `--plugins`.

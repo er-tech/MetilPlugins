@@ -1,5 +1,5 @@
 [package]
-name = "metilplugins-thumbnail"
+name = "loomasplugins-thumbnail"
 version = "0.0.0"
 edition = "2021"
 publish = false
@@ -10,6 +10,6 @@ kind = "app"
 
 [dependencies]
 serde_json = "1"
-metilplugins-frame-reader = { path = "../../libs/frame-reader" }
-metilplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
-metilplugins-work-files = { path = "../../libs/work-files" }
+loomasplugins-frame-reader = { path = "../../libs/frame-reader" }
+loomasplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
+loomasplugins-work-files = { path = "../../libs/work-files" }

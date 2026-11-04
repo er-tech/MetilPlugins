@@ -53,12 +53,12 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: er-tech/Metil
-          path: Metil
+          path: Loomas
           ref: 'main'
-          token: ${{ secrets.METIL_TOKEN }}
-      - name: Export METIL
+          token: ${{ secrets.LOOMAS_TOKEN }}
+      - name: Export LOOMAS
         shell: bash
-        run: echo "METIL=$GITHUB_WORKSPACE/Metil" >> "$GITHUB_ENV"
+        run: echo "LOOMAS=$GITHUB_WORKSPACE/Loomas" >> "$GITHUB_ENV"
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
@@ -85,10 +85,10 @@ jobs:
         run: |
           python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.27
           smith --version
-      - name: Build Metil
+      - name: Build Loomas
         shell: bash
-        working-directory: Metil
-        run: cargo build --release -p metil-cli
+        working-directory: Loomas
+        run: cargo build --release -p loomas-cli
       # smith:slot before-setup
       # smith:slot-end before-setup
       - name: Setup
@@ -158,12 +158,12 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: er-tech/Metil
-          path: Metil
+          path: Loomas
           ref: 'main'
-          token: ${{ secrets.METIL_TOKEN }}
-      - name: Export METIL
+          token: ${{ secrets.LOOMAS_TOKEN }}
+      - name: Export LOOMAS
         shell: bash
-        run: echo "METIL=$GITHUB_WORKSPACE/Metil" >> "$GITHUB_ENV"
+        run: echo "LOOMAS=$GITHUB_WORKSPACE/Loomas" >> "$GITHUB_ENV"
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
@@ -176,10 +176,10 @@ jobs:
         run: |
           python -m pip install --disable-pip-version-check --index-url https://pypi.org/simple/ monosmith==2.0.0-beta.27
           smith --version
-      - name: Build Metil
+      - name: Build Loomas
         shell: bash
-        working-directory: Metil
-        run: cargo build --release -p metil-cli
+        working-directory: Loomas
+        run: cargo build --release -p loomas-cli
       - name: Setup
         run: smith ci setup --assets
       - name: Build and upload the release files

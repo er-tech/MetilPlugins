@@ -1,5 +1,5 @@
-use metilplugins_plugin_sdk::{number, Cancel, Failure};
-use metilplugins_work_files::unique_work_file_name;
+use loomasplugins_plugin_sdk::{number, Cancel, Failure};
+use loomasplugins_work_files::unique_work_file_name;
 use serde_json::{json, Value};
 
 use super::extract_audio_use_case::describe;
@@ -30,8 +30,8 @@ pub fn normalize_audio(params: &Value, cancel: &Cancel) -> Result<Value, Failure
     let range = number(params, "loudnessRange", 11.0, 1.0, 20.0)?;
     let work_dir = cancel
         .work_dir()
-        .ok_or_else(|| Failure::status(500, "Metil gave no work folder to write the audio in"))?;
-    let program = ffmpeg_program(std::env::var_os("METIL_FFMPEG"));
+        .ok_or_else(|| Failure::status(500, "Loomas gave no work folder to write the audio in"))?;
+    let program = ffmpeg_program(std::env::var_os("LOOMAS_FFMPEG"));
 
     cancel.progress("measuring the loudness");
     let measure = measure_arguments(&input, &loudnorm_filter(target, peak, range, None));
@@ -60,7 +60,7 @@ mod tests {
     use super::*;
 
     fn has_ffmpeg() -> bool {
-        std::process::Command::new(ffmpeg_program(std::env::var_os("METIL_FFMPEG")))
+        std::process::Command::new(ffmpeg_program(std::env::var_os("LOOMAS_FFMPEG")))
             .arg("-version")
             .output()
             .is_ok()
@@ -74,7 +74,7 @@ mod tests {
         let dir = std::env::temp_dir().join(format!("video-audio-norm-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
         let source = dir.join("noise.wav");
-        let made = std::process::Command::new(ffmpeg_program(std::env::var_os("METIL_FFMPEG")))
+        let made = std::process::Command::new(ffmpeg_program(std::env::var_os("LOOMAS_FFMPEG")))
             .args(["-nostdin", "-hide_banner", "-loglevel", "error", "-y"])
             .args([
                 "-f",
@@ -99,7 +99,7 @@ mod tests {
         // The written file measures close to the target.
         let written = answer["audio"]["workFile"].as_str().unwrap();
         let log = run_ffmpeg(
-            &ffmpeg_program(std::env::var_os("METIL_FFMPEG")),
+            &ffmpeg_program(std::env::var_os("LOOMAS_FFMPEG")),
             &measure_arguments(
                 &crate::ffmpeg::AudioInput {
                     file: std::path::Path::new(written),

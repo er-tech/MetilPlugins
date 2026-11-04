@@ -1,5 +1,5 @@
 [package]
-name = "metilplugins-sound-events"
+name = "loomasplugins-sound-events"
 version = "0.0.0"
 edition = "2021"
 publish = false
@@ -11,8 +11,8 @@ kind = "app"
 [dependencies]
 ort = "=2.0.0-rc.15"
 serde_json = "1"
-metilplugins-model-cache = { path = "../../libs/model-cache" }
-metilplugins-onnx-device = { path = "../../libs/onnx-device" }
-metilplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
-metilplugins-sound-reader = { path = "../../libs/sound-reader" }
-metilplugins-work-files = { path = "../../libs/work-files" }
+loomasplugins-model-cache = { path = "../../libs/model-cache" }
+loomasplugins-onnx-device = { path = "../../libs/onnx-device" }
+loomasplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }
+loomasplugins-sound-reader = { path = "../../libs/sound-reader" }
+loomasplugins-work-files = { path = "../../libs/work-files" }

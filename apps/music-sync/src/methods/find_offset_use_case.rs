@@ -1,6 +1,6 @@
 use serde_json::{json, Value};
-use metilplugins_plugin_sdk::{number, whole_number, Cancel, Failure};
-use metilplugins_sound_reader::{load_sound_input, Sound};
+use loomasplugins_plugin_sdk::{number, whole_number, Cancel, Failure};
+use loomasplugins_sound_reader::{load_sound_input, Sound};
 
 use crate::alignment::{locate_music, AlignmentOptions, Unplaced};
 
