@@ -1,3 +1,5 @@
+<img src="../assets/brand/loomas-light-text-bg.png" alt="Loomas" width="160">
+
 # Licences of what the plugins are built with
 
 Written 2026-10-26. This page records **what the plugins in this repository use and under which licences, as the packages say about themselves**. It is an inventory, not a legal opinion; the questions that need one are at the end.

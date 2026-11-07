@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/brand/loomas-light-text-bg.png" alt="Loomas" width="420">
+</p>
+
 # LoomasPlugins
 
 Plugins for [Loomas](https://github.com/loomas-apps/Loomas), the tool that extracts data from video: image, sound, text, context and search.
