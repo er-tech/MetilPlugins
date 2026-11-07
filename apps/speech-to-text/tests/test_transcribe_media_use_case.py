@@ -58,7 +58,7 @@ def test_a_stretch_cut_out_of_the_source_gives_times_in_the_source() -> None:
         Path("talk.mp4"),
         TranscribeOptions(),
         threading.Event(),
-        lambda _name: model,
+        lambda _name, _placement: model,
         offset_ms=60_000,
     )
     assert result["sentences"][0]["startMs"] == 60_200
@@ -68,7 +68,10 @@ def test_a_stretch_cut_out_of_the_source_gives_times_in_the_source() -> None:
 def test_gives_the_language_the_length_and_the_sentences_with_their_times() -> None:
     model = FakeModel(SPEECH)
     result = transcribe_media(
-        Path("talk.mp4"), TranscribeOptions(model="base"), threading.Event(), lambda _name: model
+        Path("talk.mp4"),
+        TranscribeOptions(model="base"),
+        threading.Event(),
+        lambda _name, _placement: model,
     )
     assert result["language"] == "en"
     assert result["languageProbability"] == 0.988
@@ -84,7 +87,7 @@ def test_gives_the_language_the_length_and_the_sentences_with_their_times() -> N
 def test_passes_the_options_to_the_recognition_and_asks_for_the_time_of_each_word() -> None:
     model = FakeModel(SPEECH)
     options = TranscribeOptions(language="pt", skip_silence=False, beam_size=2)
-    transcribe_media(Path("talk.mp4"), options, threading.Event(), lambda _name: model)
+    transcribe_media(Path("talk.mp4"), options, threading.Event(), lambda _name, _placement: model)
     ((path, sent),) = model.calls
     assert path == "talk.mp4"
     assert sent == {
@@ -98,13 +101,13 @@ def test_passes_the_options_to_the_recognition_and_asks_for_the_time_of_each_wor
 def test_no_speech_is_a_success_with_no_sentences() -> None:
     model = FakeModel([FakeSegment(None), FakeSegment([])])
     result = transcribe_media(
-        Path("x.mp3"), TranscribeOptions(), threading.Event(), lambda _n: model
+        Path("x.mp3"), TranscribeOptions(), threading.Event(), lambda _n, _placement: model
     )
     assert result["sentences"] == [] and result["text"] == ""
 
 
 def test_a_model_that_cannot_be_loaded_is_a_503_and_media_that_cannot_be_read_is_a_422() -> None:
-    def no_model(_name: str) -> Any:
+    def no_model(_name: str, _placement: object) -> Any:
         raise OSError("no network")
 
     with pytest.raises(Failure) as unavailable:
@@ -117,7 +120,9 @@ def test_a_model_that_cannot_be_loaded_is_a_503_and_media_that_cannot_be_read_is
             raise RuntimeError("invalid data")
 
     with pytest.raises(Failure) as unreadable:
-        transcribe_media(Path("x.mp3"), TranscribeOptions(), threading.Event(), lambda _n: Broken())
+        transcribe_media(
+            Path("x.mp3"), TranscribeOptions(), threading.Event(), lambda _n, _placement: Broken()
+        )
     assert unreadable.value.code == 422
     assert "cannot read speech from x.mp3: invalid data" in unreadable.value.message
 
@@ -135,7 +140,9 @@ def test_a_cancel_stops_the_work_between_segments() -> None:
             return segments(), FakeInfo()
 
     with pytest.raises(Failure) as stopped:
-        transcribe_media(Path("x.mp3"), TranscribeOptions(), cancel, lambda _n: Cancelling())
+        transcribe_media(
+            Path("x.mp3"), TranscribeOptions(), cancel, lambda _n, _placement: Cancelling()
+        )
     assert stopped.value.message == "cancelled" and stopped.value.code == "CANCELLED"
 
 
@@ -173,7 +180,7 @@ def test_the_action_reads_a_stored_file_a_path_and_fails_with_the_status_that_fi
 def test_words_are_given_only_when_asked_for_and_are_in_the_time_of_the_source() -> None:
     model = FakeModel(SPEECH)
     plain = transcribe_media(
-        Path("talk.mp4"), TranscribeOptions(), threading.Event(), lambda _name: model
+        Path("talk.mp4"), TranscribeOptions(), threading.Event(), lambda _name, _placement: model
     )
     assert all("words" not in sentence for sentence in plain["sentences"])
 
@@ -181,7 +188,7 @@ def test_words_are_given_only_when_asked_for_and_are_in_the_time_of_the_source()
         Path("talk.mp4"),
         TranscribeOptions(words=True),
         threading.Event(),
-        lambda _name: FakeModel(SPEECH),
+        lambda _name, _placement: FakeModel(SPEECH),
         offset_ms=60_000,
     )
     first = with_words["sentences"][0]

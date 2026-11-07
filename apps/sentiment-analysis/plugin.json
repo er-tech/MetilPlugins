@@ -1,0 +1,300 @@
+{
+  "name": "sentiment-analysis",
+  "version": "0.1.0",
+  "title": "Rate how positive or negative the words are",
+  "description": "Says how positive, neutral or negative each sentence of a transcript is, in English, Portuguese and ten other languages, with a model that runs on this computer. It rates the words, not the voice.",
+  "protocol": 2,
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64"
+  ],
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/loomasplugins-sentiment-analysis"
+  ],
+  "timeoutSeconds": 1800,
+  "stallSeconds": 120,
+  "concurrency": 1,
+  "requirements": {
+    "cpu": 2,
+    "memoryMb": 1500
+  },
+  "permissions": {
+    "env": [
+      "LOOMAS_MODELS"
+    ],
+    "network": [
+      "huggingface.co",
+      "us.aws.cdn.hf.co",
+      "cdn-lfs.hf.co"
+    ],
+    "write": [
+      "~/.loomas/models"
+    ]
+  },
+  "actions": {
+    "analyze": {
+      "title": "Rate the sentences",
+      "description": "Rates each sentence of a transcript as positive, neutral or negative, with a score from -1 to 1, and gives an overall value. Connect the sentences of \"Speech to text\". It reads the words only: sarcasm, irony and a tone of voice that does not match the words are not understood. The model was trained on short texts such as reviews and social posts, so it is less sure on spoken language, and it was built for English, Portuguese, Spanish, French, German, Italian, Arabic, Hindi, Indonesian, Malay, Japanese and Chinese.",
+      "category": "analyse",
+      "icon": "chart",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "segments": {
+            "title": "Sentences to rate",
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "The sentences to rate, each with startMs, endMs and text: connect the sentences of \"Speech to text\".",
+            "x-ui": {
+              "group": "everyday",
+              "type": "timedText"
+            }
+          },
+          "model": {
+            "title": "Model",
+            "type": "string",
+            "enum": [
+              "standard",
+              "full"
+            ],
+            "default": "standard",
+            "description": "standard is the 8-bit version (about 136 MB to download, a little less exact); full has 32-bit numbers (about 541 MB) and is a little more sure of itself. Both are downloaded once and kept.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "standard": "Standard: 136 MB",
+                "full": "Full: 541 MB"
+              }
+            }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ],
+            "default": "cpu",
+            "description": "Where the model runs: cpu (the default: the model is small and the texts are short, so a card gains little), auto takes what Loomas grants (the graphics card when it found a discrete one), gpu uses the best card. A card that cannot be used falls back to the processor; the result says what ran. Not measured on a card.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "auto": "Automatic",
+                "cpu": "Processor",
+                "gpu": "Graphics card"
+              }
+            }
+          }
+        },
+        "required": [
+          "segments"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "segments": {
+            "title": "Rated sentences",
+            "type": "array",
+            "description": "The sentences that were given, in the same order, each with its label, confidence, score and the chance of each of the three. A sentence with no words is left out.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "title": "Starts",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Where the text starts, as it was given."
+                },
+                "endMs": {
+                  "title": "Ends",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Where the text ends, as it was given."
+                },
+                "text": {
+                  "title": "Text",
+                  "type": "string",
+                  "description": "The text that was rated.",
+                  "x-ui": {
+                    "kind": "text"
+                  }
+                },
+                "label": {
+                  "title": "Label",
+                  "type": "string",
+                  "enum": [
+                    "positive",
+                    "neutral",
+                    "negative"
+                  ],
+                  "description": "Which of the three the model finds most likely."
+                },
+                "confidence": {
+                  "title": "Confidence",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1,
+                  "description": "How likely the label is, from 0 to 1."
+                },
+                "score": {
+                  "title": "Score",
+                  "type": "number",
+                  "minimum": -1,
+                  "maximum": 1,
+                  "description": "From -1 (certainly negative) to 1 (certainly positive): the chance of positive minus the chance of negative."
+                },
+                "probabilities": {
+                  "title": "Chances",
+                  "type": "object",
+                  "description": "The chance of each of the three, which add up to 1.",
+                  "properties": {
+                    "positive": {
+                      "title": "Positive",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "neutral": {
+                      "title": "Neutral",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "negative": {
+                      "title": "Negative",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  }
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "label",
+                "confidence",
+                "score"
+              ]
+            },
+            "x-ui": {
+              "type": "timedLabel"
+            }
+          },
+          "overall": {
+            "title": "Overall",
+            "type": "object",
+            "description": "The whole transcript in one value: the label that the mean score comes to (above 0.25 positive, below -0.25 negative, else neutral), the mean score weighted by how long each sentence lasts (null when there is nothing to rate), and how many sentences have each label.",
+            "properties": {
+              "label": {
+                "title": "Label",
+                "type": "string"
+              },
+              "score": {
+                "title": "Mean score",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "segments": {
+                "title": "Sentences",
+                "type": "integer"
+              },
+              "positive": {
+                "title": "Positive",
+                "type": "integer"
+              },
+              "neutral": {
+                "title": "Neutral",
+                "type": "integer"
+              },
+              "negative": {
+                "title": "Negative",
+                "type": "integer"
+              }
+            }
+          },
+          "skipped": {
+            "title": "Left out",
+            "type": "integer",
+            "minimum": 0,
+            "description": "How many sentences had no words and were not rated."
+          },
+          "model": {
+            "title": "Model",
+            "type": "string",
+            "x-ui": {
+              "kind": "text"
+            }
+          },
+          "device": {
+            "title": "What it ran on",
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "What the model really ran on: device (cpu or directml:N), name (the graphics card, if one was used) and fallback (why the card was not used, if it was asked for or could have been). Null when there was nothing to rate.",
+            "properties": {
+              "device": {
+                "title": "Device",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "name": {
+                "title": "Graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "fallback": {
+                "title": "Why not the graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "segments",
+          "overall",
+          "skipped",
+          "model"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong, or a sentence has no time or no text."
+        },
+        {
+          "code": 422,
+          "description": "The model or its tokenizer could not be read."
+        },
+        {
+          "code": 503,
+          "description": "The model could not be downloaded (no network the first time)."
+        }
+      ]
+    }
+  }
+}

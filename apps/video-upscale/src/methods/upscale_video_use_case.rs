@@ -1,10 +1,12 @@
-use serde_json::{json, Value};
 use loomasplugins_frame_reader::{read_video_region, PixelFormat, VideoRegion};
 use loomasplugins_onnx_device::DeviceChoice;
 use loomasplugins_plugin_sdk::{Cancel, Failure};
 use loomasplugins_work_files::unique_work_file_name;
+use serde_json::{json, Value};
 
-use crate::encode::{ffmpeg_program, frame_rate, Encoder, EncoderSettings};
+use crate::encode::{
+    codec_works, ffmpeg_program, frame_rate, hardware_codecs, pick_codec, Encoder, EncoderSettings,
+};
 use crate::models::{locate_model, ModelSpec, NETWORK_SCALE};
 use crate::tiles::TILE_MARGIN;
 use crate::upscale::{device_report, upscale_frame};
@@ -22,8 +24,8 @@ fn even(side: usize) -> usize {
 /// The `upscale` action: a video made larger.
 ///
 /// Params: `media` (a video; the host decodes every colour picture of it), `model`, `device`,
-/// `tile` and `scale` (see `read_upscale_options`). It gives
-/// `{ video, frames, width, height, model, device }`: `video` is the new video, a stored MP4 with no
+/// `tile`, `scale` and `encoder` (see `read_upscale_options`). It gives
+/// `{ video, frames, width, height, model, encoder, device }`: `video` is the new video, a stored MP4 with no
 /// sound (the plugin sees pictures only), `width` and `height` are its size.
 pub fn upscale_video(params: &Value, cancel: &Cancel) -> Result<Value, Failure> {
     let mut options = read_upscale_options(params)?;
@@ -87,7 +89,14 @@ pub fn upscale_video(params: &Value, cancel: &Cancel) -> Result<Value, Failure> 
         frame_rate: frame_rate(video.frames.len(), video.start_ms, video.end_ms),
     };
     let program = ffmpeg_program(std::env::var_os("LOOMAS_FFMPEG"));
-    let mut encoder = Encoder::start(&program, &settings, &output)?;
+    // A card that was turned off for the run (`LOOMAS_GPU=cpu` or `device: cpu`) has no encoder either.
+    let pick = pick_codec(
+        options.encoder,
+        options.device != DeviceChoice::Cpu,
+        hardware_codecs(std::env::consts::OS),
+        |codec| codec_works(&program, codec),
+    );
+    let mut encoder = Encoder::start(&program, &settings, &pick.codec, &output)?;
     let fed = feed_pictures(
         &video,
         options.model,
@@ -111,6 +120,7 @@ pub fn upscale_video(params: &Value, cancel: &Cancel) -> Result<Value, Failure> 
         "width": target_width,
         "height": target_height,
         "model": options.model.name,
+        "encoder": pick.to_value(),
         "device": device_report(options.model, options.device).map(|report| report.to_value()),
     }))
 }

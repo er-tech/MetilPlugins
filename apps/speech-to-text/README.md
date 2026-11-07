@@ -31,6 +31,7 @@ It gives:
 | `skipSilence` | skip the stretches with no speech (default `false`): it stops the model from inventing words in silence, but it can drop speech that sits over loud music (on the Sintel trailer it lost 3 of 5 sentences) |
 | `words` | give each sentence its `words`, each with `startMs`, `endMs`, `text` and `confidence` (default false) |
 | `beamSize` | how many alternatives are weighed, 1 to 10 (default 5) |
+| `device` | `auto` (default: what Loomas grants), `cpu`, `gpu` or `gpu:N`; see [the graphics card](#the-graphics-card) |
 
 It gives:
 
@@ -49,6 +50,10 @@ It gives:
 ```
 
 A sentence ends at a full stop, a question mark or an exclamation mark (not after an abbreviation such as "Dr."), after a pause of more than two seconds, or after 60 words. Its times are those of its first and last word, from the word timestamps of the model, and `confidence` is the average sureness of its words. A recording with no speech is a success with no sentences.
+
+## The graphics card
+
+`transcribe` and `detectLanguage` take a `device` and answer with a `device` field that says what ran: `{ device: "cpu" | "cuda:0", name, fallback }`. With `auto` the plugin takes the device Loomas grants (`LOOMAS_GPU`, see the manual page on the graphics card). The speech library, CTranslate2, runs on the processor and on NVIDIA cards (CUDA), and nowhere else. So on an NVIDIA card the model runs there with 16-bit numbers, and on an AMD or Intel card, or when the card cannot start, it runs on the processor and `fallback` says why. The run does not fail. This route is built and tested with stand-ins, and has not been measured on an NVIDIA card.
 
 ## Failures
 

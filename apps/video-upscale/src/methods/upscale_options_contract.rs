@@ -1,5 +1,6 @@
 use loomasplugins_onnx_device::DeviceChoice;
 
+use crate::encode::EncoderChoice;
 use crate::models::ModelSpec;
 
 /// The params of `upscale`, read and checked.
@@ -11,4 +12,6 @@ pub struct UpscaleOptions {
     pub tile: usize,
     /// How many times larger the video is: 2 or 4.
     pub scale: usize,
+    /// The encoder that writes the new video.
+    pub encoder: EncoderChoice,
 }

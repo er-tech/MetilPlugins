@@ -1,0 +1,18 @@
+[package]
+name = "loomasplugins-on-screen-text"
+version = "0.0.0"
+edition = "2021"
+publish = false
+license = "MIT"
+
+[package.metadata.smith]
+kind = "app"
+
+[dependencies]
+ort = "=2.0.0-rc.15"
+serde_json = "1"
+loomasplugins-frame-reader = { path = "../../libs/frame-reader" }
+loomasplugins-model-cache = { path = "../../libs/model-cache" }
+loomasplugins-onnx-device = { path = "../../libs/onnx-device" }
+loomasplugins-picture-ops = { path = "../../libs/picture-ops" }
+loomasplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }

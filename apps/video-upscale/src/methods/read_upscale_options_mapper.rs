@@ -1,14 +1,15 @@
-use serde_json::Value;
 use loomasplugins_onnx_device::DeviceChoice;
 use loomasplugins_plugin_sdk::{text, whole_number, Failure};
+use serde_json::Value;
 
+use crate::encode::EncoderChoice;
 use crate::models::{model_named, MODELS};
 
 use super::upscale_options_contract::UpscaleOptions;
 
 /// The params of `upscale` as options: `model` (`general-x4v3` by default), `device` (`auto`,
-/// `cpu`, `gpu` or `gpu:N`, default `auto`), `tile` (64 to 1024, default 256) and `scale` (2 or 4,
-/// default 4). Anything outside its range is a 400 that says what was wrong.
+/// `cpu`, `gpu` or `gpu:N`, default `auto`), `tile` (64 to 1024, default 256), `scale` (2 or 4,
+/// default 4) and `encoder` (`x264` by default, or `hardware`). Anything outside its range is a 400 that says what was wrong.
 pub fn read_upscale_options(params: &Value) -> Result<UpscaleOptions, Failure> {
     let name = text(params, "model", Some("general-x4v3"), 20)?.unwrap_or_default();
     let model = model_named(&name).ok_or_else(|| {
@@ -34,11 +35,19 @@ pub fn read_upscale_options(params: &Value) -> Result<UpscaleOptions, Failure> {
             format!("scale must be 2 or 4, not {scale}"),
         ));
     }
+    let encoder_text = text(params, "encoder", Some("x264"), 12)?.unwrap_or_default();
+    let encoder = EncoderChoice::parse(&encoder_text).ok_or_else(|| {
+        Failure::status(
+            400,
+            format!("encoder must be x264 or hardware, not {encoder_text:?}"),
+        )
+    })?;
     Ok(UpscaleOptions {
         model,
         device,
         tile: whole_number(params, "tile", 256, 64, 1024)? as usize,
         scale,
+        encoder,
     })
 }
 
@@ -54,6 +63,15 @@ mod tests {
         assert_eq!(options.model.name, "general-x4v3");
         assert_eq!(options.device, DeviceChoice::Auto);
         assert_eq!((options.tile, options.scale), (256, 4));
+        assert_eq!(options.encoder, EncoderChoice::X264);
+    }
+
+    #[test]
+    fn the_encoder_is_x264_or_hardware_and_anything_else_is_a_400() {
+        let hardware = read_upscale_options(&json!({ "encoder": "Hardware" })).unwrap();
+        assert_eq!(hardware.encoder, EncoderChoice::Hardware);
+        let failure = read_upscale_options(&json!({ "encoder": "av1" })).unwrap_err();
+        assert_eq!(failure.code, Some(json!(400)));
     }
 
     #[test]

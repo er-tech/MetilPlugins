@@ -8,6 +8,7 @@ from typing import Any
 
 import numpy as np
 
+from ..device import CPU, Placement, load_placed_model
 from ..serve import Failure
 from ..transcription.speech_model_store import get_model
 
@@ -19,9 +20,10 @@ def detect_language(
     media: Path | np.ndarray,
     model_name: str,
     cancel: threading.Event,
-    load_model: Callable[[str], Any] = get_model,
+    load_model: Callable[[str, Placement], Any] = get_model,
+    placement: Placement = CPU,
 ) -> dict[str, Any]:
-    """Gives `{ language, languageProbability, candidates, model }`.
+    """Gives `{ language, languageProbability, candidates, model, device }`.
 
     `candidates` is the most likely languages, each `{ language, probability }`, best first.
     `media` is a file to decode here, or samples (mono, 16000 a second) the core already decoded.
@@ -33,7 +35,7 @@ def detect_language(
     if progress is not None:
         progress("loading the model")
     try:
-        model = load_model(model_name)
+        model, placement = load_placed_model(load_model, model_name, placement)
     except Exception as error:
         raise Failure.status(
             503, f"the model {model_name!r} could not be loaded: {error}"
@@ -60,6 +62,7 @@ def detect_language(
             for code, chance in sorted(ranked, key=lambda pair: pair[1], reverse=True)[:CANDIDATES]
         ],
         "model": model_name,
+        "device": placement.report(),
     }
 
 

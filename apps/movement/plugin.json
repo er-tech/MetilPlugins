@@ -1,0 +1,360 @@
+{
+  "name": "movement",
+  "version": "0.1.0",
+  "title": "Find the movements of people",
+  "description": "Follows the bodies of the people in a video and lists what moved: fast arms and legs, a striking motion towards another person, a fall, a person on the ground. It sees bodies, never faces or names, and it says what moved, never what it means.",
+  "protocol": 2,
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64"
+  ],
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/loomasplugins-movement"
+  ],
+  "timeoutSeconds": 3600,
+  "stallSeconds": 120,
+  "concurrency": 1,
+  "requirements": {
+    "cpu": 2,
+    "memoryMb": 1500
+  },
+  "permissions": {
+    "env": [
+      "LOOMAS_MODELS"
+    ],
+    "network": [
+      "huggingface.co",
+      "us.aws.cdn.hf.co",
+      "cdn-lfs.hf.co",
+      "download.openmmlab.com"
+    ],
+    "write": [
+      "~/.loomas/models"
+    ]
+  },
+  "actions": {
+    "find": {
+      "title": "Find the movements",
+      "description": "Lists the movements of the people in a video: when each starts and ends, what was seen, how sure the measurement is, and which person (a number for this run, never an identity). Loomas gives it five pictures a second. It finds the keypoints of each body (shoulders, elbows, wrists, hips, knees, ankles), follows each person from picture to picture, and measures how fast the hands and feet move compared with the body, in torso lengths a second. It says what moved, never what it means: a fast arm is not an attack, a person on the ground is not hurt. The limits are guesses that were checked on made-up movements only, not on real footage: raise or lower them (armSpeed, legSpeed) after trying it on your own videos.",
+      "category": "analyse",
+      "icon": "person",
+      "wants": {
+        "media": {
+          "media": "video",
+          "format": "rgb24",
+          "width": 480,
+          "everyMs": 200
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video: a video as media.open gives it, or a stored file. Loomas decodes five colour pictures a second of it.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "model": {
+            "title": "How the bodies are read",
+            "type": "string",
+            "enum": [
+              "rtmpose-small",
+              "rtmpose-medium",
+              "movenet"
+            ],
+            "default": "rtmpose-small",
+            "description": "rtmpose-small: a detector finds the people, then a pose network reads each one (about 39 MB to download): the best balance, and it copes with people far away, small or partly hidden. rtmpose-medium: the same with larger networks (about 145 MB): the most exact keypoints and the slowest. movenet: one small network reads the whole picture and finds up to six people (about 19 MB): the fastest, but it misses people who are small in the picture or overlap, which are the cases that matter most here.",
+            "x-ui": {
+              "group": "everyday",
+              "enumTitles": {
+                "rtmpose-small": "RTMPose small: balanced (39 MB)",
+                "rtmpose-medium": "RTMPose medium: most exact, slowest (145 MB)",
+                "movenet": "MoveNet: fastest, up to 6 people (19 MB)"
+              }
+            }
+          },
+          "picturesPerSecond": {
+            "title": "Pictures looked at a second",
+            "type": "number",
+            "enum": [
+              1,
+              2.5,
+              5
+            ],
+            "default": 5,
+            "description": "How many of the five pictures a second Loomas decodes are looked at. 5 catches a strike or a fall that lasts a quarter of a second; 2.5 is twice as fast and misses the quickest; 1 only finds slow things and states. More than 5 is not offered: the number of pictures is set by what Loomas decodes for this plugin.",
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "armSpeed": {
+            "title": "Fast arm above",
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 50,
+            "default": 4,
+            "description": "A wrist is fast above this many torso lengths a second, compared with the body. Lower finds more, and more false ones.",
+            "x-ui": {
+              "group": "advanced",
+              "unit": "torso lengths/s"
+            }
+          },
+          "legSpeed": {
+            "title": "Fast leg above",
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 50,
+            "default": 5,
+            "description": "An ankle is fast above this many torso lengths a second, compared with the body.",
+            "x-ui": {
+              "group": "advanced",
+              "unit": "torso lengths/s"
+            }
+          },
+          "minConfidence": {
+            "title": "Least confidence",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.3,
+            "description": "Movements rated below this are left out.",
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "gapMs": {
+            "title": "Gap that still joins",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 60000,
+            "default": 1000,
+            "description": "Movements of the same kind by the same person that are no further apart than this are one movement.",
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
+          },
+          "minSamples": {
+            "title": "Pictures it must be seen in",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 1,
+            "description": "A movement seen in fewer pictures than this is left out. Raise it to ignore one-picture blips caused by a wrong keypoint.",
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "minPersonScore": {
+            "title": "Least sure a person is",
+            "type": "number",
+            "minimum": 0.05,
+            "maximum": 1,
+            "default": 0.5,
+            "description": "A person counts when the model is at least this sure of them.",
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "maxPeople": {
+            "title": "Most people followed",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30,
+            "default": 8,
+            "description": "No more people than this are followed in a picture, the surest first.",
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ],
+            "default": "auto",
+            "description": "Where the networks run: auto takes what Loomas grants (the graphics card when it found a discrete one, else the processor), cpu always uses the processor, gpu uses the best card even if it is the integrated one. A card that cannot be used falls back to the processor; the result says what ran. Not measured on a card.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "auto": "Automatic",
+                "cpu": "Processor",
+                "gpu": "Graphics card"
+              }
+            }
+          }
+        },
+        "required": [
+          "media"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "movements": {
+            "title": "Movements",
+            "type": "array",
+            "description": "In the order they start.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "title": "Starts",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "When it starts, in the time of the video."
+                },
+                "endMs": {
+                  "title": "Ends",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "When it ends."
+                },
+                "label": {
+                  "title": "Movement",
+                  "type": "string",
+                  "enum": [
+                    "fast arm movement",
+                    "fast leg movement",
+                    "striking motion towards another person",
+                    "falling",
+                    "person on the ground",
+                    "two people close with fast movement"
+                  ],
+                  "description": "What was seen, written as what moved and never as what it means."
+                },
+                "confidence": {
+                  "title": "Confidence",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1,
+                  "description": "From 0 to 1: half the score of the keypoints plus up to another half for how far past its limit the movement went, all times the score of the keypoints. It is a rating of the measurement, not a chance that something happened."
+                },
+                "person": {
+                  "title": "Person",
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "A number for this run only: the same person keeps the number while they are followed. It is never an identity."
+                },
+                "detail": {
+                  "title": "Detail",
+                  "type": "string",
+                  "description": "What was measured, for example: right wrist 5.1 torso lengths a second.",
+                  "x-ui": {
+                    "kind": "text"
+                  }
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "label",
+                "confidence",
+                "person",
+                "detail"
+              ]
+            },
+            "x-ui": {
+              "type": "timedLabel"
+            }
+          },
+          "people": {
+            "title": "People followed",
+            "type": "integer",
+            "minimum": 0,
+            "description": "How many people were followed for more than one picture."
+          },
+          "samples": {
+            "title": "Pictures looked at",
+            "type": "integer",
+            "minimum": 0
+          },
+          "durationMs": {
+            "title": "Length",
+            "type": "integer",
+            "minimum": 0,
+            "description": "How much of the video was looked at, in milliseconds."
+          },
+          "model": {
+            "title": "Model",
+            "type": "string",
+            "x-ui": {
+              "kind": "text"
+            }
+          },
+          "device": {
+            "title": "What it ran on",
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "What the networks really ran on: device (cpu or directml:N), name (the graphics card, if one was used) and fallback (why the card was not used, if it was asked for or could have been). Null when nobody was found.",
+            "properties": {
+              "device": {
+                "title": "Device",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "name": {
+                "title": "Graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "fallback": {
+                "title": "Why not the graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "movements",
+          "people",
+          "samples",
+          "durationMs",
+          "model"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong, or the media is not a video Loomas decoded for this plugin."
+        },
+        {
+          "code": 422,
+          "description": "A network could not be read, or a model file could not be unpacked."
+        },
+        {
+          "code": 503,
+          "description": "A model could not be downloaded (no network the first time)."
+        }
+      ]
+    }
+  }
+}

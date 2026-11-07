@@ -6,6 +6,7 @@ use loomasplugins_plugin_sdk::Failure;
 
 use super::encoder_settings_contract::EncoderSettings;
 use super::ffmpeg_arguments_algorithm::ffmpeg_arguments;
+use super::video_codec_contract::VideoCodec;
 
 /// A running FFmpeg that turns the pictures written to it into a video file.
 pub struct Encoder {
@@ -14,15 +15,16 @@ pub struct Encoder {
 }
 
 impl Encoder {
-    /// Starts `program` to write `output`. A program that is not there is a 422 that says how to
-    /// point at it.
+    /// Starts `program` to write `output` with `codec`. A program that is not there is a 422 that
+    /// says how to point at it.
     pub fn start(
         program: &Path,
         settings: &EncoderSettings,
+        codec: &VideoCodec,
         output: &Path,
     ) -> Result<Encoder, Failure> {
         let mut child = Command::new(program)
-            .args(ffmpeg_arguments(settings, output))
+            .args(ffmpeg_arguments(settings, codec, output))
             .stdin(Stdio::piped())
             .stdout(Stdio::null())
             .stderr(Stdio::piped())

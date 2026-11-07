@@ -1,0 +1,343 @@
+{
+  "name": "on-screen-text",
+  "version": "0.1.0",
+  "title": "Read the text on the screen",
+  "description": "Reads the text a video shows (titles, subtitles burnt into the picture, signs, captions) with PaddleOCR networks that run on this computer, and says when each text is on the screen and where.",
+  "protocol": 2,
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64"
+  ],
+  "effect": "pure",
+  "command": [
+    "../../dist/cargo/release/loomasplugins-on-screen-text"
+  ],
+  "timeoutSeconds": 3600,
+  "stallSeconds": 120,
+  "concurrency": 1,
+  "requirements": {
+    "cpu": 2,
+    "memoryMb": 1500
+  },
+  "permissions": {
+    "env": [
+      "LOOMAS_MODELS"
+    ],
+    "network": [
+      "huggingface.co",
+      "us.aws.cdn.hf.co",
+      "cdn-lfs.hf.co"
+    ],
+    "write": [
+      "~/.loomas/models"
+    ]
+  },
+  "actions": {
+    "find": {
+      "title": "Find the text on the screen",
+      "description": "Reads the text a video shows and lists each text with when it is on the screen, where it is and how sure the reading is. A text that stays on the screen is one entry, even when one picture reads a letter wrong. Loomas gives it one picture a second, so a text that is on the screen for less than a second can be missed. It reads printed text in lines of one script at a time: pick the script with language. Handwriting, text on a curve or turned on its side, and very small or blurred text are read badly.",
+      "category": "analyse",
+      "icon": "text",
+      "wants": {
+        "media": {
+          "media": "video",
+          "format": "rgb24",
+          "width": 960,
+          "everyMs": 1000
+        }
+      },
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "media": {
+            "title": "Video",
+            "type": [
+              "object",
+              "string"
+            ],
+            "description": "The video: a video as media.open gives it, or a stored file. Loomas decodes a colour picture of it every second.",
+            "x-ui": {
+              "group": "everyday"
+            }
+          },
+          "language": {
+            "title": "Script to read",
+            "type": "string",
+            "enum": [
+              "latin",
+              "english",
+              "chinese",
+              "korean",
+              "arabic",
+              "eslav",
+              "greek",
+              "hindi",
+              "thai",
+              "tamil",
+              "telugu"
+            ],
+            "default": "latin",
+            "description": "Which script the text is written in. One script is read at a time, so a video with two scripts needs two calls. latin reads Portuguese, Spanish, French, German, Italian and about forty more languages. Each script is a download of 2 to 85 MB, once.",
+            "x-ui": {
+              "group": "everyday",
+              "enumTitles": {
+                "latin": "Latin letters: Portuguese, Spanish, French, German, Italian, Dutch, Polish, Turkish and about forty more",
+                "english": "English only (a little more exact on English than the Latin model)",
+                "chinese": "Chinese, Japanese and English",
+                "korean": "Korean and English",
+                "arabic": "Arabic, Persian and Urdu",
+                "eslav": "Cyrillic: Russian, Ukrainian, Belarusian, Bulgarian and others",
+                "greek": "Greek",
+                "hindi": "Devanagari: Hindi, Marathi, Nepali",
+                "thai": "Thai",
+                "tamil": "Tamil",
+                "telugu": "Telugu"
+              }
+            }
+          },
+          "detector": {
+            "title": "How the text is found",
+            "type": "string",
+            "enum": [
+              "fast",
+              "accurate"
+            ],
+            "default": "fast",
+            "description": "fast is small (2.4 MB) and finds the lines of text in clean pictures: titles, subtitles, signs. accurate is a large network (88 MB, about 4 times slower on the processor) that finds more text in busy, small or low-contrast pictures.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "fast": "Fast: 2.4 MB",
+                "accurate": "Accurate: 88 MB, slower"
+              }
+            }
+          },
+          "minConfidence": {
+            "title": "Least confidence",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0.6,
+            "description": "Text read with less confidence than this is left out. Lower finds more, and more nonsense.",
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "minChars": {
+            "title": "Fewest letters",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 2,
+            "description": "Text with fewer letters or digits than this is left out: a single mark is usually noise.",
+            "x-ui": {
+              "group": "advanced"
+            }
+          },
+          "gapMs": {
+            "title": "Gap that still joins",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 600000,
+            "default": 2500,
+            "description": "A text that is not read for longer than this has ended. Raise it for text that flickers or is hidden for a moment.",
+            "x-ui": {
+              "group": "advanced",
+              "unit": "ms"
+            }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ],
+            "default": "auto",
+            "description": "Where the networks run: auto takes what Loomas grants (the graphics card when it found a discrete one, else the processor), cpu always uses the processor, gpu uses the best card even if it is the integrated one. A card that cannot be used falls back to the processor; the result says what ran.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "auto": "Automatic",
+                "cpu": "Processor",
+                "gpu": "Graphics card"
+              }
+            }
+          }
+        },
+        "required": [
+          "media"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "texts": {
+            "title": "Texts",
+            "type": "array",
+            "description": "In the order they start.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "startMs": {
+                  "title": "Appears",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "When the picture where it is first read is shown, in the time of the video."
+                },
+                "endMs": {
+                  "title": "Disappears",
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "When the last picture it is read in stops being shown."
+                },
+                "text": {
+                  "title": "Text",
+                  "type": "string",
+                  "description": "What is written. When several pictures read it a little differently, the reading the networks were surest of.",
+                  "x-ui": {
+                    "kind": "text"
+                  }
+                },
+                "confidence": {
+                  "title": "Confidence",
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1,
+                  "description": "The mean chance of its characters over the pictures it was read in."
+                },
+                "samples": {
+                  "title": "Pictures",
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "In how many pictures it was read."
+                },
+                "box": {
+                  "title": "Where",
+                  "type": "object",
+                  "description": "Where it first appears, as shares of the picture from 0 to 1: x and y of the top left corner, then width and height.",
+                  "properties": {
+                    "x": {
+                      "title": "x",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "y": {
+                      "title": "y",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "width": {
+                      "title": "width",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "height": {
+                      "title": "height",
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  }
+                }
+              },
+              "required": [
+                "startMs",
+                "endMs",
+                "text",
+                "confidence",
+                "samples",
+                "box"
+              ]
+            },
+            "x-ui": {
+              "type": "timedText"
+            }
+          },
+          "samples": {
+            "title": "Pictures looked at",
+            "type": "integer",
+            "minimum": 0
+          },
+          "durationMs": {
+            "title": "Length",
+            "type": "integer",
+            "minimum": 0,
+            "description": "How much of the video was looked at, in milliseconds."
+          },
+          "language": {
+            "title": "Script",
+            "type": "string",
+            "x-ui": {
+              "kind": "text"
+            }
+          },
+          "device": {
+            "title": "What it ran on",
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "What the networks really ran on: device (cpu or directml:N), name (the graphics card, if one was used) and fallback (why the card was not used, if it was asked for or could have been). Null when no text was found.",
+            "properties": {
+              "device": {
+                "title": "Device",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "name": {
+                "title": "Graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "fallback": {
+                "title": "Why not the graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "texts",
+          "samples",
+          "durationMs",
+          "language"
+        ]
+      },
+      "failures": [
+        {
+          "code": 400,
+          "description": "A param is wrong, or the media is not a video Loomas decoded for this plugin."
+        },
+        {
+          "code": 422,
+          "description": "A network or a dictionary could not be read."
+        },
+        {
+          "code": 503,
+          "description": "A model could not be downloaded (no network the first time)."
+        }
+      ]
+    }
+  }
+}

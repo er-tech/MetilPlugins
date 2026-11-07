@@ -26,7 +26,7 @@ class FakeModel:
 def test_the_language_has_its_certainty_and_the_five_most_likely_candidates() -> None:
     samples = np.zeros(16000, dtype=np.float32)
     model = FakeModel()
-    answer = detect_language(samples, "tiny", threading.Event(), lambda name: model)
+    answer = detect_language(samples, "tiny", threading.Event(), lambda name, _placement: model)
     assert answer["language"] == "pt"
     assert answer["languageProbability"] == 0.971
     assert [c["language"] for c in answer["candidates"]] == ["pt", "es", "en", "fr", "de"]
@@ -49,7 +49,10 @@ def test_a_model_that_cannot_be_loaded_is_a_503_and_unreadable_audio_a_422() -> 
 
     with pytest.raises(Failure) as failure:
         detect_language(
-            np.zeros(8, dtype=np.float32), "tiny", threading.Event(), lambda name: Broken()
+            np.zeros(8, dtype=np.float32),
+            "tiny",
+            threading.Event(),
+            lambda name, _placement: Broken(),
         )
     assert failure.value.code == 422
 
@@ -58,7 +61,9 @@ def test_a_cancelled_call_stops_before_listening() -> None:
     cancel = threading.Event()
     cancel.set()
     with pytest.raises(Failure) as failure:
-        detect_language(np.zeros(8, dtype=np.float32), "tiny", cancel, lambda name: FakeModel())
+        detect_language(
+            np.zeros(8, dtype=np.float32), "tiny", cancel, lambda name, _placement: FakeModel()
+        )
     assert failure.value.code == "CANCELLED"
 
 
