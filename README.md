@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/brand/loomas-light-text-bg.png" alt="Loomas" width="420">
+  <img src="assets/brand/loomas-light-text-bg.svg" alt="Loomas" width="420">
 </p>
 
 # LoomasPlugins

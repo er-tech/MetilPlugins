@@ -1,4 +1,4 @@
-<img src="../assets/brand/loomas-light-text-bg.png" alt="Loomas" width="160">
+<img src="../assets/brand/loomas-light-text-bg.svg" alt="Loomas" width="160">
 
 # Licences of what the plugins are built with
 
