@@ -129,6 +129,25 @@
             "x-ui": {
               "group": "advanced"
             }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ],
+            "default": "auto",
+            "description": "Where the speech model runs: auto takes what Loomas grants (the graphics card when it found a discrete one, else the processor); cpu always uses the processor; gpu asks for the best card. The speech library (CTranslate2) uses NVIDIA cards only, so on an AMD or Intel card the processor is used and the result says why. A card that cannot be used falls back to the processor.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "auto": "Automatic",
+                "cpu": "Processor",
+                "gpu": "Graphics card"
+              }
+            }
           }
         },
         "required": [
@@ -236,13 +255,51 @@
             "x-ui": {
               "type": "timedText"
             }
+          },
+          "device": {
+            "title": "What it ran on",
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "What the model really ran on: device (cpu or cuda:N), name (the card, when one was used and its name is known) and fallback (why a card was not used, if it was asked for or granted).",
+            "properties": {
+              "device": {
+                "title": "Device",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "name": {
+                "title": "Graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "fallback": {
+                "title": "Why not the graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              }
+            }
           }
         },
         "required": [
           "language",
           "durationMs",
           "text",
-          "sentences"
+          "sentences",
+          "device"
         ]
       },
       "failures": [
@@ -304,6 +361,25 @@
               "group": "everyday",
               "widget": "select"
             }
+          },
+          "device": {
+            "title": "Run on",
+            "type": "string",
+            "enum": [
+              "auto",
+              "cpu",
+              "gpu"
+            ],
+            "default": "auto",
+            "description": "Where the speech model runs: auto takes what Loomas grants (the graphics card when it found a discrete one, else the processor); cpu always uses the processor; gpu asks for the best card. The speech library (CTranslate2) uses NVIDIA cards only, so on an AMD or Intel card the processor is used and the result says why. A card that cannot be used falls back to the processor.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "auto": "Automatic",
+                "cpu": "Processor",
+                "gpu": "Graphics card"
+              }
+            }
           }
         },
         "required": [
@@ -346,6 +422,43 @@
           "model": {
             "title": "Model",
             "type": "string"
+          },
+          "device": {
+            "title": "What it ran on",
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "What the model really ran on: device (cpu or cuda:N), name (the card, when one was used and its name is known) and fallback (why a card was not used, if it was asked for or granted).",
+            "properties": {
+              "device": {
+                "title": "Device",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "name": {
+                "title": "Graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "fallback": {
+                "title": "Why not the graphics card",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              }
+            }
           }
         }
       },

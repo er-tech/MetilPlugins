@@ -11,9 +11,9 @@ from .failure_error import Failure
 
 PROTOCOL = 2
 
-#: What this SDK can do for a plugin: read the sound and the pictures the host decodes, and say a
-#: call is alive.
-CAPABILITIES: dict[str, Any] = {"wants": {"media": ["audio", "video"]}, "progress": {}}
+#: What this SDK can do for a plugin: read the sound and the pictures the host decodes, say a
+#: call is alive, and take the device Loomas grants for models.
+CAPABILITIES: dict[str, Any] = {"wants": {"media": ["audio", "video"]}, "progress": {}, "gpu": {}}
 
 
 class Call(threading.Event):
@@ -21,9 +21,14 @@ class Call(threading.Event):
     to say the call is alive (`progress`). A plugin whose manifest sets `stallSeconds` must do this
     more often than that, or the host stops it."""
 
-    def __init__(self, notify: Callable[[str], None] | None = None) -> None:
+    def __init__(
+        self, notify: Callable[[str], None] | None = None, granted_device: str | None = None
+    ) -> None:
         super().__init__()
         self._notify = notify
+        #: The device word Loomas grants for models (`auto`, `cpu`, `gpu` or `gpu:N`), from `hello`;
+        #: `None` when it granted nothing.
+        self.granted_device = granted_device
 
     def progress(self, message: str = "") -> None:
         if self._notify is not None:
@@ -64,6 +69,7 @@ def serve_lines(lines: Iterable[str], write: Callable[[str], None], handler: Han
     cancels: dict[int, threading.Event] = {}
     cancels_lock = threading.Lock()
     calls: list[threading.Thread] = []
+    granted_device: str | None = None
 
     for line in lines:
         message = _parse(line)
@@ -71,10 +77,11 @@ def serve_lines(lines: Iterable[str], write: Callable[[str], None], handler: Han
             continue
         kind = message.get("type")
         if kind == "hello":
+            granted_device = _granted_device(message)
             write(_dump({"type": "ready", "protocol": PROTOCOL, "capabilities": CAPABILITIES}))
         elif kind == "call":
             call_id = message.get("id")
-            cancel = Call(_progress_sender(call_id, write))
+            cancel = Call(_progress_sender(call_id, write), granted_device)
             if isinstance(call_id, int):
                 with cancels_lock:
                     cancels[call_id] = cancel
@@ -96,6 +103,14 @@ def serve_lines(lines: Iterable[str], write: Callable[[str], None], handler: Han
 
     for thread in calls:
         thread.join()
+
+
+def _granted_device(hello: dict[str, Any]) -> str | None:
+    """The device word of the `gpu` capability of a `hello`, when there is one."""
+    capabilities = hello.get("capabilities")
+    gpu = capabilities.get("gpu") if isinstance(capabilities, dict) else None
+    device = gpu.get("device") if isinstance(gpu, dict) else None
+    return device if isinstance(device, str) else None
 
 
 def _progress_sender(call_id: Any, write: Callable[[str], None]) -> Callable[[str], None]:

@@ -8,6 +8,7 @@ from typing import Any
 
 import numpy as np
 
+from ..device import CPU, Placement, load_placed_model
 from ..serve import Failure
 from .sentence_contract import Sentence, Word
 from .speech_model_store import get_model
@@ -32,10 +33,11 @@ def transcribe_media(
     media: Path | np.ndarray,
     options: TranscribeOptions,
     cancel: threading.Event,
-    load_model: Callable[[str], Any] = get_model,
+    load_model: Callable[[str, Placement], Any] = get_model,
     offset_ms: int = 0,
+    placement: Placement = CPU,
 ) -> dict[str, Any]:
-    """Gives `{ language, languageProbability, durationMs, model, text, sentences }`.
+    """Gives `{ language, languageProbability, durationMs, model, device, text, sentences }`.
 
     `sentences` is a list of `{ startMs, endMs, text, confidence }`, with `words` (the same, one per
     word) in each when `options.words` is set. A video or sound with no speech
@@ -43,13 +45,14 @@ def transcribe_media(
     a second) the core already decoded. `load_model` is how a model is got by its name (the
     recognition itself can be swapped in tests). `offset_ms` is where `media` starts in the source,
     when it is a stretch the host cut out: the times of the sentences are in the time of the source.
-    A call that is a `Call` says it is alive as the recognition goes.
+    A call that is a `Call` says it is alive as the recognition goes. `placement` is the device the
+    model should run on; `device` in the result says what it really ran on.
     """
     progress = getattr(cancel, "progress", None)
     if progress is not None:
         progress("loading the model")
     try:
-        model = load_model(options.model)
+        model, placement = load_placed_model(load_model, options.model, placement)
     except Exception as error:
         # Usually no network the first time, or a name that is not a model.
         raise Failure.status(
@@ -86,6 +89,7 @@ def transcribe_media(
         "languageProbability": round(float(info.language_probability), 3),
         "durationMs": round(float(info.duration) * 1000),
         "model": options.model,
+        "device": placement.report(),
         "text": " ".join(sentence.text for sentence in sentences),
         "sentences": [sentence.to_dict(options.words) for sentence in sentences],
     }
