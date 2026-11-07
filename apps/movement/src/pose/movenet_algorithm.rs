@@ -1,5 +1,5 @@
-use crate::imaging::resize_bilinear;
 use crate::people::{Keypoint, Person, KEYPOINTS};
+use loomasplugins_picture_ops::resize_bilinear;
 
 /// The long side of the picture MoveNet looks at; the other side is a multiple of 32.
 const LONG_SIDE: usize = 256;

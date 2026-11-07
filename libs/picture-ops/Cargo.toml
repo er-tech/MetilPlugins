@@ -1,0 +1,11 @@
+[package]
+name = "loomasplugins-picture-ops"
+version = "0.0.0"
+edition = "2021"
+publish = false
+license = "MIT"
+
+[package.metadata.smith]
+kind = "lib"
+
+[dependencies]

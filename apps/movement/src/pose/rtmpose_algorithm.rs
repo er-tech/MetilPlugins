@@ -1,5 +1,5 @@
-use crate::imaging::crop_to;
 use crate::people::{Keypoint, KEYPOINTS};
+use loomasplugins_picture_ops::crop_to;
 
 /// The size of the picture the pose network takes: 192 wide, 256 high.
 pub const POSE_WIDTH: usize = 192;

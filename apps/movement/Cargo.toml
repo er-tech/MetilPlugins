@@ -14,4 +14,5 @@ serde_json = "1"
 loomasplugins-frame-reader = { path = "../../libs/frame-reader" }
 loomasplugins-model-cache = { path = "../../libs/model-cache" }
 loomasplugins-onnx-device = { path = "../../libs/onnx-device" }
+loomasplugins-picture-ops = { path = "../../libs/picture-ops" }
 loomasplugins-plugin-sdk = { path = "../../libs/plugin-sdk" }

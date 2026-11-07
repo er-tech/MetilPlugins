@@ -1,4 +1,4 @@
-use crate::imaging::resize_bilinear;
+use loomasplugins_picture_ops::resize_bilinear;
 
 /// A picture as the detector takes it: scaled to fit a square of `side` pixels and put in its corner on grey
 /// (114), as blue, green, red numbers from 0 to 255, one plane after another. Also the ratio the

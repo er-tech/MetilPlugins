@@ -2,7 +2,6 @@
 //! of their bodies. It sees bodies and never faces or names, and it says what moved, never what it
 //! means. See README.md; the protocol is spoken by the SDK in libs/plugin-sdk.
 
-mod imaging;
 mod methods;
 mod models;
 mod motion;
