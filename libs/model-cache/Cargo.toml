@@ -11,3 +11,4 @@ kind = "lib"
 [dependencies]
 sha2 = "0.10"
 ureq = "3"
+zip = { version = "2", default-features = false, features = ["deflate"] }
