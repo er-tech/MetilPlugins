@@ -129,6 +129,21 @@ build = "sh tools/pack-plugin.sh voice-extractor"
 assets = ["out/voice-extractor-*.loomp"]
 platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
 
+[projects.sentiment-analysis.release]
+build = "sh tools/pack-plugin.sh sentiment-analysis"
+assets = ["out/sentiment-analysis-*.loomp"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
+
+[projects.movement.release]
+build = "sh tools/pack-plugin.sh movement"
+assets = ["out/movement-*.loomp"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
+
+[projects.on-screen-text.release]
+build = "sh tools/pack-plugin.sh on-screen-text"
+assets = ["out/on-screen-text-*.loomp"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64", "linux-arm64"]
+
 # A plugin is released as a GitHub Release with its .loomp package, never to PyPI.
 [projects.speech-to-text]
 registry = "none"
