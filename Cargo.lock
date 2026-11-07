@@ -642,6 +642,7 @@ dependencies = [
  "loomasplugins-frame-reader",
  "loomasplugins-model-cache",
  "loomasplugins-onnx-device",
+ "loomasplugins-picture-ops",
  "loomasplugins-plugin-sdk",
  "ort",
  "serde_json",
@@ -658,6 +659,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "loomasplugins-on-screen-text"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-frame-reader",
+ "loomasplugins-model-cache",
+ "loomasplugins-onnx-device",
+ "loomasplugins-picture-ops",
+ "loomasplugins-plugin-sdk",
+ "ort",
+ "serde_json",
+]
+
+[[package]]
 name = "loomasplugins-onnx-device"
 version = "0.0.0"
 dependencies = [
@@ -665,6 +679,10 @@ dependencies = [
  "serde_json",
  "windows",
 ]
+
+[[package]]
+name = "loomasplugins-picture-ops"
+version = "0.0.0"
 
 [[package]]
 name = "loomasplugins-plugin-sdk"
