@@ -613,6 +613,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "loomasplugins-sentiment-analysis"
+version = "0.0.0"
+dependencies = [
+ "loomasplugins-model-cache",
+ "loomasplugins-onnx-device",
+ "loomasplugins-plugin-sdk",
+ "ort",
+ "serde_json",
+ "tokenizers",
+]
+
+[[package]]
 name = "loomasplugins-sound-clean"
 version = "0.0.0"
 dependencies = [
