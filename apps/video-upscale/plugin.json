@@ -4,7 +4,12 @@
   "title": "Upscale video",
   "description": "Makes a video larger, two or four times, with a Real-ESRGAN network that adds detail, or with plain Lanczos scaling. It runs on the graphics card when the host grants one. No language model.",
   "protocol": 2,
-  "platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-aarch64"],
+  "platforms": [
+    "windows-x86_64",
+    "linux-x86_64",
+    "linux-aarch64",
+    "macos-aarch64"
+  ],
   "effect": "pure",
   "command": [
     "../../dist/cargo/release/loomasplugins-video-upscale"
@@ -125,6 +130,23 @@
               "group": "advanced",
               "unit": "px"
             }
+          },
+          "encoder": {
+            "title": "Video encoder",
+            "type": "string",
+            "enum": [
+              "x264",
+              "hardware"
+            ],
+            "default": "x264",
+            "description": "How the new video is written. x264 uses the processor and makes the smallest file (the default). hardware uses the encoder of the graphics card (AMD, NVIDIA or Intel): about 3 to 4 times faster with almost no processor use and little memory, at the same picture quality, but the file is about 60% larger. When no graphics card encoder works here, or the card is turned off for the run, x264 is used and the result says why.",
+            "x-ui": {
+              "group": "advanced",
+              "enumTitles": {
+                "x264": "Processor (x264): smallest file",
+                "hardware": "Graphics card: faster, larger file"
+              }
+            }
           }
         },
         "required": [
@@ -221,6 +243,37 @@
                 }
               }
             }
+          },
+          "encoder": {
+            "title": "What wrote the video",
+            "type": "object",
+            "description": "The encoder really used (used), the one asked for (requested), and why the one asked for was not used (fallback), if it was not.",
+            "properties": {
+              "used": {
+                "title": "Encoder used",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "requested": {
+                "title": "Encoder asked for",
+                "type": "string",
+                "x-ui": {
+                  "kind": "text"
+                }
+              },
+              "fallback": {
+                "title": "Why not the one asked for",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "x-ui": {
+                  "kind": "text"
+                }
+              }
+            }
           }
         },
         "required": [
@@ -228,7 +281,8 @@
           "frames",
           "width",
           "height",
-          "model"
+          "model",
+          "encoder"
         ]
       },
       "failures": [

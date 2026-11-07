@@ -9,6 +9,7 @@ Makes a video larger, two or four times on each side, with a [Real-ESRGAN](https
 | `media` | the video: a video as `media.open` gives it, a stored file, or a path in text. Loomas decodes every colour picture of it |
 | `model` | `general-x4v3` (default), `animevideo-v3`, `x4plus` or `lanczos` (see below) |
 | `scale` | `2` or `4` (default 4). A network always makes four; with 2 the result is scaled down to half of that |
+| `encoder` | `x264` (default: the processor, the smallest file) or `hardware` (the encoder of the graphics card: AMD, NVIDIA or Intel on Windows and Linux, VideoToolbox on macOS) |
 | `device` | `auto` (default), `cpu`, `gpu` or `gpu:N`. `auto` uses the card the host grants |
 | `tile` | the side of a piece, 64 to 1024 (default 256), for a network that takes any size |
 
@@ -56,3 +57,7 @@ The program is MIT. Real-ESRGAN code and weights are BSD-3-Clause; ONNX Runtime 
 ```sh
 smith build -p video-upscale          # or: cargo build --release -p loomasplugins-video-upscale
 ```
+
+## The encoder
+
+`encoder: "hardware"` writes the video with the encoder of the graphics card. Measured on an RX 7900 XT at the same picture quality (VMAF 97.5, 1080p, 241 pictures): 3 to 4 times faster than `libx264` medium, 98% less processor time, 133 MB of memory against 1.1 GB, and a file 60% larger (see the research page on the media pipeline in the Loomas repository). Only the AMD encoder (`h264_amf`) was measured and run here. The NVIDIA (`h264_nvenc`), Intel (`h264_qsv`) and macOS (`h264_videotoolbox`) encoders use the usual equivalent settings and were not run. The plugin starts each candidate on a few black pictures first, because FFmpeg lists encoders the computer has no card for. When none starts, or the graphics card is turned off for the run (`LOOMAS_GPU=cpu` or `device: cpu`), `libx264` is used and `encoder.fallback` in the result says why.
