@@ -61,3 +61,15 @@ The program's own licence is the author's to choose (`loomas plugins check` says
 ```sh
 smith build -p coco-objects          # or: cargo build --release -p loomasplugins-coco-objects
 ```
+
+## The three models, run end to end
+
+All three models (`nano`, `tiny`, `s`) were run through Loomas, on the processor and on the graphics card (DirectML, an RX 7900 XT), on a 2-second video made from a street photo with about ten people. Each run is 4 pictures; the time includes starting the program, decoding and loading the model, so read it for the order and not for the size. The processor and the card gave the same things each time.
+
+| Model | Processor | Graphics card | What it found |
+|---|---|---|---|
+| `nano` | 1.6 s | 1.5 s | 1 person |
+| `tiny` | 2.1 s | 1.2 s | 1 person, 1 tennis racket |
+| `s` | 2.8 s | 1.4 s | 1 person, 1 handbag, 1 tennis racket |
+
+The card gives no gain for `nano` (too small to be worth sending the pictures), and about twice the speed for `tiny` and `s`. These are the numbers of one picture, not a benchmark. Not done: running on Linux and macOS (the continuous integration does that), the CUDA and CoreML providers, and a test on a real picture kept in the repository (the pictures that have a licence for it are not small, and the plugin has no picture decoder to read one).
